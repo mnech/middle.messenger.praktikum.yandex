@@ -4,10 +4,10 @@
     ul {
         display: flex;
         align-items: center;
-        justify-content: space-between;
         padding: 10px 40px;
 
         li {
+            margin-left: 40px;
             display: flex;
             align-items: center;
             cursor: pointer;
@@ -23,7 +23,13 @@
                 line-height: 20px;
             }
         }
+
+        :first-child {
+            margin-left: 0;
+        }
+
+        :last-child {
+            margin-left: auto;
+        }
     }
-
-
 }
