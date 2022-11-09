@@ -5,9 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="./page404.scss">
+    <link rel="stylesheet" href="../../static/globals.scss">
 </head>
 <body>
-    <div>404 page</div>
+    <main>
+        {{>navbar}}
+        {{>error code="404" text="Hey! It looks like you are lost" img="../../static/img/Planet.png"}}    
+    </main>
 </body>
 </html>

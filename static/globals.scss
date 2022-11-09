@@ -1,12 +1,21 @@
 @import "./fonts/index.scss";
 
+@import "./styles/button.scss";
+@import "./styles/input.scss";
+@import "./styles/navbar.scss";
+@import "./styles/error.scss";
+
 :root {
   --primary: #625B9A;
   --primary-light: #D7D5E5;
   --primary-dark: #181818;
+  --color-secondary: #FFBC39;
+  --color-secondary-dark: #E2861E;
   --color-white: #fff;
   --color-grey: #B9B9B9;
+  --color-grey-light: #E0E0E0;
   --color-grey-dark: #7C7C7C;
+  --color-red: #bd2d2d;
 }
 
 html,
@@ -14,7 +23,7 @@ body {
   margin: 0;
   padding: 0;
   color: var(--primary-dark);
-  font-size: 16px;
+  font-size: 14px;
   font-family: Nunito, sans-serif;
 }
 

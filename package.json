@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "parcel index.hbs",
+    "dev": "parcel index.hbs --no-cache",
     "build": "parcel build index.hbs"
   },
   "keywords": [],
