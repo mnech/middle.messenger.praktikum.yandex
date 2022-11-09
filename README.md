@@ -2,7 +2,14 @@
 
 Messenger is project for communication. You can create an account, send a message or picture to your friend :superhero_man:
 
-### You can see the Messenger there: [https://glittery-conkies-84fe7a.netlify.app](https://glittery-conkies-84fe7a.netlify.app)
+#### You can see the Messenger there
+[https://glittery-conkies-84fe7a.netlify.app](https://glittery-conkies-84fe7a.netlify.app)
+
+#### Layout in Figma
+[https://www.figma.com/file/Yh003JckgbDEUjNnuGgM57/Messenger?node-id=46%3A327](https://www.figma.com/file/Yh003JckgbDEUjNnuGgM57/Messenger?node-id=46%3A327)
+
+
+## Dev info
 ### Getting started
 
 :heavy_check_mark: Downlodad the project from github.
