@@ -2,6 +2,9 @@
   "name": "messenger",
   "version": "1.0.0",
   "description": "",
+  "engines" : { 
+    "node" : ">=16.0.0 <17.0.0"
+  },
   "scripts": {
     "dev": "parcel index.hbs --no-cache",
     "build": "parcel build index.hbs",
