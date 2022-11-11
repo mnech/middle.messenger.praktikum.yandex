@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../static/globals.scss">
+    <link rel="stylesheet" href="./auth.scss">
+</head>
+
+<body>
+    <main>
+        <div class="auth">
+            <div class="auth__container">
+                <h1 class="auth__title">Sign in</h1>
+                <form class="auth__form" action="#">
+                    {{>input text = "Enter your e-mail address"
+                    name = "email"
+                    type="email"
+                    label="E-mail"}}
+                    {{>input text = "Enter your password"
+                    name = "password"
+                    type = "password"
+                    label ="Password"
+                    error-text ="Please enter your password."}}
+                    {{>button class="btn" text="Sign in"}}
+                </form>
+                <p class="auth__text">Don’t have an account?
+                    <a href="./Signup.hbs"><span>Sign up</span></a>
+                </p>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

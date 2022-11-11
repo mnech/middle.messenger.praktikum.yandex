@@ -1,0 +1,60 @@
+---
+photo: "../../static/img/Photo.png"
+email: "yan@gmail.com"
+login: "yan1992"
+first_name: "Yan"
+second_name: "Petrov"
+display_name: "Yan"
+phone: "+7(911) 435 12 33"
+---
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../static/globals.scss">
+    <link rel="stylesheet" href="./profile.scss">
+</head>
+
+<body>
+    <main class="profile">
+        {{>navbar}}
+        <div class="container">
+            <img src={{photo}} alt="user photo" class="profile__photo">
+            <div class="profile__name">{{display_name}}</div>
+            <ul class="user-info">
+                <li>
+                    <p class="user-info__title">E-mail</p>
+                    <p class="user-info__value">{{email}}</p>
+                </li>
+                <li>
+                    <p class="user-info__title">Login</p>
+                    <p class="user-info__value">{{login}}</p>
+                </li>
+                <li>
+                    <p class="user-info__title">First name</p>
+                    <p class="user-info__value">{{first_name}}</p>
+                </li>
+                <li>
+                    <p class="user-info__title">Second_name</p>
+                    <p class="user-info__value">{{second_name}}</p>
+                </li>
+                <li>
+                    <p class="user-info__title">Display name</p>
+                    <p class="user-info__value">{{display_name}}</p>
+                </li>
+                <li>
+                    <p class="user-info__title">Phone</p>
+                    <p class="user-info__value">{{phone}}</p>
+                </li>
+            </ul>
+            <button class="profile__btn">Change password</button>
+        </div>
+    </main>
+</body>
+
+</html>
