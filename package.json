@@ -6,7 +6,7 @@
     "node" : ">=16.0.0 <17.0.0"
   },
   "scripts": {
-    "dev": "parcel index.hbs --no-cache --open --port 3000",
+    "dev": "parcel index.hbs --no-cache --open",
     "build": "parcel build index.hbs",
     "start": "parcel build ./index.hbs && node ./server.js"
   },
