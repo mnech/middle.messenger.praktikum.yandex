@@ -1,9 +1,5 @@
+@import "./styles/libs/normalize.css";
 @import "./fonts/index.scss";
-
-@import "./styles/button.scss";
-@import "./styles/input.scss";
-@import "./styles/navbar.scss";
-@import "./styles/error.scss";
 
 :root {
   --primary: #625B9A;
@@ -18,49 +14,10 @@
   --color-red: #bd2d2d;
 }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
+* {
   color: var(--primary-dark);
   font-size: 14px;
   font-family: Nunito, sans-serif;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-a {
-  display: inline-block;
-  color: inherit;
-  text-decoration: none;
-
-  &:hover {
-    color: inherit;
-    text-decoration: none;
-  }
-}
-
-ul,
-li,
-dl {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0;
-}
-
-img {
-  display: block;
 }
 
 .visually-hidden {
@@ -75,3 +32,8 @@ img {
   clip: rect(0 0 0 0);
   clip-path: inset(100%);
 }
+
+@import "./styles/button.scss";
+@import "./styles/input.scss";
+@import "./styles/navbar.scss";
+@import "./styles/error.scss";
