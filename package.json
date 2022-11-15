@@ -20,6 +20,10 @@
   "devDependencies": {
     "@anikin/parcel-transformer-handlebars": "1.0.9",
     "@parcel/transformer-sass": "2.7.0",
+    "@typescript-eslint/eslint-plugin": "^5.43.0",
+    "@typescript-eslint/parser": "^5.43.0",
+    "eslint": "^8.27.0",
+    "eslint-config-airbnb": "^19.0.4",
     "parcel": "2.7.0",
     "stylelint": "14.15.0",
     "stylelint-config-rational-order": "0.1.2",
