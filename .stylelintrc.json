@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-recommended-scss",
+    "stylelint-config-rational-order"
+  ],
+  "plugins": ["stylelint-order"],
+  "rules": {
+    "indentation": [
+			"tab"
+		],
+		"color-hex-case": "upper"
+  }
+}

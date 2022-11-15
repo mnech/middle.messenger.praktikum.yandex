@@ -1,63 +1,63 @@
 .profile {
-    .container {
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 449px;
-    }
+	.container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 449px;
+		margin: 0 auto;
+	}
 
-    &__photo {
-        margin-top: 80px;
-    }
+	&__photo {
+		margin-top: 80px;
+	}
 
-    &__name {
-        margin-top: 12px;
-        display: inline;
-        text-align: center;
-        font-weight: 700;
-        font-size: 16px;
-        line-height: 24px;
-        border-bottom: 2px solid var(--color-secondary);
-    }
+	&__name {
+		display: inline;
+		margin-top: 12px;
+		font-weight: 700;
+		font-size: 16px;
+		line-height: 24px;
+		text-align: center;
+		border-bottom: 2px solid var(--color-secondary);
+	}
 
-    .user-info {
-        margin-top: 60px;
-        width: 100%;
+	.user-info {
+		width: 100%;
+		margin-top: 60px;
 
-        li {
-            display: flex;
-            justify-content: space-between;
-            padding: 0 10px;
-            border-radius: 10px;
-            transition: all 0.2s;
-            cursor: pointer;
+		li {
+			display: flex;
+			justify-content: space-between;
+			padding: 0 10px;
+			border-radius: 10px;
+			cursor: pointer;
+			transition: all 0.2s;
 
-            p {
-                font-weight: 500;
-                font-size: 14px;
-                line-height: 20px;
-            }
-        }
+			p {
+				font-weight: 500;
+				font-size: 14px;
+				line-height: 20px;
+			}
+		}
 
-        &__value {
-            color: var(--color-grey-dark);
-        }
+		&__value {
+			color: var(--color-grey-dark);
+		}
 
-        :hover {
-            background-color: var(--primary-light);
-        }
-    }
+		:hover {
+			background-color: var(--primary-light);
+		}
+	}
 
-    &__btn {
-        margin: 50px auto 0 10px;
-        padding: 0;
-        border: none;
-        background-color: transparent;
-        font-weight: 700;
-        font-size: 14px;
-        line-height: 20px;
-        color: var(--primary);
-        cursor: pointer;
-    }
+	&__btn {
+		margin: 50px auto 0 10px;
+		padding: 0;
+		color: var(--primary);
+		font-weight: 700;
+		font-size: 14px;
+		line-height: 20px;
+		background-color: transparent;
+		border: none;
+		cursor: pointer;
+	}
 }

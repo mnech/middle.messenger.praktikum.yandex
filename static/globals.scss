@@ -1,39 +1,38 @@
-@import "./styles/libs/normalize.css";
-@import "./fonts/index.scss";
+@import url("./styles/libs/normalize.css");
+@import url("./fonts/index");
+@import url("./styles/button");
+@import url("./styles/input");
+@import url("./styles/navbar");
+@import url("./styles/error");
 
 :root {
-  --primary: #625B9A;
-  --primary-light: #D7D5E5;
-  --primary-dark: #181818;
-  --color-secondary: #FFBC39;
-  --color-secondary-dark: #E2861E;
-  --color-white: #fff;
-  --color-grey: #B9B9B9;
-  --color-grey-light: #E0E0E0;
-  --color-grey-dark: #7C7C7C;
-  --color-red: #bd2d2d;
+	--primary: #625B9A;
+	--primary-light: #D7D5E5;
+	--primary-dark: #181818;
+	--color-secondary: #FFBC39;
+	--color-secondary-dark: #E2861E;
+	--color-white: #FFF;
+	--color-grey: #B9B9B9;
+	--color-grey-light: #E0E0E0;
+	--color-grey-dark: #7C7C7C;
+	--color-red: #BD2D2D;
 }
 
 * {
-  color: var(--primary-dark);
-  font-size: 14px;
-  font-family: Nunito, sans-serif;
+	color: var(--primary-dark);
+	font-size: 14px;
+	font-family: Nunito, sans-serif;
 }
 
 .visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  border: 0;
-  clip: rect(0 0 0 0);
-  clip-path: inset(100%);
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	border: 0;
+	clip: rect(0 0 0 0);
+	clip-path: inset(100%);
 }
-
-@import "./styles/button.scss";
-@import "./styles/input.scss";
-@import "./styles/navbar.scss";
-@import "./styles/error.scss";

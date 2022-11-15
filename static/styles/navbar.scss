@@ -1,35 +1,35 @@
 .navbar {
-    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.05);
+	box-shadow: 0 3px 10px rgb(0 0 0 / 5%);
 
-    ul {
-        display: flex;
-        align-items: center;
-        padding: 10px 40px;
+	ul {
+		display: flex;
+		align-items: center;
+		padding: 10px 40px;
 
-        li {
-            margin-left: 40px;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
+		li {
+			display: flex;
+			align-items: center;
+			margin-left: 40px;
+			cursor: pointer;
 
-            img {
-                margin-right: 8px;
-            }
+			img {
+				margin-right: 8px;
+			}
 
-            span {
-                color: var(--color-grey-dark);
-                font-weight: 700;
-                font-size: 14px;
-                line-height: 20px;
-            }
-        }
+			span {
+				color: var(--color-grey-dark);
+				font-weight: 700;
+				font-size: 14px;
+				line-height: 20px;
+			}
+		}
 
-        :first-child {
-            margin-left: 0;
-        }
+		:first-child {
+			margin-left: 0;
+		}
 
-        :last-child {
-            margin-left: auto;
-        }
-    }
+		:last-child {
+			margin-left: auto;
+		}
+	}
 }
