@@ -1,1 +1,28 @@
-//*
+.chat {
+	height: 100vh;
+
+	&__container {
+		display: flex;
+		height: 100%;
+	}
+
+	&__content {
+		background-color: blue;
+	}
+
+	&__search {
+		margin: 20px 29px;
+	}
+
+	.chat-list {
+		&__item {
+			box-shadow: 0 3px 10px rgb(0 0 0 / 5%);
+		}
+
+		&__user-photo {
+			width: 44px;
+			height: 44px;
+			border-radius: 100%;
+		}
+	}
+}
