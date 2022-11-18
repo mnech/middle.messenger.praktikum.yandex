@@ -1,18 +1,17 @@
 ---
 chat_list : [
 {id: 1, photo: "../../static/temp/user_photo1.png", name: "Evgenya Kukushkina", lastMessage: "Okay! ",
-lastMessage_date: "18:30", unread: 2},
-{id: 2, photo: "../../static/temp/user_photo2.png", name: "Kate Semenova", lastMessage: "Nostrud tempor incididunt nulla
-et in qui ad. Id aliqua nostrud
-dolore magna esse pariatur culpa sint.",
-lastMessage_date: "10:00", unread: 0},
+lastMessage_date: "18:30"},
+{id: 2, photo: "../../static/temp/user_photo2.png", name: "Kate Semenova", lastMessage: "We are sending daily
+newsletters fro...",
+lastMessage_date: "10:00"},
 {id: 3, photo: "../../static/temp/user_photo3.png", name: "Nikolay Tapochkin", lastMessage: "Thank’s :)))",
-lastMessage_date: "Th", unread: 0},
+lastMessage_date: "Th"},
 {id: 4, photo: "../../static/temp/user_photo4.png", name: "Semen Ivanov", lastMessage: "Hi!",
-lastMessage_date: "10.11.2022", unread: 0},
+lastMessage_date: "10.11.2022"},
 ]
 messeges: [
-{incoming: true, text: "Hello. How are you??))))", date: "16.11.2022 11:30:32"},
+{incoming: true, text: "Hello. How are you??", date: "16.11.2022 11:30:32"},
 {incoming: false, text: "Hii. I’m fine", date: "16.11.2022 11:30:32"}
 ]
 
@@ -35,30 +34,61 @@ messeges: [
         {{>navbar}}
         <div class="chat__container">
             <div class="chat__chats">
-                {{>input text = "Search"
-                class = "chat__search"
-                name = "search"
-                type="text"}}
-                <ul class="chat-list">
-                    {{#each chat_list as |chat|}}
-                    <li class="chat-list__item">
-                        <img src={{chat.photo}} alt="user" class="chat-list__user-photo">
-                        <div>{{chat.name}}</div>
-                        <div>{{chat.lastMessage_date}}</div>
-                        <div>{{chat.lastMessage}}</div>
-                        <div>{{chat.unread}}</div>
-                    </li>
-                    {{/each }}
-
-                </ul>
-                {{>button class="btn" text="add chat"}}
+                <div>
+                    {{>input text = "Search"
+                    class = "chat__search"
+                    name = "search"
+                    type="text"}}
+                    <ul class="chat-list">
+                        {{#each chat_list as |chat|}}
+                        <li class="chat-list__item">
+                            <img src={{chat.photo}} alt="user" class="chat-list__user-photo">
+                            <div class="chat-list__info">
+                                <div class="chat-list__name">{{chat.name}}</div>
+                                <div class="chat-list__message">{{chat.lastMessage}}</div>
+                            </div>
+                            <div class="chat-list__info chat-list__info-right">
+                                <div>{{chat.lastMessage_date}}</div>
+                                {{!-- <div class="chat-list__unread">{{chat.unread}}</div> --}}
+                            </div>
+                        </li>
+                        {{/each }}
+                    </ul>
+                </div>
+                {{>button class="btn" text="add chat" }}
             </div>
-            <div class="chat__content">
-                <div class="chat__top"></div>
-                <div class="chat__body"></div>
-                <div class="chat__bottom">
-                    {{>button class="btn" text="more"}}
+            <div class="content">
+                <div class="content__top">
+                    <div class="content__info">
+                        <div class="content__name">Evgenya Kukushkina</div>
+                        <img src="../../static/temp/user_photo1.png" alt="user" class="content__user-photo">
+                    </div>
+                    <ul class="content__options">
+                        <li class="content__options-item">
+                            <button class="btn-icon">
+                                <img src="../../static/icons/search.svg" alt="search" class="btn-icon__icon">
+                                <span class="visually-hidden">Search</span>
+                            </button>
+                        </li>
+                        <li class="content__options-item">
+                            <button class="btn-icon">
+                                <img src="../../static/icons/options.svg" alt="options" class="btn-icon__icon">
+                                <span class="visually-hidden">Options</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="content__body">
+                    <div class="message-item receive">Hello. How are you??</div>
+                    <div class="message-item send">Hii. I’m fine</div>
+                </div>
+                <div class="content__bottom">
+                    <button class="btn-icon">
+                        <img src="../../static/icons/paperclip.svg" alt="paperclip" class="btn-icon__icon">
+                        <span class="visually-hidden">More options</span>
+                    </button>
                     {{>input text = "Type your message..."
+                    class="content__messeges-search"
                     name = "message"
                     type="text"}}
                     {{>button class="btn" text="Send"}}

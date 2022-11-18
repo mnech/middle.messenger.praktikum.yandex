@@ -1,4 +1,5 @@
 .navbar {
+	height: var(--navbar-height);
 	box-shadow: 0 3px 10px rgb(0 0 0 / 5%);
 
 	ul {
@@ -11,10 +12,6 @@
 			align-items: center;
 			margin-left: 40px;
 			cursor: pointer;
-
-			img {
-				margin-right: 8px;
-			}
 
 			span {
 				color: var(--color-grey-dark);
@@ -34,8 +31,15 @@
 	}
 
 	&__user-photo {
-		width: 44px;
-		height: 44px;
+		width: 32px;
+		height: 32px;
+		margin-right: 8px;
 		border-radius: 100%;
+	}
+
+	&__icon {
+		width: 20px;
+		height: 20px;
+		margin-right: 4px;
 	}
 }
