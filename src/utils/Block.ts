@@ -17,21 +17,12 @@ export default abstract class Block {
   protected children: Children;
   private eventBus: () => EventBus;
   private _element: Element = null;
-  private _meta: {
-    tagName: string,
-    props: Props,
-  };
 
-  constructor(tagName: string = 'div', childrenAndProps: Props = {}) {
+  constructor(childrenAndProps: Props = {}) {
     const eventBus = new EventBus();
     const {props, children} = this._getChildrenAndProps(childrenAndProps);
 
     this.children = children;
-    this._meta = {
-      tagName,
-      props,
-    };
-
     this.props = this._makePropsProxy(props);
 
     this.eventBus = () => eventBus;
@@ -47,13 +38,7 @@ export default abstract class Block {
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
   }
 
-  private _createResources(): void {
-    const { tagName } = this._meta;
-    this._element = this._createDocumentElement(tagName);
-  }
-
   private _init(): void {
-    this._createResources();
     this.init();
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
   }
@@ -86,18 +71,16 @@ export default abstract class Block {
     } 
   };
 
-  get element(): Element {
+  get element() {
     return this._element;
   }
 
   private _render(): void {
-    const block = this.render();
-    const element = this.getContent();
-    
-    if (element) {
-      element.innerHTML = "";
-      element.append(block);
-    }
+    const fragment = this.render();
+
+    const newElement = fragment.firstElementChild as HTMLElement;
+    this._element?.replaceWith(newElement);
+    this._element = newElement;
 
     this._addEvents();
   }
@@ -151,7 +134,7 @@ export default abstract class Block {
     const {events = {}} = this.props;
 
     Object.keys(events).forEach(event => {
-      this._element!.addEventListener(event, events[event])
+      this._element?.addEventListener(event, events[event])
     })
   }
 

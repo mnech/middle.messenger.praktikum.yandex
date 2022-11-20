@@ -1,4 +1,3 @@
-import Button from "./components/button";
 import Chat from "./pages/chat";
 
 window.addEventListener("DOMContentLoaded", ()=> {

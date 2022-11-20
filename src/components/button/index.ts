@@ -11,9 +11,7 @@ interface ButtonProps {
 
 export default class Button extends Block {
   constructor(props: ButtonProps) {
-    super("button", props);
-
-    this.element!.classList.add(styles.btn);
+    super(props);
   }
 
   render() {
