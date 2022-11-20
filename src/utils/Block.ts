@@ -1,7 +1,10 @@
-type Element = HTMLElement | null;
-
 import EventBus from './EventBus';
-export default abstract class Block<Props extends Record<string, any> = any> {
+import { v4 as uuidv4 } from 'uuid';
+
+type Element = HTMLElement | null;
+type Children = Record<string, Block>;
+type Props = Record<string, any>;
+export default abstract class Block {
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
@@ -9,16 +12,21 @@ export default abstract class Block<Props extends Record<string, any> = any> {
     FLOW_RENDER: 'flow:render',
   };
 
+  public id = uuidv4();
   protected props: Props;
+  protected children: Children;
   private eventBus: () => EventBus;
   private _element: Element = null;
   private _meta: {
     tagName: string,
-    props: Props
+    props: Props,
   };
 
-  constructor(tagName: string = 'div', props: Props = {}) {
+  constructor(tagName: string = 'div', childrenAndProps: Props = {}) {
     const eventBus = new EventBus();
+    const {props, children} = this._getChildrenAndProps(childrenAndProps);
+
+    this.children = children;
     this._meta = {
       tagName,
       props,
@@ -32,85 +40,126 @@ export default abstract class Block<Props extends Record<string, any> = any> {
     eventBus.emit(Block.EVENTS.INIT);
   }
 
-  _registerEvents(eventBus: EventBus) {
-    eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
+  private _registerEvents(eventBus: EventBus): void {
+    eventBus.on(Block.EVENTS.INIT, this._init.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
   }
 
-  _createResources() {
+  private _createResources(): void {
     const { tagName } = this._meta;
     this._element = this._createDocumentElement(tagName);
   }
 
-  init() {
+  private _init(): void {
     this._createResources();
+    this.init();
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
   }
 
-  private _componentDidMount() {
+  protected init(): void {}
+
+  private _componentDidMount(): void {
     this.componentDidMount();
   }
 
-  protected componentDidMount(oldProps?: Props) {}
+  protected componentDidMount(oldProps?: Props): void {}
 
-  dispatchComponentDidMount() {
+  public dispatchComponentDidMount(): void {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
   }
 
-  _componentDidUpdate(oldProps: Props, newProps: Props) {
-    const response = this.componentDidUpdate(oldProps, newProps);
-
-    if (!response) {
-      return;
-    }
-
-    this._render();
+  private _componentDidUpdate(oldProps: Props, newProps: Props): void {
+    if (this.componentDidUpdate(oldProps, newProps)) {
+      this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+    }  
   }
 
-  // Может переопределять пользователь, необязательно трогать
-  componentDidUpdate(oldProps: Props, newProps: Props) {
+  protected componentDidUpdate(oldProps: Props, newProps: Props): boolean {
     return true;
   }
 
-  dispatchComponentDidUpdate() {
-    this.eventBus().emit(Block.EVENTS.FLOW_CDU);
-  }
-
-  setProps = (nextProps: Props) => {
-    console.log(nextProps);
-    if (!nextProps) {
-      return;
-    }
-
-    Object.assign(this.props, nextProps);
+  public setProps = (nextProps: Props): void => {
+    if (nextProps) {
+      Object.assign(this.props, nextProps);
+    } 
   };
 
-  get element() {
+  get element(): Element {
     return this._element;
   }
 
-  private _render() {
+  private _render(): void {
     const block = this.render();
     const element = this.getContent();
     
     if (element) {
-      element.innerHTML = block;
+      element.innerHTML = "";
+      element.append(block);
     }
+
+    this._addEvents();
   }
 
-  protected render(): HTMLElement {}
+  protected render(): DocumentFragment {
+    return new DocumentFragment();
+  }
 
-  getContent(): Element {
+  protected compile(template: HandlebarsTemplateDelegate, context?: Props): DocumentFragment {
+    const contextAndStubs = {...context};
+
+    Object.entries(this.children).forEach(([name, component]) => {
+      contextAndStubs[name] = `<div data-id="${component.id}"></div>`;
+    });
+
+    const html = template(contextAndStubs);
+    const temp = document.createElement("template");
+    temp.innerHTML = html;
+
+    Object.entries(this.children).forEach(([name, component]) => {
+      const stub = temp.content.querySelector(`[data-id="${component.id}"]`);
+
+      if (stub) {
+        stub.replaceWith(component.getContent()!);
+      }
+    });
+
+    return temp.content;
+  }
+
+  public getContent(): Element {
     return this.element;
   }
 
-  _makePropsProxy(props: Props): Props  {
+  private _getChildrenAndProps(childrenAndProps: Props) {
+    const props: Record<string, any> = {};
+    const children: Children = {};
+
+    Object.entries(childrenAndProps).forEach(([key, value]) => {
+      if (value instanceof Block) {
+        children[key] = value;
+      } else {
+        props[key] = value;
+      }
+    });
+
+    return {props, children};
+  }
+
+  private _addEvents(): void {
+    const {events = {}} = this.props;
+
+    Object.keys(events).forEach(event => {
+      this._element!.addEventListener(event, events[event])
+    })
+  }
+
+  private _makePropsProxy(props: Props): Props  {
     const self = this;
 
     const proxy = new Proxy(props, {
-      get(target, prop) {
+      get(target: Props, prop: string): undefined {
         const value = target[prop];
 
         if (typeof value === 'function') {
@@ -120,25 +169,26 @@ export default abstract class Block<Props extends Record<string, any> = any> {
         return value;
       },
 
-      set(target, prop, value) {
+      set(target: Props, prop: string, value: undefined): boolean {
+        const oldTarget = {...target};
         target[prop] = value;
 
-        self.eventBus().emit(Block.EVENTS.FLOW_CDU, { ...target }, target);
+        self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
         return true;
       },
 
       deleteProperty() {
-        throw new Error('Нет доступа');
+        throw new Error('No access!');
       },
     });
     return proxy;
   }
 
-  _createDocumentElement(tagName: string) {
+  private _createDocumentElement(tagName: string): HTMLElement {
     return document.createElement(tagName);
   }
 
-  show(): void {
+  public show(): void {
     const element = this.getContent();
 
     if (element) {
@@ -146,7 +196,7 @@ export default abstract class Block<Props extends Record<string, any> = any> {
     }
   }
 
-  hide(): void {
+  public hide(): void {
     const element = this.getContent();
 
     if (element) {

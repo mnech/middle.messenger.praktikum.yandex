@@ -6,9 +6,9 @@
     "node": ">=16.0.0 <17.0.0"
   },
   "scripts": {
-    "dev": "parcel index.hbs --no-cache --open --port 3000",
-    "build": "parcel build index.hbs",
-    "start": "parcel build ./index.hbs && node ./server.js",
+    "dev": "parcel ./src/index.html --no-cache --open --port 3000",
+    "build": "parcel build ./src/index.html",
+    "start": "parcel build ./src/index.html && node ./server.js",
     "stylelint": "stylelint \"**/*.scss\" --fix"
   },
   "keywords": [],
@@ -21,6 +21,7 @@
   "devDependencies": {
     "@anikin/parcel-transformer-handlebars-precompile": "^1.0.1",
     "@parcel/transformer-sass": "2.7.0",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "5.43.0",
     "@typescript-eslint/parser": "5.43.0",
     "eslint": "8.27.0",
