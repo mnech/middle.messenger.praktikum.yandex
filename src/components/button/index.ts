@@ -1,20 +1,23 @@
 import Block from "../../utils/Block";
-import template from "./button.hbs";
-import styles from "./button.module.scss";
-
 interface ButtonProps {
   label: string,
-  events: {
-    click: () => void
-  }
+  onClick: () => void
 }
 
 export default class Button extends Block {
   constructor(props: ButtonProps) {
-    super(props);
+    super({
+      label: props.label,
+      events: {
+        click: props.onClick
+      }
+    });
+    console.log(props);
   }
 
   render() {
-    return this.compile(template, {label: this.props.label, styles});
+    return `
+      <button class="{{styles.btn}} onClick=click">{{label}}</button>
+    `;
   }
 }

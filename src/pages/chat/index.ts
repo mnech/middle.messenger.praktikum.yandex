@@ -1,6 +1,4 @@
 import Block from "../../utils/Block";
-import template from "./chat.hbs";
-import Button from "../../components/button";
 
 interface ChatProps {
   title: string,
@@ -8,19 +6,26 @@ interface ChatProps {
 
 export default class Chat extends Block {
   constructor(props: ChatProps) {
-    super(props);
-  }
-
-  init() {
-    this.children.button = new Button({
-      label: "Click me",
-      events: {
-        click: () => console.log("hi")
+    super({
+      ...props,
+      onClick: () => {
+        console.log("click on chat 2");
       }
     });
   }
 
-  render() {
-    return this.compile(template, {title: this.props.title});
+  onButtonClick = () => {
+    console.log("click on chat 2");
   }
+
+  render() {
+    return `
+     <div>
+        <h1>{{title}}</h1>
+        {{#Button onClick=onClick}}
+          click mewe
+        {{/Button}}
+      </div>
+    `
+  };
 }

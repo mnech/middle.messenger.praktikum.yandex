@@ -1,10 +1,13 @@
-import EventBus from './EventBus';
 import { v4 as uuidv4 } from 'uuid';
+import Handlebars from "handlebars";
+
+import EventBus from './EventBus';
+import { getStub, getStubSelector } from './stub';
 
 type Element = HTMLElement | null;
 type Children = Record<string, Block>;
 type Props = Record<string, any>;
-export default abstract class Block {
+export default class Block {
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
@@ -76,7 +79,8 @@ export default abstract class Block {
   }
 
   private _render(): void {
-    const fragment = this.render();
+    const template = this.render();
+    const fragment = this.compile(template, {...this.props, children: this.children});
 
     const newElement = fragment.firstElementChild as HTMLElement;
     this._element?.replaceWith(newElement);
@@ -85,27 +89,25 @@ export default abstract class Block {
     this._addEvents();
   }
 
-  protected render(): DocumentFragment {
-    return new DocumentFragment();
+  protected render(): string {
+    return "";
   }
 
-  protected compile(template: HandlebarsTemplateDelegate, context?: Props): DocumentFragment {
+  protected compile(template: string, context?: Props): DocumentFragment {
     const contextAndStubs = {...context};
 
-    Object.entries(this.children).forEach(([name, component]) => {
-      contextAndStubs[name] = `<div data-id="${component.id}"></div>`;
-    });
-
-    const html = template(contextAndStubs);
+    const compiled = Handlebars.compile(template, contextAndStubs);
     const temp = document.createElement("template");
-    temp.innerHTML = html;
+    temp.innerHTML = compiled(contextAndStubs);
 
-    Object.entries(this.children).forEach(([name, component]) => {
-      const stub = temp.content.querySelector(`[data-id="${component.id}"]`);
+    Object.entries(this.children).forEach(([id, component]) => {
+      const stub = temp.content.querySelector(getStubSelector(id));
 
       if (stub) {
-        stub.replaceWith(component.getContent()!);
+        component.getContent()?.append(...Array.from(stub.childNodes));
+        stub.replaceWith(component.getContent()!); 
       }
+      
     });
 
     return temp.content;
