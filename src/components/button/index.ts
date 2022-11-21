@@ -15,6 +15,6 @@ export default class Button extends Block {
   }
 
   render() {
-    return this.compile(template, {label: this.props.label, styles});
+    return this.compile(template, {...this.props, styles});
   }
 }
