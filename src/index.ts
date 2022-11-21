@@ -1,4 +1,3 @@
-import Button from "./components/button";
 import Chat from "./pages/chat";
 
 window.addEventListener("DOMContentLoaded", ()=> {
@@ -8,6 +7,6 @@ window.addEventListener("DOMContentLoaded", ()=> {
   root?.append(chat.getContent()!);
 
   setTimeout(() => {
-    chat.setProps({title: "update"});
+    chat.setProps({title: "update"})
   }, 1000);
 });

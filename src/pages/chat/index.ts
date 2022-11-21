@@ -7,8 +7,8 @@ interface ChatProps {
 }
 
 export default class Chat extends Block {
-  constructor(props: ChatProps) {
-    super("div", props);
+  constructor(props?: ChatProps) {
+    super(props);
   }
 
   init() {

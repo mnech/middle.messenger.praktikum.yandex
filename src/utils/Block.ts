@@ -1,10 +1,12 @@
+import {v4 as uuidv4} from 'uuid';
+
 import EventBus from './EventBus';
-import { v4 as uuidv4 } from 'uuid';
+import {getStub, getStubSelector} from "../utils/stub";
 
 type Element = HTMLElement | null;
 type Children = Record<string, Block>;
 type Props = Record<string, any>;
-export default abstract class Block {
+export default class Block {
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
@@ -17,21 +19,12 @@ export default abstract class Block {
   protected children: Children;
   private eventBus: () => EventBus;
   private _element: Element = null;
-  private _meta: {
-    tagName: string,
-    props: Props,
-  };
 
-  constructor(tagName: string = 'div', childrenAndProps: Props = {}) {
+  constructor(childrenAndProps: Props = {}) {
     const eventBus = new EventBus();
     const {props, children} = this._getChildrenAndProps(childrenAndProps);
 
     this.children = children;
-    this._meta = {
-      tagName,
-      props,
-    };
-
     this.props = this._makePropsProxy(props);
 
     this.eventBus = () => eventBus;
@@ -47,13 +40,7 @@ export default abstract class Block {
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
   }
 
-  private _createResources(): void {
-    const { tagName } = this._meta;
-    this._element = this._createDocumentElement(tagName);
-  }
-
   private _init(): void {
-    this._createResources();
     this.init();
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
   }
@@ -91,13 +78,11 @@ export default abstract class Block {
   }
 
   private _render(): void {
-    const block = this.render();
-    const element = this.getContent();
+    const fragment = this.render();
     
-    if (element) {
-      element.innerHTML = "";
-      element.append(block);
-    }
+    const newElement = fragment.firstElementChild as HTMLElement;
+    this._element?.replaceWith(newElement);
+    this._element = newElement;
 
     this._addEvents();
   }
@@ -110,7 +95,7 @@ export default abstract class Block {
     const contextAndStubs = {...context};
 
     Object.entries(this.children).forEach(([name, component]) => {
-      contextAndStubs[name] = `<div data-id="${component.id}"></div>`;
+      contextAndStubs[name] = getStub(component.id);
     });
 
     const html = template(contextAndStubs);
@@ -118,7 +103,7 @@ export default abstract class Block {
     temp.innerHTML = html;
 
     Object.entries(this.children).forEach(([name, component]) => {
-      const stub = temp.content.querySelector(`[data-id="${component.id}"]`);
+      const stub = temp.content.querySelector(getStubSelector(component.id));
 
       if (stub) {
         stub.replaceWith(component.getContent()!);
@@ -151,7 +136,7 @@ export default abstract class Block {
     const {events = {}} = this.props;
 
     Object.keys(events).forEach(event => {
-      this._element!.addEventListener(event, events[event])
+      this._element?.addEventListener(event, events[event])
     })
   }
 
