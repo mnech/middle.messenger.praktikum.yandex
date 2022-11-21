@@ -10,3 +10,4 @@ window.addEventListener("DOMContentLoaded", ()=> {
     chat.setProps({title: "update"})
   }, 1000);
 });
+
