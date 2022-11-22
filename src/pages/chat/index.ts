@@ -2,8 +2,10 @@ import Block from "../../utils/Block";
 import template from "./chat.hbs";
 import Button from "../../components/button";
 import Input from "../../components/input";
+import Navbar from "../../components/navbar";
 
 import styles from "./chat.module.scss";
+
 
 interface ChatProps {
   title: string,
@@ -15,6 +17,7 @@ export default class Chat extends Block {
   }
 
   init() {
+    this.children.navbar = new Navbar();
     this.children.button = new Button({
       label: "Click me",
       events: {

@@ -1,0 +1,45 @@
+.navbar {
+  height: var(--navbar-height);
+  box-shadow: 0 3px 10px rgb(0 0 0 / 5%);
+
+  .photo {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+    border-radius: 100%;
+  }
+
+  .icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+  }
+
+  .list {
+    display: flex;
+    align-items: center;
+    padding: 10px 40px;
+
+    .item {
+      display: flex;
+      align-items: center;
+      margin-left: 40px;
+      cursor: pointer;
+
+      span {
+        color: var(--color-grey-dark);
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
+
+    :first-child {
+      margin-left: 0;
+    }
+
+    :last-child {
+      margin-left: auto;
+    }
+  }
+}

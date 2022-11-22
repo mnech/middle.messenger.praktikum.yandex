@@ -10,5 +10,6 @@
 			2
 		],
 		"color-hex-case": "upper"
-  }
+  },
+  "ignoreFiles": ["**/*.css"]
 }
