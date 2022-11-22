@@ -6,22 +6,30 @@ import {getStub, getStubSelector} from "../utils/stub";
 type Element = HTMLElement | null;
 type Children = Record<string, Block>;
 type Props = Record<string, any>;
+
+type BlockEvents = {
+  "init": [];
+  "flow:component-did-mount": [];
+  "flow:component-did-update": [object, object];
+  "flow:render": [];
+}
+
 export default class Block {
-  static EVENTS = {
-    INIT: 'init',
-    FLOW_CDM: 'flow:component-did-mount',
-    FLOW_CDU: 'flow:component-did-update',
-    FLOW_RENDER: 'flow:render',
+  static EVENTS: Record<string, keyof BlockEvents> = {
+    INIT: "init",
+    FLOW_CDM: "flow:component-did-mount",
+    FLOW_CDU: "flow:component-did-update",
+    FLOW_RENDER: "flow:render",
   };
 
   public id = uuidv4();
   protected props: Props;
   protected children: Children;
-  private eventBus: () => EventBus;
+  private eventBus: () => EventBus<BlockEvents>;
   private _element: Element = null;
 
   constructor(childrenAndProps: Props = {}) {
-    const eventBus = new EventBus();
+    const eventBus = new EventBus<BlockEvents>();
     const {props, children} = this._getChildrenAndProps(childrenAndProps);
 
     this.children = children;
@@ -33,7 +41,7 @@ export default class Block {
     eventBus.emit(Block.EVENTS.INIT);
   }
 
-  private _registerEvents(eventBus: EventBus): void {
+  private _registerEvents(eventBus: EventBus<BlockEvents>): void {
     eventBus.on(Block.EVENTS.INIT, this._init.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
@@ -57,13 +65,13 @@ export default class Block {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
   }
 
-  private _componentDidUpdate(oldProps: Props, newProps: Props): void {
+  private _componentDidUpdate(oldProps?: Props, newProps?: Props): void {
     if (this.componentDidUpdate(oldProps, newProps)) {
       this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }  
   }
 
-  protected componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+  protected componentDidUpdate(oldProps?: Props, newProps?: Props): boolean {
     return true;
   }
 
@@ -167,10 +175,6 @@ export default class Block {
       },
     });
     return proxy;
-  }
-
-  private _createDocumentElement(tagName: string): HTMLElement {
-    return document.createElement(tagName);
   }
 
   public show(): void {
