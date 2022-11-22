@@ -6,7 +6,8 @@ interface ButtonProps {
   label: string,
   events: {
     click: () => void
-  }
+  }, 
+  class?: string,
 }
 
 export default class Button extends Block {
