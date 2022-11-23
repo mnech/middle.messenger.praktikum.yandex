@@ -13,7 +13,7 @@ export default class Signin extends Block {
   }
 
   init() {
-    this.children.login = new Input({
+    this.children.email = new Input({
       label: "E-mail",
       type: "email",
       name: "email", 

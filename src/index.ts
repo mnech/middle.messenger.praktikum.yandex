@@ -1,9 +1,9 @@
 import Chat from "./pages/chat";
-import Signin from "./pages/signin";
+import Signup from "./pages/signup";
 
 window.addEventListener("DOMContentLoaded", ()=> {
   const root = document.querySelector("#app");
-  const chat = new Signin();
+  const chat = new Signup();
 
   root?.append(chat.getContent()!);
 });
