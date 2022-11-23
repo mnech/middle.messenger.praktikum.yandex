@@ -31,13 +31,3 @@ export default class Propfile extends Block {
     return this.compile(template, {...this.props, styles,...data, photo});
   }
 }
-
-// ---
-// photo: "../../static/img/Photo.png"
-// email: "yan@gmail.com"
-// login: "yan1992"
-// first_name: "Yan"
-// second_name: "Petrov"
-// display_name: "Yan"
-// phone: "+7(911) 435 12 33"
-// ---

@@ -21,7 +21,7 @@ export default class Error extends Block {
       events: {
         click: () => console.log("Go chat")
       },
-      class: "btn",
+      propStyle: styles.btn,
     });
   }
 

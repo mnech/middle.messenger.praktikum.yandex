@@ -7,7 +7,7 @@ interface ButtonProps {
   events: {
     click: () => void
   }, 
-  class?: string,
+  propStyle?: string,
 }
 
 export default class Button extends Block {
