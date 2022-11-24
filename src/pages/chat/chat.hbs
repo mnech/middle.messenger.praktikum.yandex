@@ -1,6 +1,60 @@
 <div>
   {{{navbar}}}
-  <h1>{{title}}</h1>
-  {{{button}}}
-  {{{input}}}
+  <div class="{{styles.container}}">
+    <div class="{{styles.chats}}">
+      <div>
+        {{{search}}}
+        <ul class="{{styles.chat-list}}">
+          {{#each chatList as |chat|}}
+          <li class="{{../styles.chat-item}}">
+            <img src={{chat.photo}} alt="user" class="{{../styles.user-photo}}">
+            <div class="{{../styles.chat-info}}">
+              <div class="{{../styles.chats-name}}">{{chat.name}}</div>
+              <div class="{{../styles.chats-message}}">{{chat.lastMessage}}</div>
+            </div>
+            <div class="{{../styles.chat-info}} {{../styles.right}}">
+              <div class="{{../styles.date}}">{{chat.lastMessage_date}}</div>
+              <div class="{{../styles.unread}}">{{chat.unread}}</div>
+            </div>
+          </li>
+          {{/each }}
+        </ul>
+      </div>
+      {{{newChat}}}
+    </div>
+    <div class="{{styles.content}}">
+      <div class="{{styles.content-top}}">
+        <div class="{{styles.content-info}}">
+          <div class="{{styles.name}}">Evgenya Kukushkina</div>
+          <img src="{{photo}}" alt="user" class="{{styles.user-photo}}">
+        </div>
+        <ul class="{{styles.options}}">
+          <li class="{{styles.options-item}}">
+            <button class="{{styles.btn-icon}}">
+              <img src="{{searchIcon}}" alt="search" class="{{styles.icon}}">
+              <span class="visually-hidden">Search</span>
+            </button>
+          </li>
+          <li class="{{styles.options-item}}">
+            <button class="{{styles.btn-icon}}">
+              <img src="{{optionsIcon}}" alt="options" class="{{styles.icon}}">
+              <span class="visually-hidden">Options</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div class="{{styles.content-body}}">
+        <div class="{{styles.message-item}} {{styles.receive}}">Hello. How are you??</div>
+        <div class="{{styles.message-item}} {{styles.send}}">Hii. I’m fine</div>
+      </div>
+      <div class="{{styles.content-bottom}}">
+        <button class="{{styles.btn-icon}}">
+          <img src="{{paperclipIcon}}" alt="paperclip" class="{{styles.icon}}">
+          <span class="visually-hidden">More options</span>
+        </button>
+        {{{message}}}
+        {{{send}}}
+      </div>
+    </div>
+  </div>
 </div>
