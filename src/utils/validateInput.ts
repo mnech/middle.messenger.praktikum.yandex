@@ -1,21 +1,17 @@
-import validateForm from "./validateForm";
+import validation from "./validation";
 
 export default function validateInput(initialValue: string, name: string) {
-  let value = initialValue;
-  let touched = false;
-  let error = "";
-
-  const onFocus = (obj) => {
-    obj.touched = true; 
-  }
-
-  const onBlur = (e, obj) => {
-    obj.value = e.target.value;
-    obj.error = validateForm(obj.value, name);
-  }
-
   return {
-    value, touched, error, onFocus, onBlur
-  }
+    value: initialValue,
+    touched: false,
+    error: "",
+    onFocus() {
+      this.touched = true;
+    },
+    onBlur(e: Event) {
+      this.value = (e.target as HTMLInputElement).value;
+      this.error = validation(this.value, name);
+    }
+  };
 
 }

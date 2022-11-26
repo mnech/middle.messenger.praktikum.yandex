@@ -9,8 +9,8 @@ import validateInput from "../../utils/validateInput";
 interface SigninProps {}
 
 export default class Signin extends Block {
-  private email = validateInput("", "email");
-  private password = validateInput("", "password");
+  private email;
+  private password;
 
   constructor(props?: SigninProps) {
     super(props);
@@ -19,18 +19,16 @@ export default class Signin extends Block {
   init() {
     this.email = validateInput("", "email");
     this.password = validateInput("", "password");
-    console.log(this.email)
     this.children.email = new Input({
       label: "E-mail",
-      type: "email",
+      type: "text",
       name: "email", 
       placeholder: "Enter your e-mail address",
       events: {
-        focusin: () => this.email.onFocus(this.email),
+        focusin: () => this.email.onFocus(),
         focusout: (e) =>{
-          this.email.onBlur(e, this.email);
+          this.email.onBlur(e);
           this.setProps(this.email);
-          console.log(this.email)
         },
       }   
     });
@@ -40,6 +38,11 @@ export default class Signin extends Block {
       name: "password", 
       placeholder: "Enter your password",
       events: {
+        focusin: () => this.password.onFocus(),
+        focusout: (e) =>{
+          this.password.onBlur(e);
+          this.setProps(this.password);
+        },
       }   
     });
     this.children.button = new Button({
@@ -60,6 +63,7 @@ export default class Signin extends Block {
         link: "",
         linkText: "Sign up",
         errorEmail: this.email.error,
+        errorPassword: this.password.error,
       });
   }
 }

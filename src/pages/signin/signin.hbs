@@ -2,13 +2,13 @@
   <div class="{{styles.container}}">
     <h1 class="{{styles.title}}">{{title}}</h1>
     <form class="{{styles.form}}" action="#">
-      <div>
+      <div class="{{styles.input}}">
         {{{email}}}
-        {{errorEmail}}
+        <p class="{{styles.error}}">{{errorEmail}}</p>
       </div>
-      <div>
+      <div class="{{styles.input}}">
         {{{password}}}
-        {{errorPassword}}
+        <p class="{{styles.error}}">{{errorPassword}}</p>
       </div>
       {{{button}}}
     </form>

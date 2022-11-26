@@ -8,12 +8,11 @@ interface InputProps {
   name: string, 
   placeholder: string,
   events: {
-    click?: () => void,
-    focusin?: () => void,
-    focusout?: () => void,
+    click?: (e: Event) => void,
+    focusin?: (e: Event) => void,
+    focusout?: (e: Event) => void,
   },
   propStyle?: string,
-  validate?: () => void,
 }
 
 export default class Input extends Block {
