@@ -4,23 +4,34 @@ import Input from "../../components/input";
 import Button from "../../components/button";
 
 import styles from "./signin.module.scss";
+import validateInput from "../../utils/validateInput";
 
 interface SigninProps {}
 
 export default class Signin extends Block {
+  private email = validateInput("", "email");
+  private password = validateInput("", "password");
+
   constructor(props?: SigninProps) {
     super(props);
   }
 
   init() {
+    this.email = validateInput("", "email");
+    this.password = validateInput("", "password");
+    console.log(this.email)
     this.children.email = new Input({
       label: "E-mail",
       type: "email",
       name: "email", 
       placeholder: "Enter your e-mail address",
-      errorText: "Please enter your e-mail.",
       events: {
-        click: () => console.log("input")
+        focusin: () => this.email.onFocus(this.email),
+        focusout: (e) =>{
+          this.email.onBlur(e, this.email);
+          this.setProps(this.email);
+          console.log(this.email)
+        },
       }   
     });
     this.children.password = new Input({
@@ -28,9 +39,7 @@ export default class Signin extends Block {
       type: "password",
       name: "password", 
       placeholder: "Enter your password",
-      errorText: "Please enter your password.",
       events: {
-        click: () => console.log("input")
       }   
     });
     this.children.button = new Button({
@@ -49,7 +58,8 @@ export default class Signin extends Block {
         title: "Sign in",
         question: "Don’t have an account?",
         link: "",
-        linkText: "Sign up"
+        linkText: "Sign up",
+        errorEmail: this.email.error,
       });
   }
 }
