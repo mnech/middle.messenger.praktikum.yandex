@@ -1,20 +1,11 @@
-<div class="{{styles.auth}}">
-  <div class="{{styles.container}}">
-    <h1 class="{{styles.title}}">{{title}}</h1>
-    <form class="{{styles.form}}" action="#">
-      <div class="{{styles.input}}">
-        {{{email}}}
-        <p class="{{styles.error}}">{{errorEmail}}</p>
-      </div>
-      <div class="{{styles.input}}">
-        {{{password}}}
-        <p class="{{styles.error}}">{{errorPassword}}</p>
-      </div>
-      {{{button}}}
-    </form>
-    <p class="{{styles.question}}">
-      {{question}}
-      <a href={{link}}><span class="{{styles.link}}">{{linkText}}</span></a>
-    </p>
+<form class="{{styles.form}}" action="#">
+  <div class="{{styles.input}}">
+    {{{email}}}
+    <p class="{{styles.error}}">{{errorEmail}}</p>
   </div>
-</div>
+  <div class="{{styles.input}}">
+    {{{password}}}
+    <p class="{{styles.error}}">{{errorPassword}}</p>
+  </div>
+  {{{button}}}
+</form>

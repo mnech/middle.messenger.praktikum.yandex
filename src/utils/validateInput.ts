@@ -1,6 +1,14 @@
 import validation from "./validation";
 
-export default function validateInput(initialValue: string, name: string) {
+export interface validate {
+  value: string;
+  touched: boolean;
+  error: string;
+  onFocus(): void;
+  onBlur(e: Event): void;
+}
+
+export default function validateInput(initialValue: string, name: string): validate {
   return {
     value: initialValue,
     touched: false,

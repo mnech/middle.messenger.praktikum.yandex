@@ -2,25 +2,43 @@ import Block from "../../utils/Block";
 import template from "./signup.hbs";
 import Input from "../../components/input";
 import Button from "../../components/button";
+import validateInput, {validate} from "../../utils/validateInput";
 
-import styles from "./signup.module.scss";
+interface SignupProps {
+  styles: Record<string, string>
+}
 
-interface SigninProps {}
+export default class Signup extends Block {
+  private email!: validate;
+  private login!: validate;
+  private first_name!: validate;
+  private second_name!: validate;
+  private phone!: validate;
+  private password!: validate;
 
-export default class Signin extends Block {
-  constructor(props?: SigninProps) {
+  constructor(props?: SignupProps) {
     super(props);
   }
 
   init() {
+    this.email = validateInput("", "email");
+    this.login = validateInput("", "login");
+    this.first_name = validateInput("", "first_name");
+    this.second_name = validateInput("", "second_name");
+    this.phone = validateInput("", "phone");
+    this.password = validateInput("", "password");
+
     this.children.email = new Input({
       label: "E-mail",
       type: "email",
       name: "email", 
       placeholder: "Enter your e-mail address",
-      errorText: "Please enter your e-mail.",
       events: {
-        click: () => console.log("input")
+        focusin: () => this.email.onFocus(),
+        focusout: (e) =>{
+          this.email.onBlur(e);
+          this.setProps(this.email);
+        },
       }   
     });
     this.children.login = new Input({
@@ -28,39 +46,51 @@ export default class Signin extends Block {
       type: "text",
       name: "login", 
       placeholder: "Enter your login",
-      errorText: "Please enter your login.",
       events: {
-        click: () => console.log("input")
+        focusin: () => this.login.onFocus(),
+        focusout: (e) =>{
+          this.login.onBlur(e);
+          this.setProps(this.login);
+        },
       }   
     });
-    this.children.login = new Input({
+    this.children.firstName = new Input({
       label: "First name",
       type: "text",
       name: "first_name", 
       placeholder: "Enter your first name",
-      errorText: "Please enter your first name.",
       events: {
-        click: () => console.log("input")
+        focusin: () => this.first_name.onFocus(),
+        focusout: (e) =>{
+          this.first_name.onBlur(e);
+          this.setProps(this.first_name);
+        },
       }   
     });
-    this.children.login = new Input({
+    this.children.secondName = new Input({
       label: "Second name",
       type: "text",
       name: "second_name", 
       placeholder: "Enter your second name",
-      errorText: "Please enter your second name.",
       events: {
-        click: () => console.log("input")
+        focusin: () => this.second_name.onFocus(),
+        focusout: (e) =>{
+          this.second_name.onBlur(e);
+          this.setProps(this.second_name);
+        },
       }   
     });
-    this.children.login = new Input({
+    this.children.phone = new Input({
       label: "Phone",
       type: "tel",
       name: "phone", 
       placeholder: "Enter your phone",
-      errorText: "Please enter your phone.",
       events: {
-        click: () => console.log("input")
+        focusin: () => this.phone.onFocus(),
+        focusout: (e) =>{
+          this.phone.onBlur(e);
+          this.setProps(this.phone);
+        },
       }   
     });
     this.children.password = new Input({
@@ -68,9 +98,12 @@ export default class Signin extends Block {
       type: "password",
       name: "password", 
       placeholder: "Enter your password",
-      errorText: "Please enter your password.",
       events: {
-        click: () => console.log("input")
+        focusin: () => this.password.onFocus(),
+        focusout: (e) =>{
+          this.password.onBlur(e);
+          this.setProps(this.password);
+        },
       }   
     });
     this.children.button = new Button({
@@ -78,18 +111,19 @@ export default class Signin extends Block {
       events: {
         click: () => console.log("Sign up")
       }, 
-      propStyle: styles.btn,
+      propStyle: this.props.styles.btn,
     });
   }
 
   render() {
     return this.compile(template, 
-      {...this.props, 
-        styles,
-        title: "Sign up",
-        question: "Already have an account?",
-        link: "",
-        linkText: "Sign in"
-      });
+      {...this.props,
+      errorEmail: this.email.error,
+      errorlogin: this.login.error,
+      errorFirstName: this.first_name.error,
+      errorSecondName: this.second_name.error,
+      errorPhone: this.phone.error,
+      errorPassword: this.password.error,
+    });
   }
 }
