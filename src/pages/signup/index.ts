@@ -119,7 +119,7 @@ export default class Signup extends Block {
     return this.compile(template, 
       {...this.props,
       errorEmail: this.email.error,
-      errorlogin: this.login.error,
+      errorLogin: this.login.error,
       errorFirstName: this.first_name.error,
       errorSecondName: this.second_name.error,
       errorPhone: this.phone.error,
