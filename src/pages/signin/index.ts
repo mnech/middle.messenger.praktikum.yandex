@@ -58,8 +58,8 @@ export default class Signin extends Block {
   render() {
     return this.compile(template, 
       {...this.props, 
-        errorEmail: this.email.error,
-        errorPassword: this.password.error,
+        errorEmail: this.email.touched ? this.email.error : "",
+        errorPassword: this.password.touched ? this.password.error : "",
       });
   }
 }

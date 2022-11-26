@@ -118,12 +118,12 @@ export default class Signup extends Block {
   render() {
     return this.compile(template, 
       {...this.props,
-      errorEmail: this.email.error,
-      errorLogin: this.login.error,
-      errorFirstName: this.first_name.error,
-      errorSecondName: this.second_name.error,
-      errorPhone: this.phone.error,
-      errorPassword: this.password.error,
+      errorEmail: this.email.touched ? this.email.error : "",
+      errorLogin: this.login.touched ? this.login.error : "",
+      errorFirstName: this.first_name.touched ? this.first_name.error : "",
+      errorSecondName: this.second_name.touched ? this.second_name.error : "",
+      errorPhone: this.phone.touched ? this.phone.error : "",
+      errorPassword: this.password.touched ? this.password.error : "",
     });
   }
 }
