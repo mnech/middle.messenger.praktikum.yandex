@@ -30,10 +30,6 @@ lastMessage_date: "Th"},
 {id: 4, photo: photo4, name: "Semen Ivanov", lastMessage: "Hi!",
 lastMessage_date: "10.11.2022", unread: 3},
 ]
-const messeges = [
-{incoming: true, text: "Hello. How are you??", date: "16.11.2022 11:30:32"},
-{incoming: false, text: "Hii. I’m fine", date: "16.11.2022 11:30:32"}
-]
 
 export default class Chat extends Block {
   constructor(props?: ChatProps) {

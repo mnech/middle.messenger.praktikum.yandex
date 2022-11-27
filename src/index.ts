@@ -1,11 +1,9 @@
-import Auth from "./pages/auth";
+import Chat from "./pages/chat";
 // import Signup from "./pages/signup";
 
 window.addEventListener("DOMContentLoaded", ()=> {
   const root = document.querySelector("#app");
-  const chat = new Auth({
-    signin: false
-  });
+  const chat = new Chat();
 
   root?.append(chat.getContent()!);
 });
