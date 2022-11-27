@@ -4,6 +4,7 @@ import Input from "../../components/input";
 import Button from "../../components/button";
 
 import validateInput, {validate} from "../../utils/validateInput";
+import validationForm from "../../utils/validationForm";
 
 interface SigninProps {
   styles: Record<string, string>
@@ -17,6 +18,8 @@ export default class Signin extends Block {
     super(props);
   }
 
+  onSubmit = validationForm(this.email, this.password);
+
   init() {
     this.email = validateInput("", "email");
     this.password = validateInput("", "password");
@@ -27,7 +30,7 @@ export default class Signin extends Block {
       placeholder: "Enter your e-mail address",
       events: {
         focusin: () => this.email.onFocus(),
-        focusout: (e) =>{
+        focusout: (e) => {
           this.email.onBlur(e);
           this.setProps(this.email);
         },
@@ -40,7 +43,7 @@ export default class Signin extends Block {
       placeholder: "Enter your password",
       events: {
         focusin: () => this.password.onFocus(),
-        focusout: (e) =>{
+        focusout: (e) => {
           this.password.onBlur(e);
           this.setProps(this.password);
         },
@@ -48,8 +51,12 @@ export default class Signin extends Block {
     });
     this.children.button = new Button({
       label: "Sign in",
+      type: "submit",
       events: {
-        click: () => console.log("Sign in")
+        click: (e) => {
+          this.onSubmit(e);
+          this.setProps(this);
+        }
       }, 
       propStyle: this.props.styles.btn,
     });
@@ -58,8 +65,8 @@ export default class Signin extends Block {
   render() {
     return this.compile(template, 
       {...this.props, 
-        errorEmail: this.email.touched ? this.email.error : "",
-        errorPassword: this.password.touched ? this.password.error : "",
+        errorEmail: this.email.error,
+        errorPassword: this.password.error,
       });
   }
 }

@@ -2,7 +2,9 @@ import Block from "../../utils/Block";
 import template from "./signup.hbs";
 import Input from "../../components/input";
 import Button from "../../components/button";
+
 import validateInput, {validate} from "../../utils/validateInput";
+import validationForm from "../../utils/validationForm";
 
 interface SignupProps {
   styles: Record<string, string>
@@ -20,6 +22,13 @@ export default class Signup extends Block {
     super(props);
   }
 
+  onSubmit = validationForm(this.email, 
+                            this.login,
+                            this.first_name,
+                            this.second_name,
+                            this.phone,
+                            this.password);
+  
   init() {
     this.email = validateInput("", "email");
     this.login = validateInput("", "login");
@@ -109,7 +118,10 @@ export default class Signup extends Block {
     this.children.button = new Button({
       label: "Sign up",
       events: {
-        click: () => console.log("Sign up")
+        click: (e) => {
+          this.onSubmit(e);
+          this.setProps(this);
+        }
       }, 
       propStyle: this.props.styles.btn,
     });
@@ -118,12 +130,12 @@ export default class Signup extends Block {
   render() {
     return this.compile(template, 
       {...this.props,
-      errorEmail: this.email.touched ? this.email.error : "",
-      errorLogin: this.login.touched ? this.login.error : "",
-      errorFirstName: this.first_name.touched ? this.first_name.error : "",
-      errorSecondName: this.second_name.touched ? this.second_name.error : "",
-      errorPhone: this.phone.touched ? this.phone.error : "",
-      errorPassword: this.password.touched ? this.password.error : "",
+      errorEmail: this.email.error,
+      errorLogin: this.login.error,
+      errorFirstName: this.first_name.error,
+      errorSecondName: this.second_name.error,
+      errorPhone: this.phone.error,
+      errorPassword: this.password.error,
     });
   }
 }
