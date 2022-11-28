@@ -2,15 +2,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
   margin-top: 30px;
 }
 
 .input {
+  width: 100%;
   margin-bottom: 5px;
-}
-
-.save {
-  margin-top: 20px;
 }
 
 .error {
@@ -19,4 +17,13 @@
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
+}
+
+.btn {
+  margin: 20px 10px 0;
+}
+
+.btns {
+  display: flex;
+  flex-direction: column;
 }

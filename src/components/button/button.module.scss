@@ -8,3 +8,9 @@
   border-radius: 20px;
   cursor: pointer;
 }
+
+.secondary {
+  color: var(--primary);
+  background-color: var(--color-white);
+  border: 1px solid var(--primary);
+}

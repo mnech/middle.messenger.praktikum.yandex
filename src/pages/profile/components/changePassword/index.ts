@@ -5,10 +5,13 @@ import Button from "../../../../components/button";
 
 import validateInput, {validate} from "../../../../utils/validateInput";
 import validationForm from "../../../../utils/validationForm";
+import { Content } from "../../types";
 
 import styles from "./changePassword.module.scss";
 
-interface ChangePasswordProps {}
+interface ChangePasswordProps {
+  changeContent: (content: Content) => void,
+}
 
 export default class ChangePassword extends Block {
   private password!: validate;
@@ -47,13 +50,25 @@ export default class ChangePassword extends Block {
     });
     this.children.save = new Button({
       label: "Save",
+      type: "submit",
       events: {
         click: (e) => {
           this.onSubmit(e);
           this.setProps(this);
         }
       }, 
-      propStyle: styles.save
+      propStyle: styles.btn
+    });
+    this.children.close = new Button({
+      label: "Don't save",
+      type: "button",
+      events: {
+        click: () => {
+          this.props.changeContent(Content.Info);
+        }
+      }, 
+      propStyle: styles.btn,
+      secondary: true,
     });
   }
 

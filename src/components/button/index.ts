@@ -9,6 +9,7 @@ interface ButtonProps {
     click: (e: Event) => void,
   }, 
   propStyle?: string,
+  secondary?: boolean,
 }
 
 export default class Button extends Block {
@@ -16,7 +17,11 @@ export default class Button extends Block {
     super(props);
   }
 
+  secondary(): string {
+    return this.props.secondary ? styles.secondary : "";
+  } 
+
   render() {
-    return this.compile(template, {...this.props, styles});
+    return this.compile(template, {...this.props, styles, secondary: this.secondary()});
   }
 }

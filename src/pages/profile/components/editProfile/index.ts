@@ -2,6 +2,7 @@ import Block from "../../../../utils/Block";
 import template from "./editProfile.hbs";
 import Input from "../../../../components/input";
 import Button from "../../../../components/button";
+import { Content } from "../../types";
 
 import validateInput, {validate} from "../../../../utils/validateInput";
 import validationForm from "../../../../utils/validationForm";
@@ -9,6 +10,7 @@ import validationForm from "../../../../utils/validationForm";
 import styles from "./editProfile.module.scss";
 
 interface EditProfileProps {
+  changeContent: (content: Content) => void,
   email: string,
   login: string,
   first_name: string,
@@ -136,13 +138,25 @@ export default class EditProfile extends Block {
     });
     this.children.save = new Button({
       label: "Save",
+      type: "submit",
       events: {
         click: (e) => {
           this.onSubmit(e);
           this.setProps(this);
         }
       }, 
-      propStyle: styles.save
+      propStyle: styles.btn
+    });
+    this.children.close = new Button({
+      label: "Don't save",
+      type: "button",
+      events: {
+        click: () => {
+          this.props.changeContent(Content.Info);
+        }
+      }, 
+      propStyle: styles.btn,
+      secondary: true,
     });
   }
 

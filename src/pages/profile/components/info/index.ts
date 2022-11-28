@@ -1,10 +1,12 @@
 import Block from "../../../../utils/Block";
 import template from "./info.hbs";
+import Button from "../../../../components/button";
+import { Content } from "../../types";
 
 import styles from "./info.module.scss";
 
 interface InfoProps {
-  changeContent: () => void,
+  changeContent: (content: Content) => void,
   email: string,
   login: string,
   first_name: string,
@@ -19,6 +21,24 @@ export default class Info extends Block {
   }
 
   init() {
+    this.children.editProfile = new Button({
+      label: "Edit profile",
+      events: {
+        click: () => {
+          this.props.changeContent(Content.EditProfile);
+        }
+      }, 
+      propStyle: styles.btn
+    });
+    this.children.changePassword = new Button({
+      label: "Change password",
+      events: {
+        click: () => {
+          this.props.changeContent(Content.ChangePassword);
+        }
+      }, 
+      propStyle: styles.btn
+    });
   }
 
   render() {

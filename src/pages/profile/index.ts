@@ -4,6 +4,7 @@ import Navbar from "../../components/navbar";
 import EditProfile from "./components/editProfile";
 import ChangePassword from "./components/changePassword";
 import Info from "./components/info";
+import { Content } from "./types";
 
 import styles from "./profile.module.scss";
 
@@ -19,24 +20,28 @@ const data: Record<string, string> = {
   phone: "+7(911) 435 12 33",
 }
 
-enum Content {
-  "info",
-  "EditProfile",
-  "ChangePassword"
-}
-
 interface ProfileProps {}
 
-export default class Propfile extends Block {
-  private content: Content = Content.info;
+export default class Profile extends Block {
+  private content: Content = Content.Info;
 
   constructor(props?: ProfileProps) {
     super(props);
   }
 
+  private changeContent() {
+    return (content: Content) => {
+      this.content = content;
+      this.setProps({content: this.content});
+    }
+  }
+
   private createContent() {
+    this.changeContent.bind(this);
+
     if (this.content === Content.EditProfile) {
       return new EditProfile({
+          changeContent: this.changeContent(),
           email: data.email,
           login: data.login,
           first_name: data.first_name,
@@ -45,10 +50,12 @@ export default class Propfile extends Block {
           phone: data.phone,  
         });
     } else if (this.content === Content.ChangePassword) {
-      return new ChangePassword({});
+      return new ChangePassword({
+        changeContent: this.changeContent(),
+      });
     } else {
       return new Info({
-        content,
+        changeContent: this.changeContent(),
         email: data.email,
         login: data.login,
         first_name: data.first_name,
@@ -61,10 +68,10 @@ export default class Propfile extends Block {
 
   init() {
     this.children.navbar = new Navbar();
-    this.children.content = this.createContent();
   }
 
   render() {
+    this.children.content = this.createContent();
     return this.compile(template, {...this.props, styles, ...data, photo});
   }
 }
