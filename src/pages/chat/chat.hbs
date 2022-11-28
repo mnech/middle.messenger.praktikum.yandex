@@ -30,16 +30,10 @@
         </div>
         <ul class="{{styles.options}}">
           <li class="{{styles.options-item}}">
-            <button class="{{styles.btn-icon}}">
-              <img src="{{searchIcon}}" alt="search" class="{{styles.icon}}">
-              <span class="visually-hidden">Search</span>
-            </button>
+            {{{searchChat}}}
           </li>
           <li class="{{styles.options-item}}">
-            <button class="{{styles.btn-icon}}">
-              <img src="{{optionsIcon}}" alt="options" class="{{styles.icon}}">
-              <span class="visually-hidden">Options</span>
-            </button>
+            {{{options}}}
           </li>
         </ul>
       </div>
@@ -48,13 +42,10 @@
         <div class="{{styles.message-item}} {{styles.send}}">Hii. I’m fine</div>
       </div>
       <form class="{{styles.form}}">
-        <button class="{{styles.btn-icon}}">
-          <img src="{{paperclipIcon}}" alt="paperclip" class="{{styles.icon}}">
-          <span class="visually-hidden">More options</span>
-        </button>
+        {{{moreOptions}}}
         {{{message}}}
         {{{send}}}
-        </from>
+      </form>
     </div>
   </div>
 </div>

@@ -1,6 +1,7 @@
 import Block from "../../utils/Block";
 import template from "./chat.hbs";
 import Button from "../../components/button";
+import ButtonIcon from "../../components/buttonIcon";
 import Input from "../../components/input";
 import Navbar from "../../components/navbar";
 
@@ -11,6 +12,8 @@ import photo2 from "../../../static/temp/user_photo2.png";
 import photo3 from "../../../static/temp/user_photo3.png";
 import photo4 from "../../../static/temp/user_photo4.png";
 
+import plus from "../../../static/icons/plus.svg";
+import arrowRigth from "../../../static/icons/arrow_right.svg";
 import searchIcon from "../../../static/icons/search.svg";
 import optionsIcon from "../../../static/icons/options.svg";
 import paperclipIcon from "../../../static/icons/paperclip.svg";
@@ -37,14 +40,6 @@ export default class Chat extends Block {
   }
 
   init() {
-    this.children.navbar = new Navbar();
-    this.children.newChat = new Button({
-      label: "Add chat",
-      events: {
-        click: () => console.log("hi")
-      },
-      propStyle: styles.newchat,
-    });
     this.children.search = new Input({
       type: "text",
       name: "search", 
@@ -59,15 +54,54 @@ export default class Chat extends Block {
       name: "message", 
       placeholder: "Type your message...",
       events: {
-        click: () => console.log("input")
+        click: () => console.log("message")
       },
       propStyle: styles.message, 
     });
-    this.children.send = new Button({
-      label: "Send",
+    this.children.navbar = new Navbar();
+    this.children.newChat = new ButtonIcon({
+      label: "Add chat",
+      icon: plus,
+      alt: "Plus",
       events: {
-        click: () => console.log("hi")
+        click: () => console.log("add chat")
       },
+      propStyle: styles.newchat,
+    });
+    this.children.send = new ButtonIcon({
+      label: "Send",
+      icon: arrowRigth,
+      alt: "Send",
+      events: {
+        click: () => console.log("send")
+      },
+    });
+    this.children.searchChat = new ButtonIcon({
+      label: "Search message",
+      icon: searchIcon,
+      alt: "Search",
+      events: {
+        click: () => console.log("search")
+      },
+      propStyle: styles.transp
+    });
+    this.children.options = new ButtonIcon({
+      label: "Options",
+      icon: optionsIcon,
+      alt: "Options",
+      events: {
+        click: () => console.log("options")
+      },
+      propStyle: styles.transp
+    });
+    this.children.moreOptions = new ButtonIcon({
+      label: "More options",
+      icon: paperclipIcon,
+      alt: "paperclip",
+      events: {
+        click: () => console.log("more options")
+      },
+      propStyle: styles.transp
     });
   }
 
@@ -79,7 +113,6 @@ export default class Chat extends Block {
         photo: photo1, 
         searchIcon,
         optionsIcon,
-        paperclipIcon
       });
   }
 }
