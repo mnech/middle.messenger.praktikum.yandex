@@ -164,6 +164,14 @@
   height: 0;
 }
 
+.date-chat {
+  margin: 0 auto;
+  color: var(--color-grey-dark);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+}
+
 .form {
   display: flex;
   align-items: center;
@@ -175,6 +183,8 @@
 
 .message-item {
   position: relative;
+  display: flex;
+  flex-direction: column;
   max-width: 255px;
   margin-bottom: 12px;
   padding: 10px 20px;
@@ -189,6 +199,20 @@
     height: 25px;
     content: "";
   }
+}
+
+.message-time {
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.receive .message-time {
+  color: var(--color-white);
+}
+
+.send .message-time {
+  color: var(--primary-dark);
 }
 
 .send {
@@ -212,6 +236,7 @@
 }
 
 .receive {
+  align-items: end;
   align-self: flex-start;
   color: var(--color-white);
   background-color: var(--primary);
