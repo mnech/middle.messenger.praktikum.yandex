@@ -1,9 +1,11 @@
 import Block from "../../utils/Block";
 import template from "./chat.hbs";
-import Button from "../../components/button";
 import ButtonIcon from "../../components/buttonIcon";
 import Input from "../../components/input";
 import Navbar from "../../components/navbar";
+
+import validateInput, {validate} from "../../utils/validateInput";
+import validationForm from "../../utils/validationForm";
 
 import styles from "./chat.module.scss";
 
@@ -17,7 +19,6 @@ import arrowRigth from "../../../static/icons/arrow_right.svg";
 import searchIcon from "../../../static/icons/search.svg";
 import optionsIcon from "../../../static/icons/options.svg";
 import paperclipIcon from "../../../static/icons/paperclip.svg";
-
 
 interface ChatProps {
   title: string,
@@ -35,11 +36,17 @@ lastMessage_date: "10.11.2022", unread: 3},
 ]
 
 export default class Chat extends Block {
+  private message!: validate;
+
   constructor(props?: ChatProps) {
     super(props);
   }
 
+  onSubmit = validationForm(this.message);
+
   init() {
+    this.message = validateInput("", "message");
+
     this.children.search = new Input({
       type: "text",
       name: "search", 
@@ -54,7 +61,11 @@ export default class Chat extends Block {
       name: "message", 
       placeholder: "Type your message...",
       events: {
-        click: () => console.log("message")
+        focusin: () => this.message.onFocus(),
+        focusout: (e) => {
+          this.message.onBlur(e);
+          this.setProps(this.message);
+        },
       },
       propStyle: styles.message, 
     });
@@ -72,8 +83,12 @@ export default class Chat extends Block {
       label: "Send",
       icon: arrowRigth,
       alt: "Send",
+      type: "submit",
       events: {
-        click: () => console.log("send")
+        click: (e) => {
+          this.onSubmit(e);
+          this.setProps(this);
+        }
       },
     });
     this.children.searchChat = new ButtonIcon({

@@ -27,7 +27,12 @@ export default function validation(value: string, name: string): string {
       } else if (!/^[А-ЯЁA-Z][а-яА-ЯёЁa-zA-Z-]+$/g.test(value))  {
         return "Second name can contain letters and _"; 
       } 
-      break; 
+      break;
+    case "display_name":
+      if (!value) {
+        return "Required";
+      }
+      break;  
     case "login":
       if (!value) {
         return "Required";

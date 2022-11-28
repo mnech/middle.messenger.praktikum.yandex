@@ -7,6 +7,7 @@ interface InputProps {
   type: string,
   name: string, 
   placeholder: string,
+  value?: string,
   events: {
     click?: (e: Event) => void,
     focusin?: (e: Event) => void,

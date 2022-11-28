@@ -28,6 +28,7 @@ export default class Signin extends Block {
       type: "text",
       name: "email", 
       placeholder: "Enter your e-mail address",
+      value: this.email.value,
       events: {
         focusin: () => this.email.onFocus(),
         focusout: (e) => {
@@ -41,6 +42,7 @@ export default class Signin extends Block {
       type: "password",
       name: "password", 
       placeholder: "Enter your password",
+      value: this.password.value,
       events: {
         focusin: () => this.password.onFocus(),
         focusout: (e) => {
