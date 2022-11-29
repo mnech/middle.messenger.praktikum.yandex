@@ -3,7 +3,7 @@ import template from "./signup.hbs";
 import Input from "../../components/input";
 import Button from "../../components/button";
 
-import validateInput, {validate} from "../../utils/validateInput";
+import validateInput, {validate, focusin, focusout} from "../../utils/validateInput";
 import validationForm from "../../utils/validationForm";
 
 interface SignupProps {
@@ -28,26 +28,6 @@ export default class Signup extends Block {
   constructor(props?: SignupProps) {
     super(props);
   }
-
-  private focusin(e: Event) {
-    const self: Record<string, any> = this;
-    const name = (e.target as HTMLInputElement).name;
-    self[name].onFocus();
-  }
-
-  private focusout(e: Event) {
-    const self: Record<string, any> = this;
-    const name = (e.target as HTMLInputElement).name;
-    self[name].onBlur(e);
-
-    //after submit don't need to update props
-    if (this.submit) {
-      this.submit = false;
-      return;
-    } 
-
-    this.setProps({name: self[name]});
-  }
   
   init() {
     this.email = validateInput("", "email");
@@ -64,8 +44,8 @@ export default class Signup extends Block {
       placeholder: "Enter your e-mail address",
       value: this.email.value,
       events: {
-        focusin: (e) => this.focusin(e),
-        focusout: (e) => this.focusout(e),
+        focusin: (e) => focusin(e, this),
+        focusout: (e) => focusout(e, this),
       }   
     });
     this.children.login = new Input({
@@ -75,8 +55,8 @@ export default class Signup extends Block {
       placeholder: "Enter your login",
       value: this.login.value,
       events: {
-        focusin: (e) => this.focusin(e),
-        focusout: (e) => this.focusout(e),
+        focusin: (e) => focusin(e, this),
+        focusout: (e) => focusout(e, this),
       }   
     });
     this.children.firstName = new Input({
@@ -86,8 +66,8 @@ export default class Signup extends Block {
       placeholder: "Enter your first name",
       value: this.first_name.value,
       events: {
-        focusin: (e) => this.focusin(e),
-        focusout: (e) => this.focusout(e),
+        focusin: (e) => focusin(e, this),
+        focusout: (e) => focusout(e, this),
       }   
     });
     this.children.secondName = new Input({
@@ -97,8 +77,8 @@ export default class Signup extends Block {
       placeholder: "Enter your second name",
       value: this.second_name.value,
       events: {
-        focusin: (e) => this.focusin(e),
-        focusout: (e) => this.focusout(e),
+        focusin: (e) => focusin(e, this),
+        focusout: (e) => focusout(e, this),
       }   
     });
     this.children.phone = new Input({
@@ -108,8 +88,8 @@ export default class Signup extends Block {
       placeholder: "Enter your phone",
       value: this.phone.value,
       events: {
-        focusin: (e) => this.focusin(e),
-        focusout: (e) => this.focusout(e),
+        focusin: (e) => focusin(e, this),
+        focusout: (e) => focusout(e, this),
       }   
     });
     this.children.password = new Input({
@@ -119,8 +99,8 @@ export default class Signup extends Block {
       placeholder: "Enter your password",
       value: this.password.value,
       events: {
-        focusin: (e) => this.focusin(e),
-        focusout: (e) => this.focusout(e),
+        focusin: (e) => focusin(e, this),
+        focusout: (e) => focusout(e, this),
       }   
     });
     this.children.button = new Button({

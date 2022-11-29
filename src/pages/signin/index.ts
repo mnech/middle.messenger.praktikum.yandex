@@ -3,7 +3,7 @@ import template from "./signin.hbs";
 import Input from "../../components/input";
 import Button from "../../components/button";
 
-import validateInput, {validate} from "../../utils/validateInput";
+import validateInput, {validate, focusin, focusout} from "../../utils/validateInput";
 import validationForm from "../../utils/validationForm";
 
 interface SigninProps {
@@ -20,26 +20,6 @@ export default class Signin extends Block {
     super(props);
   }
 
-  private focusin(e: Event) {
-    const self: Record<string, any> = this;
-    const name = (e.target as HTMLInputElement).name;
-    self[name].onFocus();
-  }
-
-  private focusout(e: Event) {
-    const self: Record<string, any> = this;
-    const name = (e.target as HTMLInputElement).name;
-    self[name].onBlur(e);
-
-    //after submit don't need to update props
-    if (this.submit) {
-      this.submit = false;
-      return;
-    } 
-
-    this.setProps({name: self[name]});
-  }
-
   init() {
     this.email = validateInput("", "email");
     this.password = validateInput("", "password");
@@ -51,8 +31,8 @@ export default class Signin extends Block {
       placeholder: "Enter your e-mail address",
       value: this.email.value,
       events: {
-        focusin: (e) => this.focusin(e),
-        focusout: (e) => this.focusout(e),
+        focusin: (e) => focusin(e, this),
+        focusout: (e) => focusout(e, this),
       }   
     });
     this.children.password = new Input({
@@ -62,8 +42,8 @@ export default class Signin extends Block {
       placeholder: "Enter your password",
       value: this.password.value,
       events: {
-        focusin: (e) => this.focusin(e),
-        focusout: (e) => this.focusout(e),
+        focusin: (e) => focusin(e, this),
+        focusout: (e) => focusout(e, this),
       }   
     });
     this.children.button = new Button({

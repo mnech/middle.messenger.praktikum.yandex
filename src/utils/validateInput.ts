@@ -27,5 +27,22 @@ export default function validateInput(initialValue: string, name: string): valid
       this.error = validation(this.value, name);
     }
   };
+}
 
+export function focusin(e: Event, self: Record<string, any>) {
+    const name = (e.target as HTMLInputElement).name;
+    self[name].onFocus();
+}
+
+export function focusout(e: Event, self: Record<string, any>) {
+    const name = (e.target as HTMLInputElement).name;
+    self[name].onBlur(e);
+
+    //after submit don't need to update props
+    if (self.submit) {
+      self.submit = false;
+      return;
+    } 
+
+    self.setProps({name: self[name]});
 }

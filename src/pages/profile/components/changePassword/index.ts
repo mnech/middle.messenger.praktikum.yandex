@@ -3,7 +3,7 @@ import template from "./changePassword.hbs";
 import Input from "../../../../components/input";
 import Button from "../../../../components/button";
 
-import validateInput, {validate} from "../../../../utils/validateInput";
+import validateInput, {validate, focusin, focusout} from "../../../../utils/validateInput";
 import validationForm from "../../../../utils/validationForm";
 import { Content } from "../../types";
 
@@ -20,26 +20,6 @@ export default class ChangePassword extends Block {
 
   constructor(props?: ChangePasswordProps) {
     super(props);
-  }
-
-  private focusin(e: Event) {
-    const self: Record<string, any> = this;
-    const name = (e.target as HTMLInputElement).name;
-    self[name].onFocus();
-  }
-
-  private focusout(e: Event) {
-    const self: Record<string, any> = this;
-    const name = (e.target as HTMLInputElement).name;
-    self[name].onBlur(e);
-
-    //after submit don't need to update props
-    if (this.submit) {
-      this.submit = false;
-      return;
-    } 
-
-    this.setProps({name: self[name]});
   }
 
   init() {
@@ -60,8 +40,8 @@ export default class ChangePassword extends Block {
       placeholder: "Enter new password",
       value: this.password.value,
       events: {
-        focusin: (e) => this.focusin(e),
-        focusout: (e) => this.focusout(e),
+        focusin: (e) => focusin(e, this),
+        focusout: (e) => focusout(e, this),
       },
       propStyle: styles.input  
     });

@@ -4,7 +4,7 @@ import ButtonIcon from "../../components/buttonIcon";
 import Input from "../../components/input";
 import Navbar from "../../components/navbar";
 
-import validateInput, {validate} from "../../utils/validateInput";
+import validateInput, {validate, focusin, focusout} from "../../utils/validateInput";
 import validationForm from "../../utils/validationForm";
 
 import styles from "./chat.module.scss";
@@ -44,26 +44,6 @@ export default class Chat extends Block {
     super(props);
   }
 
-  private focusin(e: Event) {
-    const self: Record<string, any> = this;
-    const name = (e.target as HTMLInputElement).name;
-    self[name].onFocus();
-  }
-
-  private focusout(e: Event) {
-    const self: Record<string, any> = this;
-    const name = (e.target as HTMLInputElement).name;
-    self[name].onBlur(e);
-
-    //after submit don't need to update props
-    if (this.submit) {
-      this.submit = false;
-      return;
-    } 
-
-    this.setProps({name: self[name]});
-  }
-
   init() {
     this.message = validateInput("", "message");
 
@@ -81,8 +61,8 @@ export default class Chat extends Block {
       name: "message", 
       placeholder: "Type your message...",
       events: {
-        focusin: (e) => this.focusin(e),
-        focusout: (e) => this.focusout(e),
+        focusin: (e) => focusin(e, this),
+        focusout: (e) => focusout(e, this),
       },
       propStyle: styles.message, 
     });
