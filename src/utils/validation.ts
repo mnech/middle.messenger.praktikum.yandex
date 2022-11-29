@@ -45,7 +45,7 @@ export default function validation(value: string, name: string): string {
     case "phone":
       if (!value) {
           return "Required";
-      } else if(!/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,9}$/g.test(value)) {
+      } else if(!/^\+?[1-9][0-9]{9,14}$/g.test(value)) {
         return "Invalid phone number"; 
       } 
       break;   

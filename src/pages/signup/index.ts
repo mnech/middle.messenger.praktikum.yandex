@@ -107,6 +107,7 @@ export default class Signup extends Block {
       label: "Sign up",
       events: {
         click: (e) => {
+          this.submit = true;
           this.onSubmit(e);
           this.setProps({
             email: this.email,
