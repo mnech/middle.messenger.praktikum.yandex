@@ -16,6 +16,6 @@ export default class Page404 extends Block {
   }
 
   render() {
-    return this.compile(template, {...this.props});
+    return this.compile(template);
   }
 }

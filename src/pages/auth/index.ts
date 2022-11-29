@@ -12,14 +12,14 @@ interface AuthProps {
 const dataSignin = {
   title: "Sign in",
   question: "Don’t have an account?",
-  link: "",
+  link: "signup/signup.hbs",
   linkText: "Sign up",
 }
 
 const dataSignup = {
   title: "Sign up",
   question: "Already have an account?",
-  link: "",
+  link: "signin/signin.hbs",
   linkText: "Sign in"
 }
 

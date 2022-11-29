@@ -16,6 +16,6 @@ export default class Page500 extends Block {
   }
 
   render() {
-    return this.compile(template, {...this.props});
+    return this.compile(template);
   }
 }
