@@ -15,12 +15,32 @@ interface ChangePasswordProps {
 
 export default class ChangePassword extends Block {
   private password!: validate;
+  private submit = false;
+  private onSubmit = validationForm(this.password);
 
   constructor(props?: ChangePasswordProps) {
     super(props);
   }
 
-  onSubmit = validationForm(this.password);
+  private focusin(e: Event) {
+    const self: Record<string, any> = this;
+    const name = (e.target as HTMLInputElement).name;
+    self[name].onFocus();
+  }
+
+  private focusout(e: Event) {
+    const self: Record<string, any> = this;
+    const name = (e.target as HTMLInputElement).name;
+    self[name].onBlur(e);
+
+    //after submit don't need to update props
+    if (this.submit) {
+      this.submit = false;
+      return;
+    } 
+
+    this.setProps({name: self[name]});
+  }
 
   init() {
     this.password = validateInput("", "password");
@@ -40,11 +60,8 @@ export default class ChangePassword extends Block {
       placeholder: "Enter new password",
       value: this.password.value,
       events: {
-        focusin: () => this.password.onFocus(),
-        focusout: (e) =>{
-          this.password.onBlur(e);
-          this.setProps(this.password);
-        },
+        focusin: (e) => this.focusin(e),
+        focusout: (e) => this.focusout(e),
       },
       propStyle: styles.input  
     });
@@ -53,8 +70,9 @@ export default class ChangePassword extends Block {
       type: "submit",
       events: {
         click: (e) => {
+          this.submit = true;
           this.onSubmit(e);
-          this.setProps(this);
+          this.setProps({password: this.password});
         }
       }, 
       propStyle: styles.btn

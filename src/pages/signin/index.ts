@@ -13,16 +13,37 @@ interface SigninProps {
 export default class Signin extends Block {
   private email!: validate;
   private password!: validate;
+  private submit = false;
+  private onSubmit = validationForm(this.email, this.password);
 
   constructor(props?: SigninProps) {
     super(props);
   }
 
-  onSubmit = validationForm(this.email, this.password);
+  private focusin(e: Event) {
+    const self: Record<string, any> = this;
+    const name = (e.target as HTMLInputElement).name;
+    self[name].onFocus();
+  }
+
+  private focusout(e: Event) {
+    const self: Record<string, any> = this;
+    const name = (e.target as HTMLInputElement).name;
+    self[name].onBlur(e);
+
+    //after submit don't need to update props
+    if (this.submit) {
+      this.submit = false;
+      return;
+    } 
+
+    this.setProps({name: self[name]});
+  }
 
   init() {
     this.email = validateInput("", "email");
     this.password = validateInput("", "password");
+
     this.children.email = new Input({
       label: "E-mail",
       type: "text",
@@ -30,11 +51,8 @@ export default class Signin extends Block {
       placeholder: "Enter your e-mail address",
       value: this.email.value,
       events: {
-        focusin: () => this.email.onFocus(),
-        focusout: (e) => {
-          this.email.onBlur(e);
-          this.setProps(this.email);
-        },
+        focusin: (e) => this.focusin(e),
+        focusout: (e) => this.focusout(e),
       }   
     });
     this.children.password = new Input({
@@ -44,20 +62,21 @@ export default class Signin extends Block {
       placeholder: "Enter your password",
       value: this.password.value,
       events: {
-        focusin: () => this.password.onFocus(),
-        focusout: (e) => {
-          this.password.onBlur(e);
-          this.setProps(this.password);
-        },
+        focusin: (e) => this.focusin(e),
+        focusout: (e) => this.focusout(e),
       }   
     });
     this.children.button = new Button({
       label: "Sign in",
       type: "submit",
       events: {
-        click: (e) => {
+        click: (e: PointerEvent) => {
+          this.submit = true;
           this.onSubmit(e);
-          this.setProps(this);
+          this.setProps({
+            email: this.email,
+            password: this.password,
+          });    
         }
       }, 
       propStyle: this.props.styles.btn,

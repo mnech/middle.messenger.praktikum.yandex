@@ -17,17 +17,37 @@ export default class Signup extends Block {
   private second_name!: validate;
   private phone!: validate;
   private password!: validate;
+  private submit = false;
+  private onSubmit = validationForm(this.email, 
+    this.login,
+    this.first_name,
+    this.second_name,
+    this.phone,
+    this.password);
 
   constructor(props?: SignupProps) {
     super(props);
   }
 
-  onSubmit = validationForm(this.email, 
-                            this.login,
-                            this.first_name,
-                            this.second_name,
-                            this.phone,
-                            this.password);
+  private focusin(e: Event) {
+    const self: Record<string, any> = this;
+    const name = (e.target as HTMLInputElement).name;
+    self[name].onFocus();
+  }
+
+  private focusout(e: Event) {
+    const self: Record<string, any> = this;
+    const name = (e.target as HTMLInputElement).name;
+    self[name].onBlur(e);
+
+    //after submit don't need to update props
+    if (this.submit) {
+      this.submit = false;
+      return;
+    } 
+
+    this.setProps({name: self[name]});
+  }
   
   init() {
     this.email = validateInput("", "email");
@@ -44,11 +64,8 @@ export default class Signup extends Block {
       placeholder: "Enter your e-mail address",
       value: this.email.value,
       events: {
-        focusin: () => this.email.onFocus(),
-        focusout: (e) =>{
-          this.email.onBlur(e);
-          this.setProps(this.email);
-        },
+        focusin: (e) => this.focusin(e),
+        focusout: (e) => this.focusout(e),
       }   
     });
     this.children.login = new Input({
@@ -58,11 +75,8 @@ export default class Signup extends Block {
       placeholder: "Enter your login",
       value: this.login.value,
       events: {
-        focusin: () => this.login.onFocus(),
-        focusout: (e) =>{
-          this.login.onBlur(e);
-          this.setProps(this.login);
-        },
+        focusin: (e) => this.focusin(e),
+        focusout: (e) => this.focusout(e),
       }   
     });
     this.children.firstName = new Input({
@@ -72,11 +86,8 @@ export default class Signup extends Block {
       placeholder: "Enter your first name",
       value: this.first_name.value,
       events: {
-        focusin: () => this.first_name.onFocus(),
-        focusout: (e) =>{
-          this.first_name.onBlur(e);
-          this.setProps(this.first_name);
-        },
+        focusin: (e) => this.focusin(e),
+        focusout: (e) => this.focusout(e),
       }   
     });
     this.children.secondName = new Input({
@@ -86,11 +97,8 @@ export default class Signup extends Block {
       placeholder: "Enter your second name",
       value: this.second_name.value,
       events: {
-        focusin: () => this.second_name.onFocus(),
-        focusout: (e) =>{
-          this.second_name.onBlur(e);
-          this.setProps(this.second_name);
-        },
+        focusin: (e) => this.focusin(e),
+        focusout: (e) => this.focusout(e),
       }   
     });
     this.children.phone = new Input({
@@ -100,11 +108,8 @@ export default class Signup extends Block {
       placeholder: "Enter your phone",
       value: this.phone.value,
       events: {
-        focusin: () => this.phone.onFocus(),
-        focusout: (e) =>{
-          this.phone.onBlur(e);
-          this.setProps(this.phone);
-        },
+        focusin: (e) => this.focusin(e),
+        focusout: (e) => this.focusout(e),
       }   
     });
     this.children.password = new Input({
@@ -114,11 +119,8 @@ export default class Signup extends Block {
       placeholder: "Enter your password",
       value: this.password.value,
       events: {
-        focusin: () => this.password.onFocus(),
-        focusout: (e) =>{
-          this.password.onBlur(e);
-          this.setProps(this.password);
-        },
+        focusin: (e) => this.focusin(e),
+        focusout: (e) => this.focusout(e),
       }   
     });
     this.children.button = new Button({
@@ -126,7 +128,14 @@ export default class Signup extends Block {
       events: {
         click: (e) => {
           this.onSubmit(e);
-          this.setProps(this);
+          this.setProps({
+            email: this.email,
+            login: this.login,
+            first_name: this.first_name,
+            second_name: this.second_name,
+            phone: this.phone,
+            password: this.password
+          });
         }
       }, 
       propStyle: this.props.styles.btn,

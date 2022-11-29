@@ -1,10 +1,12 @@
-import Profile from "./pages/profile";
+import Auth from "./pages/auth";
 // import Signup from "./pages/signup";
 
 window.addEventListener("DOMContentLoaded", ()=> {
   const root = document.querySelector("#app");
-  const chat = new Profile();
+  const page = new Auth({
+    signin: true,
+  });
 
-  root?.append(chat.getContent()!);
+  root?.append(page.getContent()!);
 });
 

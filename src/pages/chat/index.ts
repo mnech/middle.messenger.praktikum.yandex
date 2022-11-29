@@ -37,12 +37,32 @@ lastMessage_date: "10.11.2022", unread: 3},
 
 export default class Chat extends Block {
   private message!: validate;
+  private submit = false;
+  private onSubmit = validationForm(this.message);
 
   constructor(props?: ChatProps) {
     super(props);
   }
 
-  onSubmit = validationForm(this.message);
+  private focusin(e: Event) {
+    const self: Record<string, any> = this;
+    const name = (e.target as HTMLInputElement).name;
+    self[name].onFocus();
+  }
+
+  private focusout(e: Event) {
+    const self: Record<string, any> = this;
+    const name = (e.target as HTMLInputElement).name;
+    self[name].onBlur(e);
+
+    //after submit don't need to update props
+    if (this.submit) {
+      this.submit = false;
+      return;
+    } 
+
+    this.setProps({name: self[name]});
+  }
 
   init() {
     this.message = validateInput("", "message");
@@ -61,11 +81,8 @@ export default class Chat extends Block {
       name: "message", 
       placeholder: "Type your message...",
       events: {
-        focusin: () => this.message.onFocus(),
-        focusout: (e) => {
-          this.message.onBlur(e);
-          this.setProps(this.message);
-        },
+        focusin: (e) => this.focusin(e),
+        focusout: (e) => this.focusout(e),
       },
       propStyle: styles.message, 
     });
@@ -86,8 +103,9 @@ export default class Chat extends Block {
       type: "submit",
       events: {
         click: (e) => {
+          this.submit = true;
           this.onSubmit(e);
-          this.setProps(this);
+          this.setProps({message: this.message});
         }
       },
     });

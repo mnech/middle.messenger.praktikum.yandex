@@ -26,17 +26,37 @@ export default class EditProfile extends Block {
   private second_name!: validate;
   private display_name!: validate;
   private phone!: validate;
+  private submit = false;
+  private onSubmit = validationForm(this.email, 
+    this.login,
+    this.first_name,
+    this.second_name,
+    this.display_name,
+    this.phone);
 
   constructor(props?: EditProfileProps) {
     super(props);
   }
 
-  onSubmit = validationForm(this.email, 
-                            this.login,
-                            this.first_name,
-                            this.second_name,
-                            this.display_name,
-                            this.phone);
+  private focusin(e: Event) {
+    const self: Record<string, any> = this;
+    const name = (e.target as HTMLInputElement).name;
+    self[name].onFocus();
+  }
+
+  private focusout(e: Event) {
+    const self: Record<string, any> = this;
+    const name = (e.target as HTMLInputElement).name;
+    self[name].onBlur(e);
+
+    //after submit don't need to update props
+    if (this.submit) {
+      this.submit = false;
+      return;
+    } 
+
+    this.setProps({name: self[name]});
+  }
 
   init() {
     this.email = validateInput(this.props.email, "email");
@@ -53,11 +73,8 @@ export default class EditProfile extends Block {
       placeholder: "Enter your e-mail address",
       value: this.email.value,
       events: {
-        focusin: () => this.email.onFocus(),
-        focusout: (e) =>{
-          this.email.onBlur(e);
-          this.setProps(this.email);
-        },
+        focusin: (e) => this.focusin(e),
+        focusout: (e) => this.focusout(e),
       },
       propStyle: styles.input   
     });
@@ -68,11 +85,8 @@ export default class EditProfile extends Block {
       placeholder: "Enter your login",
       value: this.login.value,
       events: {
-        focusin: () => this.login.onFocus(),
-        focusout: (e) =>{
-          this.login.onBlur(e);
-          this.setProps(this.login);
-        },
+        focusin: (e) => this.focusin(e),
+        focusout: (e) => this.focusout(e),
       },
       propStyle: styles.input  
     });
@@ -83,11 +97,8 @@ export default class EditProfile extends Block {
       placeholder: "Enter your first name",
       value: this.first_name.value,
       events: {
-        focusin: () => this.first_name.onFocus(),
-        focusout: (e) =>{
-          this.first_name.onBlur(e);
-          this.setProps(this.first_name);
-        },
+        focusin: (e) => this.focusin(e),
+        focusout: (e) => this.focusout(e),
       },
       propStyle: styles.input   
     });
@@ -98,11 +109,8 @@ export default class EditProfile extends Block {
       placeholder: "Enter your second name",
       value: this.second_name.value,
       events: {
-        focusin: () => this.second_name.onFocus(),
-        focusout: (e) =>{
-          this.second_name.onBlur(e);
-          this.setProps(this.second_name);
-        },
+        focusin: (e) => this.focusin(e),
+        focusout: (e) => this.focusout(e),
       },
       propStyle: styles.input   
     });
@@ -113,11 +121,8 @@ export default class EditProfile extends Block {
       placeholder: "Enter your display name",
       value: this.display_name.value,
       events: {
-        focusin: () => this.display_name.onFocus(),
-        focusout: (e) =>{
-          this.display_name.onBlur(e);
-          this.setProps(this.display_name);
-        },
+        focusin: (e) => this.focusin(e),
+        focusout: (e) => this.focusout(e),
       },
       propStyle: styles.input   
     });
@@ -128,11 +133,8 @@ export default class EditProfile extends Block {
       placeholder: "Enter your phone",
       value: this.phone.value,
       events: {
-        focusin: () => this.phone.onFocus(),
-        focusout: (e) =>{
-          this.phone.onBlur(e);
-          this.setProps(this.phone);
-        },
+        focusin: (e) => this.focusin(e),
+        focusout: (e) => this.focusout(e),
       },
       propStyle: styles.input  
     });
@@ -142,7 +144,14 @@ export default class EditProfile extends Block {
       events: {
         click: (e) => {
           this.onSubmit(e);
-          this.setProps(this);
+          this.setProps({
+            email: this.email,
+            login: this.login,
+            first_name: this.first_name,
+            second_name: this.second_name,
+            display_name: this.display_name,
+            phone: this.phone
+          });
         }
       }, 
       propStyle: styles.btn
@@ -152,6 +161,7 @@ export default class EditProfile extends Block {
       type: "button",
       events: {
         click: () => {
+          this.submit = true;
           this.props.changeContent(Content.Info);
         }
       }, 
