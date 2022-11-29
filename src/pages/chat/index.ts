@@ -47,14 +47,25 @@ export default class Chat extends Block {
   init() {
     this.message = validateInput("", "message");
 
+    this.children.navbar = new Navbar();
     this.children.search = new Input({
       type: "text",
       name: "search", 
       placeholder: "Search",
       events: {
-        click: () => console.log("input")
+        click: () => console.log("search")
       },
       propStyle: styles.search, 
+    });
+    
+    this.children.newChat = new ButtonIcon({
+      label: "Add chat",
+      icon: plus,
+      alt: "Plus",
+      events: {
+        click: () => console.log("add chat")
+      },
+      propStyle: styles.newchat,
     });
     this.children.message = new Input({
       type: "text",
@@ -65,16 +76,6 @@ export default class Chat extends Block {
         focusout: (e) => focusout(e, this),
       },
       propStyle: styles.message, 
-    });
-    this.children.navbar = new Navbar();
-    this.children.newChat = new ButtonIcon({
-      label: "Add chat",
-      icon: plus,
-      alt: "Plus",
-      events: {
-        click: () => console.log("add chat")
-      },
-      propStyle: styles.newchat,
     });
     this.children.send = new ButtonIcon({
       label: "Send",
@@ -88,6 +89,16 @@ export default class Chat extends Block {
           this.setProps({message: this.message});
         }
       },
+    });
+    this.children.moreOptions = new ButtonIcon({
+      label: "More options",
+      icon: paperclipIcon,
+      alt: "paperclip",
+      type: "button",
+      events: {
+        click: () => console.log("more options")
+      },
+      propStyle: styles.transp
     });
     this.children.searchChat = new ButtonIcon({
       label: "Search message",
@@ -104,15 +115,6 @@ export default class Chat extends Block {
       alt: "Options",
       events: {
         click: () => console.log("options")
-      },
-      propStyle: styles.transp
-    });
-    this.children.moreOptions = new ButtonIcon({
-      label: "More options",
-      icon: paperclipIcon,
-      alt: "paperclip",
-      events: {
-        click: () => console.log("more options")
       },
       propStyle: styles.transp
     });

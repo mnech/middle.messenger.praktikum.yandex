@@ -1,7 +1,11 @@
 <div>
   {{{navbar}}}
   <div class="{{styles.container}}">
-    <img src={{photo}} alt="user photo" class="{{styles.photo}}">
+    <div class="{{styles.avatar}}">
+      <img src={{photo}} alt="user photo" class="{{styles.photo}}">
+      <label for="file" class="{{styles.upload}}">Choose photo</label>
+      <input type="file" name="avatar" id="file" class="{{styles.file}}">
+    </div>
     <div class="{{styles.name}}">{{display_name}}</div>
     {{{content}}}
   </div>

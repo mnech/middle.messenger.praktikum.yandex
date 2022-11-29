@@ -17,7 +17,7 @@ const data: Record<string, string> = {
   first_name: "Yan",
   second_name: "Petrov",
   display_name: "Yan",
-  phone: "+7(911) 435 12 33",
+  phone: "+7(911)435-12-33",
 }
 
 interface ProfileProps {}
