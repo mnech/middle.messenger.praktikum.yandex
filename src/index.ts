@@ -12,8 +12,6 @@ window.addEventListener("DOMContentLoaded", ()=> {
 
   const path = window.location.pathname;
 
-  console.log(path);
-
   if (path === "/") {
     render(new Temp());
   } else if (path === "/signin") {
