@@ -2,9 +2,6 @@
   "name": "messenger",
   "version": "1.0.0",
   "description": "",
-  "engines": {
-    "node": ">=16.0.0 <17.0.0"
-  },
   "scripts": {
     "dev": "parcel ./src/index.html --no-cache --open --port 3000",
     "build": "parcel build ./src/index.html",
