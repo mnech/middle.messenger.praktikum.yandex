@@ -59,7 +59,7 @@ export default class Block {
     this.componentDidMount();
   }
 
-  protected componentDidMount(oldProps?: Props): void {}
+  protected componentDidMount(_oldProps?: Props): void {}
 
   public dispatchComponentDidMount(): void {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
@@ -71,7 +71,7 @@ export default class Block {
     }  
   }
 
-  protected componentDidUpdate(oldProps?: Props, newProps?: Props): boolean {
+  protected componentDidUpdate(_oldProps?: Props, _newProps?: Props): boolean {
     return true;
   }
 
@@ -110,7 +110,7 @@ export default class Block {
     const temp = document.createElement("template");
     temp.innerHTML = html;
 
-    Object.entries(this.children).forEach(([name, component]) => {
+    Object.entries(this.children).forEach(([_name, component]) => {
       const stub = temp.content.querySelector(getStubSelector(component.id));
 
       if (stub) {
