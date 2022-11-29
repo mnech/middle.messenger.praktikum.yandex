@@ -1,4 +1,4 @@
-import render from "./utils/render";
+import render from "./utils/Render";
 
 import Temp from "./pages/temp";
 import Auth from "./pages/auth";
