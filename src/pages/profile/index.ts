@@ -8,7 +8,7 @@ import { Content } from "./types";
 
 import * as styles from "./profile.module.scss";
 
-import photo from "../../../static/img/photo.png";
+import photo from "../../../static/img/Photo.png";
 
 const data: Record<string, string> = {
   photo: "../../static/img/Photo.png",
