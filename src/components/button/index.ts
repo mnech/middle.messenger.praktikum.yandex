@@ -1,6 +1,6 @@
 import Block from "../../utils/Block";
 import template from "./button.hbs";
-import styles from "./button.module.scss";
+import * as styles from "./button.module.scss";
 
 interface ButtonProps {
   label: string,

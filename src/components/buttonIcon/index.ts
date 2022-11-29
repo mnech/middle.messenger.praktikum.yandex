@@ -1,6 +1,6 @@
 import Block from "../../utils/Block";
 import template from "./buttonIcon.hbs";
-import styles from "./buttonIcon.module.scss";
+import * as styles from "./buttonIcon.module.scss";
 
 interface ButtonIconProps {
   label: string,

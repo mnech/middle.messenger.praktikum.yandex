@@ -7,7 +7,7 @@ import validateInput, {validate, focusin, focusout} from "../../../../utils/vali
 import validationForm from "../../../../utils/validationForm";
 import { Content } from "../../types";
 
-import styles from "./changePassword.module.scss";
+import * as styles from "./changePassword.module.scss";
 
 interface ChangePasswordProps {
   changeContent: (content: Content) => void,

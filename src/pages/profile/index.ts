@@ -6,7 +6,7 @@ import ChangePassword from "./components/changePassword";
 import Info from "./components/info";
 import { Content } from "./types";
 
-import styles from "./profile.module.scss";
+import * as styles from "./profile.module.scss";
 
 import photo from "../../../static/img/photo.png";
 

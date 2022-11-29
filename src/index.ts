@@ -12,19 +12,21 @@ window.addEventListener("DOMContentLoaded", ()=> {
 
   const path = window.location.pathname;
 
+  console.log(path);
+
   if (path === "/") {
     render(new Temp());
-  } else if (path === "/signin/signin.hbs") {
+  } else if (path === "/signin") {
     render(new Auth({signin: true}));
-  } else if (path === "/signup/signup.hbs") {
+  } else if (path === "/signup") {
     render(new Auth({signin: false}));
-  } else if (path === "/error404/error404.hbs") {
+  } else if (path === "/error404") {
     render(new Page404());
-  } else if (path === "/error500/error500.hbs") {
+  } else if (path === "/error500") {
     render(new Page500());
-  } else if (path === "/profile/profile.hbs") {
+  } else if (path === "/profile") {
     render(new Profile());
-  } else if (path === "/chat/chat.hbs") {
+  } else if (path === "/chat") {
     render(new Chat());
   }
 });

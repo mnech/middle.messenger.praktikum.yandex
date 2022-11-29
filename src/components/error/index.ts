@@ -2,7 +2,7 @@ import Block from "../../utils/Block";
 import Button from "../button";
 import template from "./error.hbs";
 
-import styles from "./error.module.scss";
+import * as styles from "./error.module.scss";
 
 interface ErrorProps {
   img: string,

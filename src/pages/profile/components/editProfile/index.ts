@@ -7,7 +7,7 @@ import { Content } from "../../types";
 import validateInput, {validate} from "../../../../utils/validateInput";
 import validationForm from "../../../../utils/validationForm";
 
-import styles from "./editProfile.module.scss";
+import * as styles from "./editProfile.module.scss";
 
 interface EditProfileProps {
   changeContent: (content: Content) => void,

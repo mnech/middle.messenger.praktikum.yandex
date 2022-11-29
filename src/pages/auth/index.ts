@@ -3,7 +3,7 @@ import template from "./auth.hbs";
 import Signin from "../signin";
 import Signup from "../signup";
 
-import styles from "./auth.module.scss";
+import * as styles from "./auth.module.scss";
 
 interface AuthProps {
   signin: boolean,
@@ -12,14 +12,14 @@ interface AuthProps {
 const dataSignin = {
   title: "Sign in",
   question: "Don’t have an account?",
-  link: "signup/signup.hbs",
+  link: "/signup",
   linkText: "Sign up",
 }
 
 const dataSignup = {
   title: "Sign up",
   question: "Already have an account?",
-  link: "signin/signin.hbs",
+  link: "/signin",
   linkText: "Sign in"
 }
 

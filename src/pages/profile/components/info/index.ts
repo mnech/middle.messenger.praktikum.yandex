@@ -3,7 +3,7 @@ import template from "./info.hbs";
 import Button from "../../../../components/button";
 import { Content } from "../../types";
 
-import styles from "./info.module.scss";
+import * as styles from "./info.module.scss";
 
 interface InfoProps {
   changeContent: (content: Content) => void,
