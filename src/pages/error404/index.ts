@@ -3,7 +3,7 @@ import template from "./error404.hbs";
 import Navbar from "../../components/navbar";
 import Error from "../../components/error";
 
-import img from "../../../static/img/planet.png"
+import img from "../../../static/img/Planet.png"
 
 export default class Page404 extends Block {
   init() {
