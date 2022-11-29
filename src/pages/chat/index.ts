@@ -7,7 +7,7 @@ import Navbar from "../../components/navbar";
 import validateInput, {validate, focusin, focusout} from "../../utils/validateInput";
 import validationForm from "../../utils/validationForm";
 
-import styles from "./chat.module.scss";
+import * as styles from "./chat.module.scss";
 
 import photo1 from "../../../static/temp/user_photo1.png";
 import photo2 from "../../../static/temp/user_photo2.png";

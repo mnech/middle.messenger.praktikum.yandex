@@ -4,7 +4,7 @@ import Input from "../../../../components/input";
 import Button from "../../../../components/button";
 import { Content } from "../../types";
 
-import validateInput, {validate} from "../../../../utils/validateInput";
+import validateInput, {validate, focusin, focusout} from "../../../../utils/validateInput";
 import validationForm from "../../../../utils/validationForm";
 
 import * as styles from "./editProfile.module.scss";
@@ -38,26 +38,6 @@ export default class EditProfile extends Block {
     super(props);
   }
 
-  private focusin(e: Event) {
-    const self: Record<string, any> = this;
-    const name = (e.target as HTMLInputElement).name;
-    self[name].onFocus();
-  }
-
-  private focusout(e: Event) {
-    const self: Record<string, any> = this;
-    const name = (e.target as HTMLInputElement).name;
-    self[name].onBlur(e);
-
-    //after submit don't need to update props
-    if (this.submit) {
-      this.submit = false;
-      return;
-    } 
-
-    this.setProps({name: self[name]});
-  }
-
   init() {
     this.email = validateInput(this.props.email, "email");
     this.login = validateInput(this.props.login, "login");
@@ -73,8 +53,8 @@ export default class EditProfile extends Block {
       placeholder: "Enter your e-mail address",
       value: this.email.value,
       events: {
-        focusin: (e) => this.focusin(e),
-        focusout: (e) => this.focusout(e),
+        focusin: (e) => focusin(e, this),
+        focusout: (e) => focusout(e, this),
       },
       propStyle: styles.input   
     });
@@ -85,8 +65,8 @@ export default class EditProfile extends Block {
       placeholder: "Enter your login",
       value: this.login.value,
       events: {
-        focusin: (e) => this.focusin(e),
-        focusout: (e) => this.focusout(e),
+        focusin: (e) => focusin(e, this),
+        focusout: (e) => focusout(e, this),
       },
       propStyle: styles.input  
     });
@@ -97,8 +77,8 @@ export default class EditProfile extends Block {
       placeholder: "Enter your first name",
       value: this.first_name.value,
       events: {
-        focusin: (e) => this.focusin(e),
-        focusout: (e) => this.focusout(e),
+        focusin: (e) => focusin(e, this),
+        focusout: (e) => focusout(e, this),
       },
       propStyle: styles.input   
     });
@@ -109,8 +89,8 @@ export default class EditProfile extends Block {
       placeholder: "Enter your second name",
       value: this.second_name.value,
       events: {
-        focusin: (e) => this.focusin(e),
-        focusout: (e) => this.focusout(e),
+        focusin: (e) => focusin(e, this),
+        focusout: (e) => focusout(e, this),
       },
       propStyle: styles.input   
     });
@@ -121,8 +101,8 @@ export default class EditProfile extends Block {
       placeholder: "Enter your display name",
       value: this.display_name.value,
       events: {
-        focusin: (e) => this.focusin(e),
-        focusout: (e) => this.focusout(e),
+        focusin: (e) => focusin(e, this),
+        focusout: (e) => focusout(e, this),
       },
       propStyle: styles.input   
     });
@@ -133,8 +113,8 @@ export default class EditProfile extends Block {
       placeholder: "Enter your phone",
       value: this.phone.value,
       events: {
-        focusin: (e) => this.focusin(e),
-        focusout: (e) => this.focusout(e),
+        focusin: (e) => focusin(e, this),
+        focusout: (e) => focusout(e, this),
       },
       propStyle: styles.input  
     });
