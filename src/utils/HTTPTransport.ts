@@ -6,8 +6,8 @@ enum Methods {
 };
 
 interface Options {
-  method: Methods,
-  headers: Record<string, string>,
+  method?: Methods,
+  headers?: Record<string, string>,
   data?: any,
   timeout?: number,
 }
@@ -31,21 +31,23 @@ function queryStringify(data: unknown) {
   return newData;
 }
 
+type HTTPMethod = (url: string, options?: Options) => Promise<unknown>
+
 export default class HTTPTransport {
-	get = (url: string, options: Options) => {
+	get: HTTPMethod = (url, options = {}) => {
     const newUrl = url + queryStringify(options.data);
     return this.request(newUrl , {...options, method: Methods.Get}, options.timeout);
 	};
   
-  put = (url: string, options: Options) => {
+  put: HTTPMethod = (url: string, options = {}) => {
     return this.request(url, {...options, method: Methods.Put}, options.timeout);
 	};
         
-  post = (url: string, options: Options) => {
+  post: HTTPMethod = (url: string, options = {}) => {
           return this.request(url, {...options, method: Methods.Post}, options.timeout);
 	};
   
-  delete = (url: string, options: Options) => {
+  delete: HTTPMethod = (url: string, options = {}) => {
     return this.request(url, {...options, method: Methods.Delete}, options.timeout);
 	};
 
@@ -57,7 +59,7 @@ export default class HTTPTransport {
           
     return new Promise((resolve, reject) => {
       const xhr: XMLHttpRequest = new XMLHttpRequest();
-      xhr.open(method, url);
+      xhr.open(method!, url);
             
       Object.keys(headers).forEach(key => {
         xhr.setRequestHeader(key, headers[key]);
