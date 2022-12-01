@@ -3,7 +3,7 @@ import template from "./signin.hbs";
 import Input from "../../components/input";
 import Button from "../../components/button";
 
-import validateInput, {validate, focusin, focusout} from "../../utils/validateInput";
+import validateInput, {validate, validEvents} from "../../utils/validateInput";
 import validationForm from "../../utils/validationForm";
 
 interface SigninProps {
@@ -30,10 +30,7 @@ export default class Signin extends Block {
       name: "email", 
       placeholder: "Enter your e-mail address",
       value: this.email.value,
-      events: {
-        focusin: (e) => focusin(e, this),
-        focusout: (e) => focusout(e, this),
-      }   
+      events: validEvents(this),  
     });
     this.children.password = new Input({
       label: "Password",
@@ -41,10 +38,7 @@ export default class Signin extends Block {
       name: "password", 
       placeholder: "Enter your password",
       value: this.password.value,
-      events: {
-        focusin: (e) => focusin(e, this),
-        focusout: (e) => focusout(e, this),
-      }   
+      events: validEvents(this),   
     });
     this.children.button = new Button({
       label: "Sign in",

@@ -1,5 +1,4 @@
 import validation from "./validation";
-
 export interface validate {
   value: string;
   touched: boolean;
@@ -45,4 +44,11 @@ export function focusout(e: Event, self: Record<string, any>) {
     } 
 
     self.setProps({name: self[name]});
+}
+
+export function validEvents(self: Record<string, any>) {
+  return {
+    focusin: (e: Event) => focusin(e, self),
+    focusout: (e: Event) => focusout(e, self),
+  }
 }

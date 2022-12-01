@@ -89,6 +89,7 @@ export default class Block {
     const fragment = this.render();
     
     const newElement = fragment.firstElementChild as HTMLElement;
+    this._removeEvents();
     this._element?.replaceWith(newElement);
     this._element = newElement;
 
@@ -138,6 +139,14 @@ export default class Block {
     });
 
     return {props, children};
+  }
+
+  private _removeEvents() {
+    const {events = {}} = this.props;
+
+    Object.keys(events).forEach(event => {
+      this._element?.removeEventListener(event, events[event])
+    })
   }
 
   private _addEvents(): void {

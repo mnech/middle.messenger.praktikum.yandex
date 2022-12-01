@@ -4,7 +4,7 @@ import ButtonIcon from "../../components/buttonIcon";
 import Input from "../../components/input";
 import Navbar from "../../components/navbar";
 
-import validateInput, {validate, focusin, focusout} from "../../utils/validateInput";
+import validateInput, {validate, validEvents} from "../../utils/validateInput";
 import validationForm from "../../utils/validationForm";
 
 import * as styles from "./chat.module.scss";
@@ -71,10 +71,7 @@ export default class Chat extends Block {
       type: "text",
       name: "message", 
       placeholder: "Type your message...",
-      events: {
-        focusin: (e) => focusin(e, this),
-        focusout: (e) => focusout(e, this),
-      },
+      events: validEvents(this),
       propStyle: styles.message, 
     });
     this.children.send = new ButtonIcon({

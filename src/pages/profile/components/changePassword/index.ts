@@ -3,7 +3,7 @@ import template from "./changePassword.hbs";
 import Input from "../../../../components/input";
 import Button from "../../../../components/button";
 
-import validateInput, {validate, focusin, focusout} from "../../../../utils/validateInput";
+import validateInput, {validate, validEvents} from "../../../../utils/validateInput";
 import validationForm from "../../../../utils/validationForm";
 import { Content } from "../../types";
 
@@ -39,10 +39,7 @@ export default class ChangePassword extends Block {
       name: "password", 
       placeholder: "Enter new password",
       value: this.password.value,
-      events: {
-        focusin: (e) => focusin(e, this),
-        focusout: (e) => focusout(e, this),
-      },
+      events: validEvents(this),
       propStyle: styles.input  
     });
     this.children.save = new Button({

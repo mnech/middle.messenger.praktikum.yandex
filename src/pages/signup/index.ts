@@ -3,7 +3,7 @@ import template from "./signup.hbs";
 import Input from "../../components/input";
 import Button from "../../components/button";
 
-import validateInput, {validate, focusin, focusout} from "../../utils/validateInput";
+import validateInput, {validate, validEvents} from "../../utils/validateInput";
 import validationForm from "../../utils/validationForm";
 
 interface SignupProps {
@@ -43,10 +43,7 @@ export default class Signup extends Block {
       name: "email", 
       placeholder: "Enter your e-mail address",
       value: this.email.value,
-      events: {
-        focusin: (e) => focusin(e, this),
-        focusout: (e) => focusout(e, this),
-      }   
+      events: validEvents(this),  
     });
     this.children.login = new Input({
       label: "Login",
@@ -54,10 +51,7 @@ export default class Signup extends Block {
       name: "login", 
       placeholder: "Enter your login",
       value: this.login.value,
-      events: {
-        focusin: (e) => focusin(e, this),
-        focusout: (e) => focusout(e, this),
-      }   
+      events: validEvents(this),   
     });
     this.children.firstName = new Input({
       label: "First name",
@@ -65,10 +59,7 @@ export default class Signup extends Block {
       name: "first_name", 
       placeholder: "Enter your first name",
       value: this.first_name.value,
-      events: {
-        focusin: (e) => focusin(e, this),
-        focusout: (e) => focusout(e, this),
-      }   
+      events: validEvents(this),   
     });
     this.children.secondName = new Input({
       label: "Second name",
@@ -76,10 +67,7 @@ export default class Signup extends Block {
       name: "second_name", 
       placeholder: "Enter your second name",
       value: this.second_name.value,
-      events: {
-        focusin: (e) => focusin(e, this),
-        focusout: (e) => focusout(e, this),
-      }   
+      events: validEvents(this),   
     });
     this.children.phone = new Input({
       label: "Phone",
@@ -87,10 +75,7 @@ export default class Signup extends Block {
       name: "phone", 
       placeholder: "Enter your phone",
       value: this.phone.value,
-      events: {
-        focusin: (e) => focusin(e, this),
-        focusout: (e) => focusout(e, this),
-      }   
+      events: validEvents(this),   
     });
     this.children.password = new Input({
       label: "Password",
@@ -98,10 +83,7 @@ export default class Signup extends Block {
       name: "password", 
       placeholder: "Enter your password",
       value: this.password.value,
-      events: {
-        focusin: (e) => focusin(e, this),
-        focusout: (e) => focusout(e, this),
-      }   
+      events: validEvents(this),   
     });
     this.children.button = new Button({
       label: "Sign up",
