@@ -1,0 +1,29 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.input {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.error {
+  margin-top: 5px;
+  color: var(--color-red);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.btn {
+  margin: 20px 10px 0;
+}
+
+.btns {
+  display: flex;
+  flex-direction: column;
+}

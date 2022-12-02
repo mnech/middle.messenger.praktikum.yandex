@@ -1,0 +1,22 @@
+.input {
+  padding: 6px 15px;
+  color: var(--primary-dark);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  border: 1px solid var(--primary);
+  border-radius: 10px;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  color: var(--color-grey-dark);
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 20px;
+
+  span {
+    margin-left: 14px;
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-recommended-scss",
+    "stylelint-config-rational-order"
+  ],
+  "plugins": ["stylelint-order"],
+  "rules": {
+    "indentation": [
+			2
+		],
+		"color-hex-case": "upper"
+  },
+  "ignoreFiles": ["**/*.css"]
+}
