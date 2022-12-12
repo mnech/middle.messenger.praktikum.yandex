@@ -34,26 +34,37 @@ function queryStringify(data: unknown) {
 type HTTPMethod = (url: string, options?: Options) => Promise<unknown>
 
 export default class HTTPTransport {
-	get: HTTPMethod = (url, options = {}) => {
-    const newUrl = url + queryStringify(options.data);
-    return this.request(newUrl , {...options, method: Methods.Get}, options.timeout);
+  static API_URL = "https://ya_praktikum.tech/api/v2";
+  protected endpoint: string;
+
+  constructor(endpoint: string) {
+    this.endpoint = `${HTTPTransport.API_URL}${endpoint}`;
+  }
+
+  private getURL(path: string): string {
+    return this.endpoint + path;
+  }
+
+	get: HTTPMethod = (path, options = {}) => {
+    const newUrl = path + queryStringify(options.data);
+    return this.request(this.getURL(newUrl), {...options, method: Methods.Get}, options.timeout);
 	};
   
-  put: HTTPMethod = (url: string, options = {}) => {
-    return this.request(url, {...options, method: Methods.Put}, options.timeout);
+  put: HTTPMethod = (path: string, options = {}) => {
+    return this.request(this.getURL(path), {...options, method: Methods.Put}, options.timeout);
 	};
         
-  post: HTTPMethod = (url: string, options = {}) => {
-          return this.request(url, {...options, method: Methods.Post}, options.timeout);
+  post: HTTPMethod = (path: string, options = {}) => {
+          return this.request(this.getURL(path), {...options, method: Methods.Post}, options.timeout);
 	};
   
-  delete: HTTPMethod = (url: string, options = {}) => {
-    return this.request(url, {...options, method: Methods.Delete}, options.timeout);
+  delete: HTTPMethod = (path: string, options = {}) => {
+    return this.request(this.getURL(path), {...options, method: Methods.Delete}, options.timeout);
 	};
 
 	request = (url: string, 
              options: Options = {method: Methods.Get, headers: {'Content-Type': 'application/json'}}, 
-             timeout: number = 5000): Promise<XMLHttpRequest> => {
+             timeout: number = 5000): Promise<unknown> => {
               
     let {method, data, headers = {}} = options;
           
