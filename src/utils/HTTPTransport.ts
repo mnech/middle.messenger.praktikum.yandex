@@ -15,8 +15,8 @@ interface Options {
 function queryStringify(data: unknown) {
   if (!data) return '';
   
-  if (typeof data !== 'object') {
-	throw new Error('Data must be object');
+  if (typeof data !== "object") {
+	throw new Error("Data must be object");
   }
   
   let newData = '';
@@ -26,12 +26,10 @@ function queryStringify(data: unknown) {
     pairs.push(`${key}=${value}`);
   }
 
-  newData = pairs.length ? `?${pairs.join('&')}` : '';
+  newData = pairs.length ? `?${pairs.join("&")}` : "";
       
   return newData;
 }
-
-type HTTPMethod = (url: string, options?: Options) => Promise<unknown>
 
 export default class HTTPTransport {
   static API_URL = "https://ya_praktikum.tech/api/v2";
@@ -45,41 +43,46 @@ export default class HTTPTransport {
     return this.endpoint + path;
   }
 
-	get: HTTPMethod = (path, options = {}) => {
+	public get<T>(path: string, options: Options = {}): Promise<T> {
     const newUrl = path + queryStringify(options.data);
-    return this.request(this.getURL(newUrl), {...options, method: Methods.Get}, options.timeout);
+    return this.request<T>(this.getURL(newUrl), {...options, method: Methods.Get}, options.timeout);
 	};
   
-  put: HTTPMethod = (path: string, options = {}) => {
-    return this.request(this.getURL(path), {...options, method: Methods.Put}, options.timeout);
+  public put<T>(path: string, options: Options = {}): Promise<T> {
+    return this.request<T>(this.getURL(path), {...options, method: Methods.Put}, options.timeout);
 	};
         
-  post: HTTPMethod = (path: string, options = {}) => {
-          return this.request(this.getURL(path), {...options, method: Methods.Post}, options.timeout);
+  public post<T>(path: string, options: Options = {}): Promise<T> {
+          return this.request<T>(this.getURL(path), {...options, method: Methods.Post}, options.timeout);
 	};
   
-  delete: HTTPMethod = (path: string, options = {}) => {
-    return this.request(this.getURL(path), {...options, method: Methods.Delete}, options.timeout);
+  public delete<T>(path: string, options: Options = {}): Promise<T> {
+    return this.request<T>(this.getURL(path), {...options, method: Methods.Delete}, options.timeout);
 	};
 
-	request = (url: string, 
-             options: Options = {method: Methods.Get, headers: {'Content-Type': 'application/json'}}, 
-             timeout: number = 5000): Promise<unknown> => {
+	private request<T>(url: string, 
+             options: Options = {method: Methods.Get, headers: {"Content-Type": "application/json"}}, 
+             timeout: number = 5000): Promise<T> {
               
     let {method, data, headers = {}} = options;
           
     return new Promise((resolve, reject) => {
-      const xhr: XMLHttpRequest = new XMLHttpRequest();
+      const xhr = new XMLHttpRequest();
       xhr.open(method!, url);
             
       Object.keys(headers).forEach(key => {
         xhr.setRequestHeader(key, headers[key]);
       });
-            
-      xhr.setRequestHeader('Content-Type', 'application/json');
+          
+      if (!(data instanceof FormData)) {
+        xhr.setRequestHeader('Content-Type', 'application/json');
+      }
 
+      xhr.withCredentials = true;
+      xhr.responseType = "json";
+      
       xhr.onload = function() {
-        resolve(xhr);
+        resolve(xhr.response);
       };
 
       const handleError = (err:any) => {
