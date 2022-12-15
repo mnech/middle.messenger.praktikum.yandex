@@ -5,6 +5,8 @@ import Button from "../../components/button";
 
 import validateInput, {validate, validEvents} from "../../utils/validateInput";
 import validationForm from "../../utils/validationForm";
+import AuthController from "../../controlles/AuthController";
+import { SignupData } from "../../types/interfaces";
 
 interface SignupProps {
   styles: Record<string, string>
@@ -90,7 +92,7 @@ export default class Signup extends Block {
       events: {
         click: (e) => {
           this.submit = true;
-          this.onSubmit(e);
+
           this.setProps({
             email: this.email,
             login: this.login,
@@ -99,6 +101,9 @@ export default class Signup extends Block {
             phone: this.phone,
             password: this.password
           });
+
+          const data = this.onSubmit(e);
+          AuthController.signup(data as SignupData);
         }
       }, 
       propStyle: this.props.styles.btn,

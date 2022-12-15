@@ -5,6 +5,8 @@ import Button from "../../components/button";
 
 import validateInput, {validate, validEvents} from "../../utils/validateInput";
 import validationForm from "../../utils/validationForm";
+import AuthController from "../../controlles/AuthController";
+import { SigninData } from "../../types/interfaces";
 
 interface SigninProps {
   styles: Record<string, string>
@@ -46,11 +48,14 @@ export default class Signin extends Block {
       events: {
         click: (e: PointerEvent) => {
           this.submit = true;
-          this.onSubmit(e);
+          
           this.setProps({
             email: this.email,
             password: this.password,
-          });    
+          }); 
+          
+          const data = this.onSubmit(e);
+          AuthController.signin(data as SigninData);
         }
       }, 
       propStyle: this.props.styles.btn,

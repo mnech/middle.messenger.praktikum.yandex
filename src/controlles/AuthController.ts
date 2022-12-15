@@ -19,6 +19,8 @@ class AuthController {
       await this.api.signup(signupData);
       await this.fetchUser();
 
+      this.setError(undefined);
+
       Router.go("/settings");
     } catch(e) {
       this.setError(e);
@@ -30,6 +32,8 @@ class AuthController {
       await this.api.signin(signinData);
       await this.fetchUser();
 
+      this.setError(undefined);
+
       Router.go("/settings");
     } catch(e) {
       this.setError(e);
@@ -39,6 +43,8 @@ class AuthController {
   async logout() {
     try {
       await this.api.logout();
+
+      this.setError(undefined);
 
       Router.go("/");
     } catch(e) {

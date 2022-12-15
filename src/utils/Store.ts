@@ -1,16 +1,21 @@
 import EventBus from "./EventBus";
+import { set } from "./helpers";
 
-export enum StoreEvents {
-  Updated = 'updated',
+type StoreEvents = {
+  "updated": [object],
 }
 
-class Store extends EventBus {
+class Store extends EventBus<StoreEvents> {
   private state: any = {};
+
+  static EVENTS: Record<string, keyof StoreEvents> = {
+    UPDATED: "updated",
+  };
 
   public set(path: string, value: unknown) {
     set(this.state, path, value);
 
-    this.emit(StoreEvents.Updated, this.getState());
+    this.emit(Store.EVENTS.Updated, this.getState());
   };
 
   public getState() {

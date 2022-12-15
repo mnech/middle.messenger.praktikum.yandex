@@ -1,5 +1,5 @@
 export default function validationForm(...args: any[]) {
-  return (e: Event) => {
+  return (e: Event): unknown => {
     e.preventDefault();    
     let errors: boolean = false;
     const data: Record<string, string> = {};
@@ -15,7 +15,7 @@ export default function validationForm(...args: any[]) {
     if (errors) {
       console.log("error");
     } else {
-      console.log(data);
+      return data;
     }
   }  
 }
