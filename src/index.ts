@@ -5,6 +5,7 @@ import Page404 from "./pages/error404";
 import Page500 from "./pages/error500";
 import Profile from "./pages/profile";
 import Chat from "./pages/chat";
+import AuthController from "./controlles/AuthController";
 
 enum Routes {
   Index = "/",
@@ -23,6 +24,30 @@ window.addEventListener("DOMContentLoaded", async ()=> {
     .use(Routes.Page500, Page500)
     .use(Routes.Profile, Profile)
     .use(Routes.Chat, Chat)
-    .start()
+
+    let isProtectedRoute = true;
+
+    switch(window.location.pathname) {
+      case Routes.Index:
+      case Routes.Signup: 
+        isProtectedRoute = false;
+        break;
+    }
+
+    try {
+      await AuthController.fetchUser();
+      
+      Router.start(); 
+
+      if (!isProtectedRoute) {
+        Router.go(Routes.Profile);
+      }
+    } catch(e) {
+      Router.start();
+
+      if (isProtectedRoute) {
+        Router.go(Routes.Index);
+      }
+    }
 });
 

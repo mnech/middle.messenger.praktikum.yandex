@@ -13,25 +13,25 @@ interface SigninProps {
 }
 
 export default class Signin extends Block {
-  private email!: validate;
+  private login!: validate;
   private password!: validate;
   private submit = false;
-  private onSubmit = validationForm(this.email, this.password);
+  private onSubmit = validationForm(this.login, this.password);
 
   constructor(props?: SigninProps) {
     super(props);
   }
 
   init() {
-    this.email = validateInput("", "email");
+    this.login = validateInput("", "login");
     this.password = validateInput("", "password");
 
-    this.children.email = new Input({
-      label: "E-mail",
+    this.children.login = new Input({
+      label: "Login",
       type: "text",
-      name: "email", 
-      placeholder: "Enter your e-mail address",
-      value: this.email.value,
+      name: "login", 
+      placeholder: "Enter your login",
+      value: this.login.value,
       events: validEvents(this),  
     });
     this.children.password = new Input({
@@ -50,7 +50,7 @@ export default class Signin extends Block {
           this.submit = true;
           
           this.setProps({
-            email: this.email,
+            email: this.login,
             password: this.password,
           }); 
           
@@ -65,7 +65,7 @@ export default class Signin extends Block {
   render() {
     return this.compile(template, 
       {...this.props, 
-        errorEmail: this.email.error,
+        errorEmail: this.login.error,
         errorPassword: this.password.error,
       });
   }

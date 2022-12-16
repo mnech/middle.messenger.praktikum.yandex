@@ -2,7 +2,7 @@ import Block from "../../../../utils/Block";
 import template from "./editProfile.hbs";
 import Input from "../../../../components/input";
 import Button from "../../../../components/button";
-import { Content } from "../../types";
+import { Content } from "../../../../types/types";
 
 import validateInput, {validate, validEvents} from "../../../../utils/validateInput";
 import validationForm from "../../../../utils/validationForm";

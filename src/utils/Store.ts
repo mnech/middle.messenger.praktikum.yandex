@@ -1,3 +1,4 @@
+import { state } from "../types/types";
 import EventBus from "./EventBus";
 import { set } from "./helpers";
 
@@ -6,16 +7,16 @@ type StoreEvents = {
 }
 
 class Store extends EventBus<StoreEvents> {
-  private state: any = {};
+  private state: state = {};
 
-  static EVENTS: Record<string, keyof StoreEvents> = {
+  public EVENTS: Record<string, keyof StoreEvents> = {
     UPDATED: "updated",
   };
 
   public set(path: string, value: unknown) {
     set(this.state, path, value);
 
-    this.emit(Store.EVENTS.Updated, this.getState());
+    this.emit(this.EVENTS.UPDATED, this.getState());
   };
 
   public getState() {

@@ -5,7 +5,7 @@ import Button from "../../../../components/button";
 
 import validateInput, {validate, validEvents} from "../../../../utils/validateInput";
 import validationForm from "../../../../utils/validationForm";
-import { Content } from "../../types";
+import { Content } from "../../../../types/types";
 
 import * as styles from "./changePassword.module.scss";
 

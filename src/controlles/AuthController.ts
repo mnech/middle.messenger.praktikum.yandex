@@ -4,66 +4,60 @@ import Router from "../utils/Router";
 import Store from "../utils/Store";
 
 class AuthController {
-  private api = new AuthAPI();
+  constructor(private api: AuthAPI) {};
+
+  private async request(req: () => void) {
+    try {
+      Store.set("user.isLoading", true);
+      this.setError(undefined);
+      await req();
+    } catch(e) {
+      this.setError(e);
+      throw new Error();
+    } finally {
+      Store.set("user.isLoading", false);
+    }
+  }
 
   private setError(e: unknown) {
     if (e instanceof Error) {
       Store.set("user.data", e.message);
-    } else {
+    } else if (e){
       Store.set("user.data", e);
     }
   }
 
   async signup(signupData: SignupData) {
-    try {
+    await this.request(async() => {
       await this.api.signup(signupData);
       await this.fetchUser();
-
-      this.setError(undefined);
-
       Router.go("/settings");
-    } catch(e) {
-      this.setError(e);
-    }
+    });
   }
 
   async signin(signinData: SigninData) {
-    try {
+    await this.request(async() => {
       await this.api.signin(signinData);
       await this.fetchUser();
-
-      this.setError(undefined);
-
       Router.go("/settings");
-    } catch(e) {
-      this.setError(e);
-    }
+    });
   }
 
   async logout() {
-    try {
+    await this.request(async() => {
       await this.api.logout();
-
-      this.setError(undefined);
-
       Router.go("/");
-    } catch(e) {
-      this.setError(e);
-    }
+    });
   }
 
   async fetchUser() {
-    Store.set("user.isLoading", true);
-    
-    try {
+    console.log("fetch");
+    await this.request(async() => {
       const user = await this.api.read();
+      console.log("fetch",user);
       Store.set("user.data", user);
-    } catch(e) {
-      this.setError(e);
-    } finally {
-      Store.set("user.isLoading", false);
-    }
+    });
   }
 }
 
-export default new AuthController();
+export default new AuthController(new AuthAPI());

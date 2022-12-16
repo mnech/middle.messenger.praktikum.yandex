@@ -3,8 +3,6 @@ type Indexed<T = unknown> = {
 };
 
 export function set(object: Indexed | unknown, path: string, value: unknown): Indexed | unknown {
-  console.log("hi");
-  console.log(JSON.stringify(object), path, value);
 	if (typeof path !== "string") {
       throw new Error("path must be string");
   }
@@ -21,9 +19,7 @@ export function set(object: Indexed | unknown, path: string, value: unknown): In
     }
   }, {});
   
-  const res = merge(object as Indexed, newValue);
-  console.log(JSON.stringify(object), path, value, JSON.stringify(res));
-  return ;
+  return  merge(object as Indexed, newValue);
 }
 
 function merge(lhs: Indexed = {}, rhs: Indexed): Indexed {
@@ -39,6 +35,27 @@ function merge(lhs: Indexed = {}, rhs: Indexed): Indexed {
 }
 
 function isObject(value: unknown): value is Object {
-  return typeof value === "object" && (value as Object).constructor === Object;
+  return value !== null && typeof value === "object" && (value as Object).constructor === Object;
 } 
 
+export function isEqual(a: object, b: object): boolean {
+  if (isObject(a) && isObject(b)) {
+    if (Object.keys(a).length !== Object.keys(b).length) {
+      return false;
+    }
+    return checkObjects(a, b);
+  } else {
+    return false;
+  } 
+}
+
+function checkObjects(a: object, b: object) {
+  return Object.keys(a).reduce((equal, key) => {
+    const keyA = a[key as keyof typeof a];
+    const keyB = b[key as keyof typeof b];
+    if (isObject(keyA) && isObject(keyB)) {
+      return equal && isEqual(keyA, keyB);
+    }
+    return equal && keyA === keyB;
+  }, true);
+}

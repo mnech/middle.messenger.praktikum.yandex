@@ -1,13 +1,17 @@
 <div>
   {{{navbar}}}
   <div class="{{styles.container}}">
+    {{#if isLoading}}
+    Loading...
+    {{else}}
     <div class="{{styles.avatar}}">
-      <img src={{photo}} alt="user photo" class="{{styles.photo}}">
+      <img src={{data.photo}} alt="user photo" class="{{styles.photo}}">
       <label for="file" class="{{styles.upload}}">Choose photo</label>
       <input type="file" name="avatar" id="file" class="{{styles.file}}">
     </div>
     <div class="{{styles.name}}">{{display_name}}</div>
     {{{content}}}
+    {{/if}}
   </div>
 </div>
 </div>

@@ -32,7 +32,7 @@ function queryStringify(data: unknown) {
 }
 
 export default class HTTPTransport {
-  static API_URL = "https://ya_praktikum.tech/api/v2";
+  static API_URL = "https://ya-praktikum.tech/api/v2";
   protected endpoint: string;
 
   constructor(endpoint: string) {
@@ -63,7 +63,6 @@ export default class HTTPTransport {
 	private request<T>(url: string, 
              options: Options = {method: Methods.Get, headers: {"Content-Type": "application/json"}}, 
              timeout: number = 5000): Promise<T> {
-              
     let {method, data, headers = {}} = options;
           
     return new Promise((resolve, reject) => {
@@ -81,18 +80,20 @@ export default class HTTPTransport {
       xhr.withCredentials = true;
       xhr.responseType = "json";
       
-      xhr.onload = function() {
-        resolve(xhr.response);
+      xhr.onreadystatechange = () => {
+
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status < 400) {
+            resolve(xhr.response);
+          } else {
+            reject(xhr.response);
+          }
+        }
       };
 
-      const handleError = (err:any) => {
-        reject(err);
-      };
-
-      xhr.onabort = handleError;
-      xhr.onerror = handleError;
-      xhr.ontimeout = handleError;
-      xhr.timeout = timeout;
+      xhr.onabort = () => reject({reason: 'abort'});
+      xhr.onerror = () => reject({reason: 'network error'});
+      xhr.ontimeout = () => reject({reason: 'timeout'});
 
       if (method === Methods.Get || !data) {
         xhr.send();
