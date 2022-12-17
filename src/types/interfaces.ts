@@ -22,3 +22,23 @@ export interface User {
   phone: string;
   avatar: string;
 }
+
+export interface ProfileData {
+  first_name: string;
+  second_name: string;
+  display_name: string;
+  login: string;
+  email: string;
+  phone: string;
+}
+
+export interface AvatarData {
+  avatar: FormData;
+}
+
+export interface PasswordData {
+  oldPassword: string;
+  newPassword: string;
+}
+
+

@@ -10,7 +10,7 @@ interface InputProps {
   value?: string,
   events: {
     click?: (e: Event) => void,
-    focusin?: (e: Event) => void,
+    change?: (e: Event) => void,
     focusout?: (e: Event) => void,
   },
   propStyle?: string,

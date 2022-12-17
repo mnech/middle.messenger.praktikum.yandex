@@ -54,6 +54,11 @@ export default function validation(value: string, name: string): string {
         return "Required";
       } 
       break;  
+    case "oldPassword":
+      if (!value) {
+        return "Required";
+      } 
+      break;
   }
 
   return "";

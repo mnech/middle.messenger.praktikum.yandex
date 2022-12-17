@@ -1,26 +1,21 @@
 import validation from "./validation";
 export interface validate {
   value: string;
-  touched: boolean;
   error: string;
   name: string;
-  onFocus(): void;
-  onBlur(e: Event): void;
+  onCheck(e: Event): void;
   validate(): void;
 }
 
 export default function validateInput(initialValue: string, name: string): validate {
   return {
     value: initialValue,
-    touched: false,
     error: "",
     name,
-    onFocus() {
-      this.touched = true;
-    },
-    onBlur(e: Event) {
+    onCheck(e: Event) {
       this.value = (e.target as HTMLInputElement).value;
       this.error = validation(this.value, name);
+      console.log("check", this.error)
     },
     validate() {
       this.error = validation(this.value, name);
@@ -28,14 +23,9 @@ export default function validateInput(initialValue: string, name: string): valid
   };
 }
 
-export function focusin(e: Event, self: Record<string, any>) {
+function check(e: Event, self: Record<string, any>) {
     const name = (e.target as HTMLInputElement).name;
-    self[name].onFocus();
-}
-
-export function focusout(e: Event, self: Record<string, any>) {
-    const name = (e.target as HTMLInputElement).name;
-    self[name].onBlur(e);
+    self[name].onCheck(e);
 
     //after submit don't need to update props
     if (self.submit) {
@@ -48,7 +38,7 @@ export function focusout(e: Event, self: Record<string, any>) {
 
 export function validEvents(self: Record<string, any>) {
   return {
-    focusin: (e: Event) => focusin(e, self),
-    focusout: (e: Event) => focusout(e, self),
+    change: (e: Event) => check(e, self),
+    focusout: (e: Event) => check(e, self),
   }
 }

@@ -19,7 +19,6 @@ export default function withStore(mapStateToProps: (state: state) => obj) {
 
         super({...props, ...currentState});
         Store.on(Store.EVENTS.UPDATED, () => {
-          console.log("upd");
           const state = Store.getState();
           const propsFromState = mapStateToProps(state);
           console.log(currentState, propsFromState);

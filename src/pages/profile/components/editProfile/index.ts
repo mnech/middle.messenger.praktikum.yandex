@@ -8,6 +8,8 @@ import validateInput, {validate, validEvents} from "../../../../utils/validateIn
 import validationForm from "../../../../utils/validationForm";
 
 import * as styles from "./editProfile.module.scss";
+import ProfileController from "../../../../controlles/ProfileController";
+import { ProfileData } from "../../../../types/interfaces";
 
 interface EditProfileProps {
   changeContent: (content: Content) => void,
@@ -105,7 +107,6 @@ export default class EditProfile extends Block {
       type: "submit",
       events: {
         click: (e) => {
-          this.onSubmit(e);
           this.setProps({
             email: this.email,
             login: this.login,
@@ -114,6 +115,9 @@ export default class EditProfile extends Block {
             display_name: this.display_name,
             phone: this.phone
           });
+
+          const data = this.onSubmit(e);
+          ProfileController.changeProfile(data as ProfileData);
         }
       }, 
       propStyle: styles.btn

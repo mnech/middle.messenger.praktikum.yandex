@@ -8,18 +8,8 @@ import { Content, state } from "../../types/types";
 
 import * as styles from "./profile.module.scss";
 
-import photo from "../../../static/img/Photo.png";
+import defPhoto from "../../../static/img/Photo.png";
 import withStore from "../../hocs/withStore";
-
-const data: Record<string, string> = {
-  photo: "../../static/img/Photo.png",
-  email: "yan@gmail.com",
-  login: "yan1992",
-  first_name: "Yan",
-  second_name: "Petrov",
-  display_name: "Yan",
-  phone: "+79114351233",
-}
 
 interface ProfileProps {
   data?: Record<string, string>;
@@ -36,6 +26,14 @@ class Profile extends Block {
     return (content: Content) => {
       this.content = content;
       this.setProps({content: this.content});
+    }
+  }
+
+  private getAvatar() {
+    if (this.props.data.avatar) {
+      return this.props.data.avatar;
+    } else {
+      return defPhoto;
     }
   }
 
@@ -65,7 +63,7 @@ class Profile extends Block {
 
   render() {
     this.children.content = this.createContent();
-    return this.compile(template, {...this.props, styles, photo});
+    return this.compile(template, {...this.props, styles, avatar: this.getAvatar()});
   }
 }
 
