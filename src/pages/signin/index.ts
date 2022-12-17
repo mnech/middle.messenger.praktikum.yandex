@@ -1,12 +1,12 @@
 import Block from "../../utils/Block";
 import template from "./signin.hbs";
-import Input from "../../components/input";
 import Button from "../../components/button";
 
-import validateInput, {validate, validEvents} from "../../utils/validateInput";
+import validateInput, {validate} from "../../utils/validateInput";
 import validationForm from "../../utils/validationForm";
 import AuthController from "../../controlles/AuthController";
 import { SigninData } from "../../types/interfaces";
+import FormInput from "../../components/FormInput";
 
 interface SigninProps {
   styles: Record<string, string>
@@ -15,7 +15,6 @@ interface SigninProps {
 export default class Signin extends Block {
   private login!: validate;
   private password!: validate;
-  private submit = false;
   private onSubmit = validationForm(this.login, this.password);
 
   constructor(props?: SigninProps) {
@@ -26,29 +25,27 @@ export default class Signin extends Block {
     this.login = validateInput("", "login");
     this.password = validateInput("", "password");
 
-    this.children.login = new Input({
+    this.children.login = new FormInput({
       label: "Login",
       type: "text",
       name: "login", 
+      value: "",
       placeholder: "Enter your login",
-      value: this.login.value,
-      events: validEvents(this),  
+      validation: "login", 
     });
-    this.children.password = new Input({
+    this.children.password = new FormInput({
       label: "Password",
       type: "password",
       name: "password", 
+      value: "",
       placeholder: "Enter your password",
-      value: this.password.value,
-      events: validEvents(this),   
+      validation: "password",   
     });
     this.children.button = new Button({
       label: "Sign in",
       type: "submit",
       events: {
         click: (e: PointerEvent) => {
-          this.submit = true;
-          
           this.setProps({
             email: this.login,
             password: this.password,
@@ -64,9 +61,6 @@ export default class Signin extends Block {
 
   render() {
     return this.compile(template, 
-      {...this.props, 
-        errorLogin: this.login.error,
-        errorPassword: this.password.error,
-      });
+      {...this.props});
   }
 }
