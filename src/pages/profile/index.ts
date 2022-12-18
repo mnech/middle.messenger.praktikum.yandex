@@ -13,22 +13,13 @@ import withStore from "../../hocs/withStore";
 
 interface ProfileProps {
   data?: Record<string, string>;
+  content: Content;
 }
 
 class Profile extends Block {
-  private content: string = localStorage.getItem("profile_content") || Content.Info;
 
   constructor(props?: ProfileProps) {
     super(props);
-  }
-
-  private changeContent() {
-    return (content: Content) => {
-      console.log("content, ", content, this.content)
-      localStorage.setItem("profile_content", content);
-      this.content = content;
-      this.setProps({content: this.content});
-    }
   }
 
   private getAvatar() {
@@ -45,21 +36,16 @@ class Profile extends Block {
   }
 
   private createContent() {
-    this.changeContent.bind(this);
 
-    if (this.content === Content.EditProfile) {
+    if (this.props.content === Content.EditProfile) {
       return new EditProfile({
-          changeContent: this.changeContent(),
           ...this.props.data,
           display_name: this.displayName()
         });
-    } else if (this.content === Content.ChangePassword) {
-      return new ChangePassword({
-        changeContent: this.changeContent(),
-      });
+    } else if (this.props.content === Content.ChangePassword) {
+      return new ChangePassword();
     } else {
       return new Info({
-        changeContent: this.changeContent(),
         ...this.props.data,
         display_name: this.displayName()
       });

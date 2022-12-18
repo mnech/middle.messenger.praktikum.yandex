@@ -4,16 +4,14 @@ import Button from "../../../../components/button";
 
 import validateInput, {validate, validEvents} from "../../../../utils/validateInput";
 import validationForm from "../../../../utils/validationForm";
-import { Content } from "../../../../types/types";
 
 import * as styles from "./changePassword.module.scss";
 import ProfileController from "../../../../controlles/ProfileController";
 import { PasswordData } from "../../../../types/interfaces";
 import FormInput from "../../../../components/FormInput";
+import Router from "../../../../utils/Router";
 
-interface ChangePasswordProps {
-  changeContent: (content: Content) => void,
-}
+interface ChangePasswordProps {}
 
 export default class ChangePassword extends Block {
   private oldPassword!: validate;
@@ -65,7 +63,7 @@ export default class ChangePassword extends Block {
       type: "button",
       events: {
         click: () => {
-          this.props.changeContent(Content.Info);
+          Router.go("/settings");
         }
       }, 
       propStyle: styles.btn,
@@ -76,8 +74,6 @@ export default class ChangePassword extends Block {
   render() {
     return this.compile(template, 
       {...this.props, 
-      styles,
-      errorOldPassword: this.oldPassword.error,
-      errorPassword: this.password.error,});
+      styles});
   }
 }

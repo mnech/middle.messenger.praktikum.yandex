@@ -10,6 +10,7 @@ import * as styles from "./editProfile.module.scss";
 import ProfileController from "../../../../controlles/ProfileController";
 import { ProfileData } from "../../../../types/interfaces";
 import FormInput from "../../../../components/FormInput";
+import Router from "../../../../utils/Router";
 
 interface EditProfileProps {
   changeContent: (content: Content) => void,
@@ -113,7 +114,7 @@ export default class EditProfile extends Block {
       type: "button",
       events: {
         click: () => {
-          this.props.changeContent(Content.Info);
+          Router.go("/settings");
         }
       }, 
       propStyle: styles.btn,

@@ -6,6 +6,7 @@ import Page500 from "./pages/error500";
 import Profile from "./pages/profile";
 import Chat from "./pages/chat";
 import AuthController from "./controlles/AuthController";
+import { Content } from "./types/types";
 
 enum Routes {
   Index = "/",
@@ -13,6 +14,8 @@ enum Routes {
   Page404 = "/page404",
   Page500 = "/page500",
   Profile = "/settings",
+  ProfileInfo = "/settings/info",
+  ProfilePassword = "/settings/password",
   Chat = "/messenger",
 }
 
@@ -22,7 +25,9 @@ window.addEventListener("DOMContentLoaded", async ()=> {
     .use(Routes.Signup, Auth)
     .use(Routes.Page404, Page404)
     .use(Routes.Page500, Page500)
-    .use(Routes.Profile, Profile)
+    .use(Routes.Profile, Profile, {content: Content.Info})
+    .use(Routes.ProfileInfo, Profile, {content: Content.EditProfile})
+    .use(Routes.ProfilePassword, Profile, {content: Content.ChangePassword})
     .use(Routes.Chat, Chat)
 
     let isProtectedRoute = true;
