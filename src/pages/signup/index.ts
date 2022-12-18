@@ -7,6 +7,7 @@ import validateInput, {validate, validEvents} from "../../utils/validateInput";
 import validationForm from "../../utils/validationForm";
 import AuthController from "../../controlles/AuthController";
 import { SignupData } from "../../types/interfaces";
+import FormInput from "../../components/FormInput";
 
 interface SignupProps {
   styles: Record<string, string>
@@ -19,7 +20,6 @@ export default class Signup extends Block {
   private second_name!: validate;
   private phone!: validate;
   private password!: validate;
-  private submit = false;
   private onSubmit = validationForm(this.email, 
     this.login,
     this.first_name,
@@ -39,60 +39,52 @@ export default class Signup extends Block {
     this.phone = validateInput("", "phone");
     this.password = validateInput("", "password");
 
-    this.children.email = new Input({
+    this.children.email = new FormInput({
       label: "E-mail",
       type: "email",
       name: "email", 
       placeholder: "Enter your e-mail address",
-      value: this.email.value,
-      events: validEvents(this),  
+      validation: this.email,  
     });
-    this.children.login = new Input({
+    this.children.login = new FormInput({
       label: "Login",
       type: "text",
       name: "login", 
       placeholder: "Enter your login",
-      value: this.login.value,
-      events: validEvents(this),   
+      validation: this.login,   
     });
-    this.children.firstName = new Input({
+    this.children.firstName = new FormInput({
       label: "First name",
       type: "text",
       name: "first_name", 
       placeholder: "Enter your first name",
-      value: this.first_name.value,
-      events: validEvents(this),   
+      validation: this.first_name,   
     });
-    this.children.secondName = new Input({
+    this.children.secondName = new FormInput({
       label: "Second name",
       type: "text",
       name: "second_name", 
       placeholder: "Enter your second name",
-      value: this.second_name.value,
-      events: validEvents(this),   
+      validation: this.second_name,   
     });
-    this.children.phone = new Input({
+    this.children.phone = new FormInput({
       label: "Phone",
       type: "tel",
       name: "phone", 
       placeholder: "Enter your phone",
-      value: this.phone.value,
-      events: validEvents(this),   
+      validation: this.phone,   
     });
-    this.children.password = new Input({
+    this.children.password = new FormInput({
       label: "Password",
       type: "password",
       name: "password", 
       placeholder: "Enter your password",
-      value: this.password.value,
-      events: validEvents(this),   
+      validation: this.password,   
     });
     this.children.button = new Button({
       label: "Sign up",
       events: {
         click: (e) => {
-          this.submit = true;
-
           this.setProps({
             email: this.email,
             login: this.login,
@@ -112,13 +104,6 @@ export default class Signup extends Block {
 
   render() {
     return this.compile(template, 
-      {...this.props,
-      errorEmail: this.email.error,
-      errorLogin: this.login.error,
-      errorFirstName: this.first_name.error,
-      errorSecondName: this.second_name.error,
-      errorPhone: this.phone.error,
-      errorPassword: this.password.error,
-    });
+      {...this.props});
   }
 }

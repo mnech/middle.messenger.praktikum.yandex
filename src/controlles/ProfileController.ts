@@ -28,7 +28,8 @@ class ProfileController {
 
   async changeProfile(profileData: ProfileData) {
     await this.request(async() => {
-      await this.api.changeProfile(profileData);
+      const data = await this.api.changeProfile(profileData);
+      Store.set("user.data", data);
     });
   }
 

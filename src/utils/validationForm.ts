@@ -13,7 +13,7 @@ export default function validationForm(...args: any[]) {
     });
 
     if (errors) {
-      console.log("error");
+      return null;
     } else {
       return data;
     }

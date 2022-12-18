@@ -39,7 +39,7 @@ class AuthController {
     await this.request(async() => {
       await this.api.signin(signinData);
       await this.fetchUser();
-      Router.go("/settings");
+      Router.go("/messenger");
     });
   }
 
@@ -51,10 +51,8 @@ class AuthController {
   }
 
   async fetchUser() {
-    console.log("fetch");
     await this.request(async() => {
       const user = await this.api.read();
-      console.log("fetch",user);
       Store.set("user.data", user);
     });
   }

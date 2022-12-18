@@ -28,31 +28,27 @@ export default class Signin extends Block {
     this.children.login = new FormInput({
       label: "Login",
       type: "text",
-      name: "login", 
-      value: "",
+      name: "login",
       placeholder: "Enter your login",
-      validation: "login", 
+      validation: this.login, 
     });
     this.children.password = new FormInput({
       label: "Password",
       type: "password",
       name: "password", 
-      value: "",
       placeholder: "Enter your password",
-      validation: "password",   
+      validation: this.password,   
     });
     this.children.button = new Button({
       label: "Sign in",
       type: "submit",
       events: {
         click: (e: PointerEvent) => {
-          this.setProps({
-            email: this.login,
-            password: this.password,
-          }); 
-          
           const data = this.onSubmit(e);
-          AuthController.signin(data as SigninData);
+          if (data) {
+            
+            AuthController.signin(data as SigninData);
+          }
         }
       }, 
       propStyle: this.props.styles.btn,

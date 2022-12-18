@@ -19,6 +19,7 @@ import arrowRigth from "../../../static/icons/arrow_right.svg";
 import searchIcon from "../../../static/icons/search.svg";
 import optionsIcon from "../../../static/icons/options.svg";
 import paperclipIcon from "../../../static/icons/paperclip.svg";
+import FormInput from "../../components/FormInput";
 
 interface ChatProps {
   title: string,
@@ -37,7 +38,6 @@ lastMessage_date: "10.11.2022", unread: 3},
 
 export default class Chat extends Block {
   private message!: validate;
-  private submit = false;
   private onSubmit = validationForm(this.message);
 
   constructor(props?: ChatProps) {
@@ -67,11 +67,11 @@ export default class Chat extends Block {
       },
       propStyle: styles.newchat,
     });
-    this.children.message = new Input({
+    this.children.message = new FormInput({
       type: "text",
       name: "message", 
       placeholder: "Type your message...",
-      events: validEvents(this),
+      validation: this.message,
       propStyle: styles.message, 
     });
     this.children.send = new ButtonIcon({
@@ -81,7 +81,6 @@ export default class Chat extends Block {
       type: "submit",
       events: {
         click: (e) => {
-          this.submit = true;
           this.onSubmit(e);
           this.setProps({message: this.message});
         }

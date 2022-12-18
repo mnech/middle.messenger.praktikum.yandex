@@ -1,5 +1,5 @@
 import Block from "../../utils/Block";
-import validateInput, { validate, validEvents } from "../../utils/validateInput";
+import {validate, validEvents} from "../../utils/validateInput";
 import ErrorInput from "../ErrorInput";
 import Input from "../input";
 import template from "./formInput.hbs";
@@ -9,34 +9,31 @@ interface FormInputProps {
   label?: string,
   type: string,
   name: string, 
-  value: string,
   placeholder: string,
-  validation: string,
+  validation: validate,
   propStyle?: string,
 }
 
 export default class FormInput extends Block {
-  private input!: validate;
-
   constructor(props: FormInputProps) {
     super(props);
   }
 
   init() {
-    this.input = validateInput(this.props.value, this.props.validation);
-
+    const {label, type, name, placeholder, validation} = this.props;
     this.children.error = new ErrorInput({
       text: "",
     });
     this.children.input = new Input({
-      label: this.props.label,
-      type: this.props.type,
-      name: this.props.name, 
-      placeholder: this.props.placeholder,
-      value: this.input.value,
-      events: validEvents(this.input, this.children.error),  
+      label,
+      type,
+      name, 
+      placeholder,
+      value: validation.value,
+      events: validEvents(validation),  
     });
-    
+
+    validation.errorComponent = this.children.error; 
   }
 
   render() {

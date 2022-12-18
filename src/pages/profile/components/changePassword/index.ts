@@ -1,6 +1,5 @@
 import Block from "../../../../utils/Block";
 import template from "./changePassword.hbs";
-import Input from "../../../../components/input";
 import Button from "../../../../components/button";
 
 import validateInput, {validate, validEvents} from "../../../../utils/validateInput";
@@ -10,6 +9,7 @@ import { Content } from "../../../../types/types";
 import * as styles from "./changePassword.module.scss";
 import ProfileController from "../../../../controlles/ProfileController";
 import { PasswordData } from "../../../../types/interfaces";
+import FormInput from "../../../../components/FormInput";
 
 interface ChangePasswordProps {
   changeContent: (content: Content) => void,
@@ -18,7 +18,6 @@ interface ChangePasswordProps {
 export default class ChangePassword extends Block {
   private oldPassword!: validate;
   private password!: validate;
-  private submit = false;
   private onSubmit = validationForm(this.oldPassword, this.password);
 
   constructor(props?: ChangePasswordProps) {
@@ -29,22 +28,20 @@ export default class ChangePassword extends Block {
     this.oldPassword = validateInput("", "oldPassword");
     this.password = validateInput("", "password");
   
-    this.children.oldPassword = new Input({
+    this.children.oldPassword = new FormInput({
       label: "Old password",
       type: "password",
       name: "oldPassword", 
       placeholder: "Enter old password",
-      value: this.oldPassword.value,
-      events: validEvents(this),
+      validation: this.oldPassword,
       propStyle: styles.input  
     });
-    this.children.newPassword = new Input({
+    this.children.newPassword = new FormInput({
       label: "New password",
       type: "password",
       name: "password", 
       placeholder: "Enter new password",
-      value: this.password.value,
-      events: validEvents(this),
+      validation: this.password,
       propStyle: styles.input  
     });
     this.children.save = new Button({
@@ -52,14 +49,8 @@ export default class ChangePassword extends Block {
       type: "submit",
       events: {
         click: (e) => {
-          this.submit = true;
-
-          this.setProps({
-            password: this.password, 
-            oldPassword: this.oldPassword
-          });
-
           this.onSubmit(e);
+          
           const data = {
             oldPassword: this.oldPassword.value,
             newPassword: this.password.value,
@@ -70,7 +61,7 @@ export default class ChangePassword extends Block {
       propStyle: styles.btn
     });
     this.children.close = new Button({
-      label: "Don't save",
+      label: "Close",
       type: "button",
       events: {
         click: () => {

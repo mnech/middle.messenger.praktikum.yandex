@@ -3,6 +3,7 @@ import validation from "./validation";
 export interface validate {
   value: string;
   error: string;
+  errorComponent: Block | null,
   touched: boolean;
   name: string;
   onChange(e: Event): void;
@@ -16,6 +17,7 @@ export default function validateInput(initialValue: string, name: string): valid
   return {
     value: initialValue,
     error,
+    errorComponent: null,
     touched: false,
     name,
     onChange(e: Event) {
@@ -27,23 +29,28 @@ export default function validateInput(initialValue: string, name: string): valid
     },
     validate() {
       this.error = validation(this.value, name);
-    }
+      this.errorComponent?.setProps({text: this.error});
+    },
   };
 }
 
-function change(e: Event, input: validate, error: Block) {
+function change(e: Event, input: validate) {
   input.onChange(e);
-  error.setProps({text: input.error});
+  if (input.touched) {
+    input.errorComponent?.setProps({text: input.error});
+  }
 }
 
-function focusout(_e: Event, input: validate, error: Block) {
+function focusout(_e: Event, input: validate) {
   input.onBlur();
-  error.setProps({text: input.error});
+  if (input.touched) {
+    input.errorComponent?.setProps({text: input.error});
+  }
 }
 
-export function validEvents(input: validate, error: Block) {
+export function validEvents(input: validate) {
   return {
-    change: (e: Event) => change(e, input, error),
-    focusout: (e: Event) => focusout(e, input, error),
+    change: (e: Event) => change(e, input),
+    focusout: (e: Event) => focusout(e, input),
   }
 }

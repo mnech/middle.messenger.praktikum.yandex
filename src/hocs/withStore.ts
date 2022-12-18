@@ -14,17 +14,14 @@ export default function withStore(mapStateToProps: (state: state) => obj) {
     return class WithStore extends Component {
 
       constructor(props: obj) {
-        const state = Store.getState();
-        currentState = mapStateToProps(state);
+        currentState = mapStateToProps(Store.getState());
 
         super({...props, ...currentState});
         Store.on(Store.EVENTS.UPDATED, () => {
-          const state = Store.getState();
-          const propsFromState = mapStateToProps(state);
-          console.log(currentState, propsFromState);
-          if (!isEqual(currentState, propsFromState)) {
+          const propsFromState = mapStateToProps(Store.getState());
+          // if (!isEqual(currentState, propsFromState)) {
             this.setProps({...propsFromState});
-          }
+          // }
         });
       }
 

@@ -16,7 +16,7 @@ interface ProfileProps {
 }
 
 class Profile extends Block {
-  private content: Content = Content.Info;
+  private content: string = localStorage.getItem("profile_content") || Content.Info;
 
   constructor(props?: ProfileProps) {
     super(props);
@@ -24,6 +24,8 @@ class Profile extends Block {
 
   private changeContent() {
     return (content: Content) => {
+      console.log("content, ", content, this.content)
+      localStorage.setItem("profile_content", content);
       this.content = content;
       this.setProps({content: this.content});
     }
@@ -37,13 +39,19 @@ class Profile extends Block {
     }
   }
 
+  private displayName() {
+    const {display_name, first_name} = this.props.data;
+    return display_name ? display_name : first_name;
+  }
+
   private createContent() {
     this.changeContent.bind(this);
 
     if (this.content === Content.EditProfile) {
       return new EditProfile({
           changeContent: this.changeContent(),
-          ...this.props.data
+          ...this.props.data,
+          display_name: this.displayName()
         });
     } else if (this.content === Content.ChangePassword) {
       return new ChangePassword({
@@ -52,7 +60,8 @@ class Profile extends Block {
     } else {
       return new Info({
         changeContent: this.changeContent(),
-        ...this.props.data
+        ...this.props.data,
+        display_name: this.displayName()
       });
     }
   }
@@ -63,7 +72,7 @@ class Profile extends Block {
 
   render() {
     this.children.content = this.createContent();
-    return this.compile(template, {...this.props, styles, avatar: this.getAvatar()});
+    return this.compile(template, {...this.props, styles, avatar: this.getAvatar(), name: this.displayName()});
   }
 }
 
