@@ -4,7 +4,7 @@ import ButtonIcon from "../../components/buttonIcon";
 import Input from "../../components/input";
 import Navbar from "../../components/navbar";
 
-import validateInput, {validate, validEvents} from "../../utils/validateInput";
+import validateInput, {validate} from "../../utils/validateInput";
 import validationForm from "../../utils/validationForm";
 
 import * as styles from "./chat.module.scss";
@@ -20,6 +20,8 @@ import searchIcon from "../../../static/icons/search.svg";
 import optionsIcon from "../../../static/icons/options.svg";
 import paperclipIcon from "../../../static/icons/paperclip.svg";
 import FormInput from "../../components/FormInput";
+import withStore from "../../hocs/withStore";
+import { state } from "../../types/types";
 
 interface ChatProps {
   title: string,
@@ -36,7 +38,7 @@ lastMessage_date: "Th"},
 lastMessage_date: "10.11.2022", unread: 3},
 ]
 
-export default class Chat extends Block {
+class Chat extends Block {
   private message!: validate;
   private onSubmit = validationForm(this.message);
 
@@ -127,3 +129,7 @@ export default class Chat extends Block {
       });
   }
 }
+
+const withChat = withStore((state: state) => (state.chats || {isLoading: true}));
+
+export default withChat(Chat);

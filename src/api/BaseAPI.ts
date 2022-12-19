@@ -13,5 +13,5 @@ export default abstract class BaseAPI {
 
   public abstract update?(identifier: string, ata: unknown): Promise<unknown>;
 
-  public abstract delete?(identifier: string): Promise<unknown>;
+  public abstract delete?(identifier: number): Promise<unknown>;
 }
