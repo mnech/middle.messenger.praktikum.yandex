@@ -32,10 +32,6 @@ export interface ProfileData {
   phone: string;
 }
 
-export interface AvatarData {
-  avatar: FormData;
-}
-
 export interface PasswordData {
   oldPassword: string;
   newPassword: string;

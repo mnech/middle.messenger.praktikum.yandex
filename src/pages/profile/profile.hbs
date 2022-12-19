@@ -4,12 +4,7 @@
     {{#if isLoading}}
     Loading...
     {{else}}
-    <div class="{{styles.avatar}}">
-      <img src={{avatar}} alt="user photo" class="{{styles.photo}}">
-      <label for="file" class="{{styles.upload}}">Choose photo</label>
-      <input type="file" name="avatar" id="file" class="{{styles.file}}">
-    </div>
-    <div class="{{styles.name}}">{{name}}</div>
+    {{{avatar}}}
     {{{content}}}
     {{/if}}
   </div>

@@ -4,6 +4,8 @@ import * as styles from "./input.module.scss";
 
 interface InputProps {
   label?: string,
+  id?: string,
+  accept?: string,
   type: string,
   name: string, 
   placeholder: string,

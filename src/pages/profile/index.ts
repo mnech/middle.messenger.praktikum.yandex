@@ -10,6 +10,7 @@ import * as styles from "./profile.module.scss";
 
 import defPhoto from "../../../static/img/Photo.png";
 import withStore from "../../hocs/withStore";
+import UploadFile from "../../components/uploadFile";
 
 interface ProfileProps {
   data?: Record<string, string>;
@@ -20,14 +21,6 @@ class Profile extends Block {
 
   constructor(props?: ProfileProps) {
     super(props);
-  }
-
-  private getAvatar() {
-    if (this.props.data.avatar) {
-      return this.props.data.avatar;
-    } else {
-      return defPhoto;
-    }
   }
 
   private displayName() {
@@ -54,11 +47,16 @@ class Profile extends Block {
 
   init() {
     this.children.navbar = new Navbar();
+    this.children.avatar = new UploadFile({
+      photo: this.props.data.photo || defPhoto,
+    });
   }
 
   render() {
+    this.children.avatar.setProps({photo: this.props.data.photo || defPhoto});
+    
     this.children.content = this.createContent();
-    return this.compile(template, {...this.props, styles, avatar: this.getAvatar(), name: this.displayName()});
+    return this.compile(template, {...this.props, styles, name: this.displayName()});
   }
 }
 

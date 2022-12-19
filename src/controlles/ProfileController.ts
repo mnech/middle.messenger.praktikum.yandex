@@ -1,5 +1,5 @@
 import { ProfileAPI } from "../api/ProfileAPI";
-import { ProfileData, AvatarData, PasswordData } from "../types/interfaces";
+import { ProfileData, PasswordData } from "../types/interfaces";
 import Store from "../utils/Store";
 
 class ProfileController {
@@ -33,12 +33,12 @@ class ProfileController {
     });
   }
 
-  async changeAvatar(avatarData: AvatarData) {
+  async changeAvatar(avatarData: FormData) {
     await this.request(async() => {
       await this.api.changeAvatar(avatarData);
     })
   }
-
+  
   async changePassword(passwordData: PasswordData) {
     await this.request(async() => {
       await this.api.changePassword(passwordData);

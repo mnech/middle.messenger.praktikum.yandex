@@ -64,7 +64,7 @@ export default class HTTPTransport {
              options: Options = {method: Methods.Get, headers: {"Content-Type": "application/json"}}, 
              timeout: number = 5000): Promise<T> {
     let {method, data, headers = {}} = options;
-          
+    
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.open(method!, url);
@@ -98,7 +98,7 @@ export default class HTTPTransport {
       if (method === Methods.Get || !data) {
         xhr.send();
       } else {
-        xhr.send(JSON.stringify(data));
+        xhr.send(data instanceof FormData ? data : JSON.stringify(data));
       }
     });
   };

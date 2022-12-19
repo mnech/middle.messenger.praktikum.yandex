@@ -1,5 +1,5 @@
 import BaseAPI from "./BaseAPI";
-import { ProfileData, AvatarData, PasswordData, User } from "../types/interfaces";
+import { ProfileData, PasswordData, User } from "../types/interfaces";
 
 
 export class ProfileAPI extends BaseAPI {
@@ -11,7 +11,7 @@ export class ProfileAPI extends BaseAPI {
     return this.hhtp.put("/profile", {data: profileData});
   }
 
-  public changeAvatar(avatarData: AvatarData) {
+  public changeAvatar(avatarData: FormData) {
     return this.hhtp.put("/profile/avatar", {data: avatarData});
   }
 
