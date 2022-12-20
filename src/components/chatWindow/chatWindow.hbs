@@ -2,7 +2,7 @@
   {{#if selectedChat }}
   <div class="{{styles.content-top}}">
     <div class="{{styles.content-info}}">
-      <div class="{{styles.name}}">Evgenya Kukushkina</div>
+      <div class="{{styles.name}}">{{name}}</div>
       <img src="{{photo}}" alt="user" class="{{styles.user-photo}}">
     </div>
     <ul class="{{styles.options}}">
@@ -15,7 +15,7 @@
     </ul>
   </div>
   <div class="{{styles.content-body}}">
-    <div class="{{styles.date-chat}}">Today</div>
+    <div class="{{styles.date-chat}}">{{date}}</div>
     {{#each messages}}
     {{{this}}}
     {{/each}}

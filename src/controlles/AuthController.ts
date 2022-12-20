@@ -3,6 +3,7 @@ import { SigninData, SignupData } from "../types/interfaces";
 import HTTPTransport from "../utils/HTTPTransport";
 import Router from "../utils/Router";
 import Store from "../utils/Store";
+import MessageController from "./MessageController";
 
 class AuthController {
   constructor(private api: AuthAPI) {};
@@ -47,6 +48,9 @@ class AuthController {
   async logout() {
     await this.request(async() => {
       await this.api.logout();
+
+      MessageController.closeAll();
+
       Router.go("/");
     });
   }

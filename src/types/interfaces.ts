@@ -1,3 +1,10 @@
+export interface State {
+  user: User;
+  chats: ChatInfo[];
+  messages: Record<number, Message[]>
+  selectedChat?: number;
+}
+
 export interface SigninData {
   login: string;
   password: string;
@@ -53,6 +60,23 @@ export interface ChatInfo {
     },
     time: Date
     content: string;
+  }
+}
+
+export interface Message {
+  chat_id: number;
+  time: string;
+  type: string;
+  user_id: string;
+  content: string;
+  file?: {
+    id: number,
+    user_id: number,
+    path: string,
+    filename: string,
+    content_type: string,
+    content_size: number,
+    upload_date: string,
   }
 }
 

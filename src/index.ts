@@ -7,6 +7,7 @@ import Profile from "./pages/profile";
 import Chat from "./pages/chat";
 import AuthController from "./controlles/AuthController";
 import { Content } from "./types/types";
+import "./controlles/MessageController";
 
 enum Routes {
   Index = "/",

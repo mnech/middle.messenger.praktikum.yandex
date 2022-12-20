@@ -1,5 +1,6 @@
 import { ChatAPI } from "../api/ChatAPI";
 import Store from "../utils/Store";
+import MessageController from "./MessageController";
 
 class ChatController {
   constructor(private api: ChatAPI) {};
@@ -22,9 +23,21 @@ class ChatController {
     }
   }
 
+  async create(title: string) {
+    await this.api.create(title);
+    await this.fetchChats();
+  }
+
   async fetchChats() {
     await this.request(async() => {
       const chats = await this.api.read();
+
+      const promises = chats.map(chat => {
+        return MessageController.connect(chat.id);
+      });
+
+      await Promise.all(promises);
+
       Store.set("chats", chats);
     });
   }

@@ -14,6 +14,7 @@ import searchIcon from "../../../static/icons/search.svg";
 import optionsIcon from "../../../static/icons/options.svg";
 import paperclipIcon from "../../../static/icons/paperclip.svg";
 import arrowRigth from "../../../static/icons/arrow_right.svg";
+import MessageController from "../../controlles/MessageController";
 
 interface ChatWindowProps {
   selectedChat: number | undefined;
@@ -85,8 +86,9 @@ class ChatWindow extends Block {
       type: "submit",
       events: {
         click: (e) => {
-          this.onSubmit(e);
-          this.setProps({message: this.message});
+          const data = this.onSubmit(e);
+          // this.children.message.setValue("");
+          MessageController.sendMessage(this.props.selectChat, this.message.value);
         }
       },
     });
