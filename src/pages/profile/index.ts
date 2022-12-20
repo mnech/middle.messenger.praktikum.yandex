@@ -45,6 +45,12 @@ class Profile extends Block {
     }
   }
 
+  protected componentDidUpdate(_oldProps: ProfileProps, newProps: ProfileProps): boolean {
+    (this.children.avatar as Block).setProps({photo: newProps.data?.photo || defPhoto});
+
+    return true;
+  }
+
   init() {
     this.children.navbar = new Navbar();
     this.children.avatar = new UploadFile({
@@ -52,9 +58,7 @@ class Profile extends Block {
     });
   }
 
-  render() {
-    this.children.avatar.setProps({photo: this.props.data.photo || defPhoto});
-    
+  render() {   
     this.children.content = this.createContent();
     return this.compile(template, {...this.props, styles, name: this.displayName()});
   }

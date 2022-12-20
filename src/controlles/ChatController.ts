@@ -6,14 +6,11 @@ class ChatController {
 
   private async request(req: () => void) {
     try {
-      Store.set("chats.isLoading", true);
       this.setError(undefined);
       await req();
     } catch(e) {
       this.setError(e);
       throw new Error();
-    } finally {
-      Store.set("chats.isLoading", false);
     }
   }
 

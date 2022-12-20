@@ -1,0 +1,15 @@
+<div class="{{styles.chats}}">
+  <div>
+    {{{search}}}
+    {{#if isLoading}}
+    Loading...
+    {{else}}
+    <ul class="{{styles.chat-list}}">
+      {{#each chats}}
+      {{{this}}}
+      {{/each}}
+    </ul>
+    {{/if}}
+  </div>
+  {{{newChat}}}
+</div>

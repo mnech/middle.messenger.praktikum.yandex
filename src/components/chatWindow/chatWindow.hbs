@@ -1,0 +1,27 @@
+<div class="{{styles.content}}">
+  <div class="{{styles.content-top}}">
+    <div class="{{styles.content-info}}">
+      <div class="{{styles.name}}">Evgenya Kukushkina</div>
+      <img src="{{photo}}" alt="user" class="{{styles.user-photo}}">
+    </div>
+    <ul class="{{styles.options}}">
+      <li class="{{styles.options-item}}">
+        {{{searchChat}}}
+      </li>
+      <li class="{{styles.options-item}}">
+        {{{options}}}
+      </li>
+    </ul>
+  </div>
+  <div class="{{styles.content-body}}">
+    <div class="{{styles.date-chat}}">Today</div>
+    {{#each messages}}
+    {{{this}}}
+    {{/each}}
+  </div>
+  <form class="{{styles.form}}">
+    {{{moreOptions}}}
+    {{{message}}}
+    {{{send}}}
+  </form>
+</div>
