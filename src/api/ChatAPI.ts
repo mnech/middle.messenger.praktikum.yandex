@@ -8,7 +8,7 @@ export class ChatAPI extends BaseAPI {
   }
 
   public create(title: string) {
-    return this.hhtp.post("/", {data: title});
+    return this.hhtp.post("/", {data: {title}});
   }
 
   public delete(id: number): Promise<unknown> {

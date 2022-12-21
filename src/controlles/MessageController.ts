@@ -12,7 +12,7 @@ class MessageController {
     }
 
     const token = await ChatController.getToken(id);
-    const userId = Store.getState().user.id;
+    const userId = Store.getState().user.data.id;
 
     const transport = new WSTransport(`wss://ya-praktikum.tech/ws/chats/${userId}/${id}/${token}`);
     await transport.connect();

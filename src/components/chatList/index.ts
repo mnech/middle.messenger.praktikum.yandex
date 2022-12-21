@@ -11,6 +11,11 @@ import template from "./chatList.hbs";
 import * as styles from "./chatList.module.scss";
 
 import plus from "../../../static/icons/plus.svg";
+import Modal from "../modal";
+import Button from "../button";
+import FormInput from "../FormInput";
+import validateInput, { validate } from "../../utils/validateInput";
+import validationForm from "../../utils/validationForm";
 
 interface ChatListProps {
   chats: ChatInfo[] | [],
@@ -18,6 +23,9 @@ interface ChatListProps {
 }
 
 class ChatList extends Block {
+  private chat_name!: validate;
+  private onSubmit = validationForm(this.chat_name);
+
   constructor(props: ChatListProps) {
     super(props);
   }
@@ -41,6 +49,8 @@ class ChatList extends Block {
   init() {
     this.children.chats = this.createChats(this.props as ChatListProps);
 
+    this.chat_name = validateInput("", "required");
+
     this.children.search = new Input({
       type: "text",
       name: "search", 
@@ -56,9 +66,39 @@ class ChatList extends Block {
       icon: plus,
       alt: "Plus",
       events: {
-        click: () => console.log("add chat")
+        click: () => {
+          (this.children.modal as Block).setProps({active: true});
+        }
       },
       propStyle: styles.newchat,
+    });
+    this.children.modal = new Modal({
+      active: false,
+      content: new FormInput({
+        label: "Chat name",
+        type: "text",
+        name: "chat_name", 
+        placeholder: "Enter chat name...",
+        validation: this.chat_name,
+      }),
+      submit: new Button({
+        label: "Create",
+        events: {
+          click: (e: Event) => {
+            const data = this.onSubmit(e);
+            
+            if (data) {
+              ChatController.create(this.chat_name.value);
+            }
+          }
+        },
+        propStyle: styles.btn,
+      }),
+      events: {
+        click: () => {
+          (this.children.modal as Block).setProps({active: false});
+        }
+      },
     });
   }
 
