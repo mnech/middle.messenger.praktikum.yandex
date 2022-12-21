@@ -29,11 +29,7 @@ class MessageController {
     delete this.transports[id];
   }
 
-  onMessageReceived(chatId: number, message?: Message | Message[]) {
-    if (!message) {
-      return;
-    }
-
+  onMessageReceived(chatId: number, message: Message | Message[]) {
     let type;
 
     if (Array.isArray(message)) {
@@ -47,11 +43,11 @@ class MessageController {
 
     switch (type) {
       case "message": {
-        Store.set(`message.${chatId}`, [...oldMessages, message]);
+        Store.set(`messages.${chatId}`, [...oldMessages, message]);
         break;
       }  
       case "messages": {
-        Store.set(`message.${chatId}`, [...oldMessages, ...(message as Message[]).reverse()]);
+        Store.set(`messages.${chatId}`, [...oldMessages, ...(message as Message[]).reverse()]);
         break;
       }
     }    

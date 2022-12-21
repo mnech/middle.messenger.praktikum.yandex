@@ -19,10 +19,11 @@ export class ProfileAPI extends BaseAPI {
     return this.hhtp.put("/password", {data: passwordData});
   }
 
-  public read(): Promise<User> {
-    return this.hhtp.get("/{id}");
+  public searchByLogin(login: String): Promise<User> {
+    return this.hhtp.post("/search", {data: {login}});
   }
 
+  read = undefined;
   create = undefined;
   update = undefined;
   delete = undefined;

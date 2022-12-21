@@ -2,6 +2,8 @@ import { Message } from "../types/interfaces";
 import EventBus from "./EventBus";
 
 type SocketEvents = {
+  "connected": [],
+  "error": [Event],
   "message": [Message | Message[]],
   "close": [],
 }
@@ -12,6 +14,8 @@ type SocketEvents = {
   private pingInterval: number = 0;
 
   public EVENTS: Record<string, keyof SocketEvents> = {
+    CONNECTED: "connected",
+    ERROR: "error",
     MESSAGE: "message",
     CLOSE: "close",
   };
@@ -20,7 +24,7 @@ type SocketEvents = {
     super();
   }
 
-  connect() {
+  connect(): Promise<void> {
     this.socket = new WebSocket(this.url);
     this.subscribe(this.socket);
 
@@ -58,8 +62,16 @@ type SocketEvents = {
       this.emit(this.EVENTS.MESSAGE, data);
     });
 
+    socket.addEventListener("open", () => {
+      this.emit(this.EVENTS.CONNECTED)
+    });
+
     socket.addEventListener("close", () => {
       this.emit(this.EVENTS.CLOSE);
+    });
+
+    socket.addEventListener('error', (e) => {
+      this.emit(this.EVENTS.ERROR, e)
     });
   }
 

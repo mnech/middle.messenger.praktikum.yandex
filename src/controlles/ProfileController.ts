@@ -44,5 +44,12 @@ class ProfileController {
       await this.api.changePassword(passwordData);
     })
   }
+
+  async searchByLogin(login: String) {
+    await this.request(async() => {
+      const res = await this.api.searchByLogin(login);
+      Store.set("friend", res);
+    });
+  }
 }
 export default new ProfileController(new ProfileAPI());

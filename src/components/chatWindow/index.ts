@@ -15,6 +15,12 @@ import optionsIcon from "../../../static/icons/options.svg";
 import paperclipIcon from "../../../static/icons/paperclip.svg";
 import arrowRigth from "../../../static/icons/arrow_right.svg";
 import MessageController from "../../controlles/MessageController";
+import DropDown from "../dropDown";
+import Button from "../button";
+import Modal from "../modal";
+import ChatController from "../../controlles/ChatController";
+import ProfileController from "../../controlles/ProfileController";
+import Store from "../../utils/Store";
 
 interface ChatWindowProps {
   selectedChat: number | undefined;
@@ -23,8 +29,11 @@ interface ChatWindowProps {
 }
 
 class ChatWindow extends Block {
+  private activeOptions: boolean = false;
   private message!: validate;
+  private user_login!: validate;
   private onSubmit = validationForm(this.message);
+  private onSubmitModal = validationForm(this.user_login);
 
   constructor(props: ChatWindowProps) {
     super(props);
@@ -39,8 +48,36 @@ class ChatWindow extends Block {
     });
   }
 
+  closeDropDown = (e: Event) => {
+    const target = (e.target as HTMLInputElement);
+    if (!(target.parentNode  as HTMLInputElement).matches('.dropbtn')) {
+      if (this.activeOptions) {
+        this.activeOptions = ! this.activeOptions;
+        (this.children.options as Block).setProps({active: this.activeOptions});
+        window.removeEventListener("click", this.closeDropDown);
+      }
+    }
+  }
+
+  onDropDown() {
+    window.addEventListener("click", this.closeDropDown);
+  }
+
+  async addUser(e: Event) {
+    e.preventDefault();
+    const data = this.onSubmitModal(e);
+
+    if (data) {
+      await ProfileController.searchByLogin(this.user_login.value);
+      const id = Store.getState().friend[0].id;
+      ChatController.addUserToChat(this.props.selectedChat, id);
+    }
+  }
+
   init() {
+    console.log(this.props)
     this.message = validateInput("", "message");
+    this.user_login = validateInput("", "required");
 
     this.children.messages = this.createMessages(this.props as ChatWindowProps);
 
@@ -53,14 +90,29 @@ class ChatWindow extends Block {
       },
       propStyle: styles.transp
     });
-    this.children.options = new ButtonIcon({
-      label: "Options",
-      icon: optionsIcon,
-      alt: "Options",
-      events: {
-        click: () => console.log("options")
-      },
-      propStyle: styles.transp
+    this.children.options = new DropDown({
+      active: this.activeOptions,
+      button: new ButtonIcon({
+        label: "Options",
+        icon: optionsIcon,
+        alt: "Options",
+        events: {
+          click: () => {
+            this.activeOptions = !this.activeOptions;
+            (this.children.options as Block).setProps({active: this.activeOptions});
+            this.onDropDown();
+          }
+        },
+        propStyle: `${styles.transp} dropbtn`
+      }),
+      list: [new Button({
+        label: "Add user to chat",
+        events: {
+          click: () => {
+            (this.children.modal as Block).setProps({active: true});
+          }
+        },
+      })],
     });
     this.children.moreOptions = new ButtonIcon({
       label: "More options",
@@ -70,7 +122,7 @@ class ChatWindow extends Block {
       events: {
         click: () => console.log("more options")
       },
-      propStyle: styles.transp
+      propStyle: styles.transp,
     });
     this.children.message = new FormInput({
       type: "text",
@@ -87,8 +139,33 @@ class ChatWindow extends Block {
       events: {
         click: (e) => {
           const data = this.onSubmit(e);
-          // this.children.message.setValue("");
-          MessageController.sendMessage(this.props.selectChat, this.message.value);
+          if (data) {
+            MessageController.sendMessage(this.props.selectedChat, this.message.value);
+          } 
+        }
+      },
+    });
+    this.children.modal = new Modal({
+      active: false,
+      content: new FormInput({
+        label: "User login",
+        type: "text",
+        name: "user_login", 
+        placeholder: "Enter user login...",
+        validation: this.user_login,
+      }),
+      submit: new Button({
+        label: "Add",
+        events: {
+          click: (e: Event) => {
+            this.addUser(e); 
+          }
+        },
+        propStyle: styles.btn,
+      }),
+      events: {
+        click: () => {
+          (this.children.modal as Block).setProps({active: false});
         }
       },
     });
