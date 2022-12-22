@@ -41,6 +41,7 @@ class ChatWindow extends Block {
 
   createMessages(props: ChatWindowProps) {
     return props.messages.map(data => {
+      console.log(props, data.user_id)
       return new Message({
         ...data, 
         send: props.userId === data.user_id,
@@ -52,7 +53,7 @@ class ChatWindow extends Block {
     const target = (e.target as HTMLInputElement);
     if (!(target.parentNode  as HTMLInputElement).matches('.dropbtn')) {
       if (this.activeOptions) {
-        this.activeOptions = ! this.activeOptions;
+        this.activeOptions = !this.activeOptions;
         (this.children.options as Block).setProps({active: this.activeOptions});
         window.removeEventListener("click", this.closeDropDown);
       }
@@ -184,6 +185,7 @@ class ChatWindow extends Block {
 
 const withChatWindow = withStore(state => {
   const chatId = state.selectedChat;
+  console.log(state);
 
   if (!chatId) {
     return {
@@ -196,7 +198,7 @@ const withChatWindow = withStore(state => {
   return {
     messages: (state.messages || {})[chatId] || [],
     selectedChat: state.selectedChat,
-    userId: state.user.id
+    userId: state.user.data.id
   }
 });
 
