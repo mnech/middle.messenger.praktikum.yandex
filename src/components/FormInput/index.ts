@@ -19,6 +19,12 @@ export default class FormInput extends Block {
     super(props);
   }
 
+  protected componentDidUpdate(_oldProps: FormInputProps, newProps: FormInputProps): boolean {
+    (this.children.input as Block).setProps({value: newProps.validation.value});
+
+    return true;
+  }
+
   init() {
     const {label, type, name, placeholder, validation} = this.props;
     this.children.error = new ErrorInput({

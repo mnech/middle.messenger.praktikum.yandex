@@ -86,7 +86,7 @@ class ChatWindow extends Block {
   }
 
   init() {
-    this.message = validateInput("", "message");
+    this.message = validateInput("", "");
     this.user_login = validateInput("", "required");
 
     this.children.messages = this.createMessages(this.props as ChatWindowProps);
@@ -148,9 +148,13 @@ class ChatWindow extends Block {
       type: "submit",
       events: {
         click: (e) => {
-          const data = this.onSubmit(e);
-          if (data) {
+          this.onSubmit(e);
+          
+          if (this.message.value) {
             MessageController.sendMessage(this.props.selectedChat, this.message.value);
+
+            this.message.value = "";
+            (this.children.message as Block).setProps({validation: this.message});
           } 
         }
       },
