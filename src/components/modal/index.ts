@@ -11,6 +11,7 @@ interface ModalProps {
   },
   submit: Block | Block[],
   content: Block | Block[],
+  error?: string,
   propStyle?: string,
 }
 
@@ -20,13 +21,17 @@ export default class Modal extends Block {
   }
 
   protected componentDidUpdate(_oldProps: ModalProps, newProps: ModalProps): boolean {
-    (this.children.form as Block).setProps({active: newProps.active});
+    (this.children.form as Block).setProps({
+      active: newProps.active,
+      error: newProps.error,
+    });
 
     return true;
   }
 
   init() {
     this.children.form = new ModalForm({
+      ...this.props,
       active: false,
       submit: this.children.submit,
       content: this.children.content,

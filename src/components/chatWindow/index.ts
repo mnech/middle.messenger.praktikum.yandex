@@ -26,6 +26,7 @@ interface ChatWindowProps {
   selectedChat: number | undefined;
   messages: any[],
   userId: number;
+  addUserToChat: string,
 }
 
 class ChatWindow extends Block {
@@ -50,7 +51,7 @@ class ChatWindow extends Block {
 
   closeDropDown = (e: Event) => {
     const target = (e.target as HTMLInputElement);
-    if (!(target.parentNode  as HTMLInputElement).matches('.dropbtn')) {
+    if (!(target.parentNode  as HTMLInputElement).matches(".dropbtn")) {
       if (this.activeOptions) {
         this.activeOptions = !this.activeOptions;
         (this.children.options as Block).setProps({active: this.activeOptions});
@@ -69,8 +70,18 @@ class ChatWindow extends Block {
 
     if (data) {
       await ProfileController.searchByLogin(this.user_login.value);
-      const id = Store.getState().friend[0].id;
-      ChatController.addUserToChat(this.props.selectedChat, id);
+      const friend = Store.getState().friend;
+
+      if (Array.isArray(friend) && friend.length) {
+        const id = Store.getState().friend[0].id;
+        await ChatController.addUserToChat(this.props.selectedChat, id);
+      }
+
+      if (!this.props.addUserToChat) {
+        (this.children.modal as Block).setProps({active: false});
+      } else {
+        (this.children.modal as Block).setProps({error: this.props.addUserToChat});
+      }
     }
   }
 
@@ -188,14 +199,16 @@ const withChatWindow = withStore(state => {
     return {
       messages: [],
       selectedChat: undefined,
-      userId: state.user.id
+      userId: state.user.id,
+      chatError: "",
     }
   }
 
   return {
     messages: (state.messages || {})[chatId] || [],
     selectedChat: state.selectedChat,
-    userId: state.user.data.id
+    userId: state.user.data.id,
+    addUserToChat: state.addUserToChat,
   }
 });
 

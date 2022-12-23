@@ -91,6 +91,7 @@ class ChatList extends Block {
             
             if (data) {
               ChatController.create(this.chat_name.value);
+              (this.children.modal as Block).setProps({active: false});
             }
           }
         },

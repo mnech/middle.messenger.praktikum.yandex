@@ -19,7 +19,7 @@ export class ProfileAPI extends BaseAPI {
     return this.hhtp.put("/password", {data: passwordData});
   }
 
-  public searchByLogin(login: String): Promise<User> {
+  public searchByLogin(login: String): Promise<User[]> {
     return this.hhtp.post("/search", {data: {login}});
   }
 
