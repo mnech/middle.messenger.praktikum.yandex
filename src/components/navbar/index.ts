@@ -21,6 +21,7 @@ class Navbar extends Block {
   }
 
   getPhoto(photo: string | undefined) {
+    console.log("photo",this.props)
     return photo || defPhoto;
   }
 
@@ -43,11 +44,12 @@ class Navbar extends Block {
     return this.compile(template, 
       {...this.props,
       styles,  
+      photo: this.getPhoto(this.props.photo),
       messageIcon,
       logoutIcon});
   }
 }
 
-const withNavbar = withStore((state: state) => (state.user.data.avatar || {photo: defPhoto}));
+const withNavbar = withStore((state: state) => (state.user.data) || {photo: defPhoto});
 
 export default withNavbar(Navbar);

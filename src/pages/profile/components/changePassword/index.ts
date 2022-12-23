@@ -2,7 +2,7 @@ import Block from "../../../../utils/Block";
 import template from "./changePassword.hbs";
 import Button from "../../../../components/button";
 
-import validateInput, {validate, validEvents} from "../../../../utils/validateInput";
+import validateInput, {validate} from "../../../../utils/validateInput";
 import validationForm from "../../../../utils/validationForm";
 
 import * as styles from "./changePassword.module.scss";
