@@ -47,7 +47,6 @@ class Profile extends Block {
 
   protected componentDidUpdate(_oldProps: ProfileProps, newProps: ProfileProps): boolean {
     (this.children.avatar as Block).setProps({photo: newProps.data?.photo || defPhoto});
-
     return true;
   }
 

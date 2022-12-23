@@ -1,16 +1,3 @@
-.search {
-  margin: 10px 28px;
-}
-
-.newchat {
-  margin: 10px 28px;
-}
-
-.chat-list::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
-
 .right {
   margin-left: auto;
 }
@@ -29,7 +16,7 @@
 .content {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
 }
 
@@ -107,4 +94,12 @@
 
 .btn {
   margin-top: 20px;
+}
+
+.title {
+  margin: 0 auto;
+  color: var(--color-grey-dark);
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 18px;
 }

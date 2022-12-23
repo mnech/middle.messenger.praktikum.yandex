@@ -30,9 +30,17 @@ class MessageController {
   }
 
   onMessageReceived(chatId: number, message: Message | Message[]) {
+    if (!message) {
+      return;
+    }
+
     let type;
 
     if (Array.isArray(message)) {
+      if (!message.length) {
+        return;
+      }
+
       type = "messages";
     } else {
       type = message.type

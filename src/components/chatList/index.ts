@@ -20,6 +20,7 @@ import validationForm from "../../utils/validationForm";
 interface ChatListProps {
   chats: ChatInfo[] | [],
   isLoading: boolean,
+  selectedChat: ChatInfo,
 }
 
 class ChatList extends Block {
@@ -37,6 +38,7 @@ class ChatList extends Block {
         title: data.title,
         lastMessage: data.last_message,
         unread_count: data.unread_count,
+        active: this.props.selectedChat === data.id,
         events: {
           click: () => {
             ChatController.selectChat(data.id);
@@ -116,7 +118,8 @@ class ChatList extends Block {
 const withChatList = withStore((state: state) => {
   if (state.chats) {
     return {
-      chats: [...state.chats]
+      chats: [...state.chats],
+      selectedChat: state.selectedChat,
     }
   } else {
     return {

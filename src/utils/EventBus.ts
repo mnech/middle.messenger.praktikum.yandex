@@ -3,7 +3,7 @@ export default class EventBus<E extends {[Event: string]: unknown[]}> {
     [K in keyof E]?: Array<(...args: E[K]) => void>;
   } = {};
 
-  on<K extends keyof E>(event: K, callback: (...args: E[K]) => void) {
+  on<K extends keyof E>(event: K, callback: (...args: any) => void) {
     if (!this.listeners[event]) {
       this.listeners[event] = [];
     }

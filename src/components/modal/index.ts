@@ -26,7 +26,6 @@ export default class Modal extends Block {
   }
 
   init() {
-    console.log("modal", this.children)
     this.children.form = new ModalForm({
       active: false,
       submit: this.children.submit,

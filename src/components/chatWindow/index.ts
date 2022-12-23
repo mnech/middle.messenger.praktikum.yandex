@@ -41,7 +41,6 @@ class ChatWindow extends Block {
 
   createMessages(props: ChatWindowProps) {
     return props.messages.map(data => {
-      console.log(props, data.user_id)
       return new Message({
         ...data, 
         send: props.userId === data.user_id,
@@ -76,7 +75,6 @@ class ChatWindow extends Block {
   }
 
   init() {
-    console.log(this.props)
     this.message = validateInput("", "message");
     this.user_login = validateInput("", "required");
 
@@ -185,7 +183,6 @@ class ChatWindow extends Block {
 
 const withChatWindow = withStore(state => {
   const chatId = state.selectedChat;
-  console.log(state);
 
   if (!chatId) {
     return {
