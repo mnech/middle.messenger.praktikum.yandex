@@ -17,6 +17,8 @@ import FormInput from "../FormInput";
 import validateInput, { validate } from "../../utils/validateInput";
 import validationForm from "../../utils/validationForm";
 
+import defPhoto from "../../../static/img/Photo.png";
+
 interface ChatListProps {
   chats: ChatInfo[] | [],
   isLoading: boolean,
@@ -34,7 +36,7 @@ class ChatList extends Block {
   createChats(props: ChatListProps) {
     return props.chats.map(data => {
       return new ChatItem({
-        photo: data.avatar,
+        photo: data.photo || defPhoto,
         title: data.title,
         lastMessage: data.last_message,
         unread_count: data.unread_count,

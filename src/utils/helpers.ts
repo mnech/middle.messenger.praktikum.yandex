@@ -18,8 +18,8 @@ export function set(object: Indexed | unknown, path: string, value: unknown): In
       return {[el]: res};
     }
   }, {});
-  
-  return  merge(object as Indexed, newValue);
+
+  return merge(object as Indexed, newValue);
 }
 
 function merge(lhs: Indexed = {}, rhs: Indexed): Indexed {

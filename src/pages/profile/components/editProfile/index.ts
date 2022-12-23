@@ -11,6 +11,8 @@ import ProfileController from "../../../../controlles/ProfileController";
 import { ProfileData } from "../../../../types/interfaces";
 import FormInput from "../../../../components/FormInput";
 import Router from "../../../../utils/Router";
+import Store from "../../../../utils/Store";
+import ErrorText from "../../../../components/errorText";
 
 interface EditProfileProps {
   changeContent: (content: Content) => void,
@@ -38,6 +40,20 @@ export default class EditProfile extends Block {
 
   constructor(props?: EditProfileProps) {
     super(props);
+  }
+
+  async editProfile(e: Event) {
+    const data = this.onSubmit(e);
+          
+    if (data) {
+      await ProfileController.changeProfile(data as ProfileData);
+
+      const error = Store.getState().userError;
+
+      if (error) {
+        (this.children.error as Block).setProps({error});
+      }
+    }   
   }
 
   init() {
@@ -103,8 +119,7 @@ export default class EditProfile extends Block {
       type: "submit",
       events: {
         click: (e) => {
-          const data = this.onSubmit(e);
-          ProfileController.changeProfile(data as ProfileData);
+          this.editProfile(e);
         }
       }, 
       propStyle: styles.btn
@@ -120,6 +135,7 @@ export default class EditProfile extends Block {
       propStyle: styles.btn,
       secondary: true,
     });
+    this.children.error = new ErrorText({});
   }
 
   render() {

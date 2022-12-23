@@ -14,7 +14,7 @@ class ProfileController {
       this.setError(null, path);
       await req();
     } catch(e: unknown) {
-      this.setError(e as error, path);
+      this.setError(e as error, path); 
     } 
   }
 
@@ -35,13 +35,13 @@ class ProfileController {
   }
 
   async changeAvatar(avatarData: FormData) {
-    await this.request("user.data", async() => {
+    await this.request("userError", async() => {
       await this.api.changeAvatar(avatarData);
     })
   }
   
   async changePassword(passwordData: PasswordData) {
-    await this.request("user.data", async() => {
+    await this.request("userError", async() => {
       await this.api.changePassword(passwordData);
     })
   }

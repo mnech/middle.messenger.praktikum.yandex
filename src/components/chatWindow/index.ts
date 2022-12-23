@@ -124,16 +124,6 @@ class ChatWindow extends Block {
         },
       })],
     });
-    this.children.moreOptions = new ButtonIcon({
-      label: "More options",
-      icon: paperclipIcon,
-      alt: "paperclip",
-      type: "button",
-      events: {
-        click: () => console.log("more options")
-      },
-      propStyle: styles.transp,
-    });
     this.children.message = new FormInput({
       type: "text",
       name: "message", 

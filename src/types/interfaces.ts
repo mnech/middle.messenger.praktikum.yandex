@@ -60,7 +60,8 @@ export interface ChatInfo {
     },
     time: Date
     content: string;
-  }
+  },
+  photo?: string,
 }
 
 export interface Message {

@@ -26,7 +26,7 @@ export default class Modal extends Block {
       error: newProps.error,
     });
 
-    return true;
+    return false;
   }
 
   init() {

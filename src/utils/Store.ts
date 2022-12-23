@@ -14,7 +14,7 @@ class Store extends EventBus<StoreEvents> {
   };
 
   public set(path: string, value: unknown) {
-    set(this.state, path, value);
+    set(this.getState(), path, value);
 
     this.emit(this.EVENTS.UPDATED, this.getState());
   };

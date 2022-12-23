@@ -54,7 +54,7 @@ class Profile extends Block {
 
     (this.children.avatar as Block).setProps({photo});
 
-    return true;
+    return false;
   }
 
   init() {
@@ -72,6 +72,6 @@ class Profile extends Block {
   }
 }
 
-const withUser = withStore((state: state) => (state.user || {isLoading: true}));
+const withUser = withStore((state: state) => (state.user));
 
 export default withUser(Profile);

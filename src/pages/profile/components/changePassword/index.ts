@@ -10,6 +10,8 @@ import ProfileController from "../../../../controlles/ProfileController";
 import { PasswordData } from "../../../../types/interfaces";
 import FormInput from "../../../../components/FormInput";
 import Router from "../../../../utils/Router";
+import Store from "../../../../utils/Store";
+import ErrorText from "../../../../components/errorText";
 
 interface ChangePasswordProps {}
 
@@ -20,6 +22,33 @@ export default class ChangePassword extends Block {
 
   constructor(props?: ChangePasswordProps) {
     super(props);
+  }
+
+  async changePassword(e: Event) {
+    this.onSubmit(e);
+          
+    if (this.oldPassword.value && this.password.value) {
+      const data = {
+        oldPassword: this.oldPassword.value,
+        newPassword: this.password.value,
+       };
+
+      await ProfileController.changePassword(data as PasswordData);
+
+      const error = Store.getState().userError;
+
+      if (error) {
+        (this.children.error as Block).setProps({error});
+      } else {
+        this.oldPassword.value = "";
+        this.password.value = "";
+
+        (this.children.oldPassword as Block).setProps({validation: this.oldPassword});
+        (this.children.newPassword as Block).setProps({validation: this.password});
+        
+        (this.children.error as Block).setProps({error: ""});
+      }
+    }   
   }
 
   init() {
@@ -47,15 +76,10 @@ export default class ChangePassword extends Block {
       type: "submit",
       events: {
         click: (e) => {
-          this.onSubmit(e);
-          
-          const data = {
-            oldPassword: this.oldPassword.value,
-            newPassword: this.password.value,
-          };
-          ProfileController.changePassword(data as PasswordData);
-        }
-      }, 
+          e.preventDefault();
+          this.changePassword(e);
+        }, 
+      },
       propStyle: styles.btn
     });
     this.children.close = new Button({
@@ -69,11 +93,11 @@ export default class ChangePassword extends Block {
       propStyle: styles.btn,
       secondary: true,
     });
+    this.children.error = new ErrorText({});
   }
 
   render() {
-    return this.compile(template, 
-      {...this.props, 
-      styles});
+    console.log(this.props)
+    return this.compile(template, {...this.props, styles});
   }
 }

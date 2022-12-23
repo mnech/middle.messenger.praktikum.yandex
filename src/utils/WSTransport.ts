@@ -53,13 +53,17 @@ type SocketEvents = {
 
   private subscribe(socket: WebSocket) {
     socket.addEventListener("message", (message) => {
-      const data = JSON.parse(message.data);
+      try {
+        const data = JSON.parse(message.data);
 
-      if (data?.type === "pong"){
-        return;
+        if (data?.type === "pong") {
+          return;
+        }
+
+        this.emit(this.EVENTS.MESSAGE, data);
+      } catch(e) {
+        throw new Error("Invalid message");
       }
-
-      this.emit(this.EVENTS.MESSAGE, data);
     });
 
     socket.addEventListener("open", () => {

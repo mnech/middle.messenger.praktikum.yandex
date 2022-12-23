@@ -24,14 +24,6 @@ class Navbar extends Block {
     return photo || defPhoto;
   }
 
-  // protected componentDidUpdate(_oldProps: NavbarProps, newProps: NavbarProps): boolean {
-  //   const photo = this.getPhoto(newProps.photo);
-
-  //   (this.children.avatar as Block).setProps({photo});
-
-  //   return true;
-  // }
-
   init() {
     this.children.logout = new ButtonIcon({
       label: "Log out",
@@ -56,6 +48,6 @@ class Navbar extends Block {
   }
 }
 
-const withNavbar = withStore((state: state) => (state.user.data || {photo: defPhoto}));
+const withNavbar = withStore((state: state) => (state.user.data.avatar || {photo: defPhoto}));
 
 export default withNavbar(Navbar);

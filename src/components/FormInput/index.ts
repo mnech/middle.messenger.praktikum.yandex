@@ -22,7 +22,7 @@ export default class FormInput extends Block {
   protected componentDidUpdate(_oldProps: FormInputProps, newProps: FormInputProps): boolean {
     (this.children.input as Block).setProps({value: newProps.validation.value});
 
-    return true;
+    return false;
   }
 
   init() {
