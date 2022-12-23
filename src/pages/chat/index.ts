@@ -27,7 +27,7 @@ export default class Chat extends Block {
       (this.children.chatList as Block).setProps({isLoading: false});
     });
 
-    this.children.navbar = new Navbar();
+    this.children.navbar = new Navbar({});
   }
 
   render() {

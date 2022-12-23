@@ -45,15 +45,24 @@ class Profile extends Block {
     }
   }
 
+  getPhoto(photo: string | undefined) {
+    return photo || defPhoto;
+  }
+
   protected componentDidUpdate(_oldProps: ProfileProps, newProps: ProfileProps): boolean {
-    (this.children.avatar as Block).setProps({photo: newProps.data?.photo || defPhoto});
+    const photo = this.getPhoto(newProps.data?.photo);
+
+    (this.children.avatar as Block).setProps({photo});
+
     return true;
   }
 
   init() {
-    this.children.navbar = new Navbar();
+    const photo = this.getPhoto(this.props.data.photo);
+
+    this.children.navbar = new Navbar({});
     this.children.avatar = new UploadFile({
-      photo: this.props.data.photo || defPhoto,
+      photo
     });
   }
 

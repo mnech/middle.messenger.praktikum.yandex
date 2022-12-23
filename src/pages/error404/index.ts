@@ -7,7 +7,7 @@ import img from "../../../static/img/Planet.png"
 
 export default class Page404 extends Block {
   init() {
-    this.children.navbar = new Navbar();
+    this.children.navbar = new Navbar({});
     this.children.error = new Error({
       img,
       code: "404",

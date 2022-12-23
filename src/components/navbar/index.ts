@@ -2,18 +2,35 @@ import Block from "../../utils/Block";
 import template from "./navbar.hbs";
 import * as styles from "./navbar.module.scss";
 
-import userPhoto from "../../../static/temp/User_photo.png";
 import messageIcon from "../../../static/icons/message_circle.svg";
 import logoutIcon from "../../../static/icons/log_out.svg";
 import AuthController from "../../controlles/AuthController";
 import ButtonIcon from "../buttonIcon";
+import withStore from "../../hocs/withStore";
+import { state } from "../../types/types";
 
-interface NavbarProps {}
+import defPhoto from "../../../static/img/Photo.png";
 
-export default class Navbar extends Block {
+interface NavbarProps {
+  photo?: string,
+}
+
+class Navbar extends Block {
   constructor(props?: NavbarProps) {
     super(props);
   }
+
+  getPhoto(photo: string | undefined) {
+    return photo || defPhoto;
+  }
+
+  // protected componentDidUpdate(_oldProps: NavbarProps, newProps: NavbarProps): boolean {
+  //   const photo = this.getPhoto(newProps.photo);
+
+  //   (this.children.avatar as Block).setProps({photo});
+
+  //   return true;
+  // }
 
   init() {
     this.children.logout = new ButtonIcon({
@@ -33,9 +50,12 @@ export default class Navbar extends Block {
   render() {
     return this.compile(template, 
       {...this.props,
-      styles, 
-      userPhoto, 
+      styles,  
       messageIcon,
       logoutIcon});
   }
 }
+
+const withNavbar = withStore((state: state) => (state.user.data || {photo: defPhoto}));
+
+export default withNavbar(Navbar);
