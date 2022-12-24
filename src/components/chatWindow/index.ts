@@ -42,6 +42,10 @@ class ChatWindow extends Block {
   }
 
   createMessages(props: ChatWindowProps) {
+    if (!props.messages) {
+      return props.messages;
+    }
+
     return props.messages.map(data => {
       return new Message({
         ...data, 
