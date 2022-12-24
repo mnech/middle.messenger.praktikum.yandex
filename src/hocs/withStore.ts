@@ -14,9 +14,11 @@ export default function withStore(mapStateToProps: (state: state) => obj) {
     return class WithStore extends Component {
 
       constructor(props: obj) {
-        const state = mapStateToProps(Store.getState());
-        currentState = JSON.parse(JSON.stringify(state)) ;
-
+        try {
+          const state = mapStateToProps(Store.getState());
+          currentState = JSON.parse(JSON.stringify(state)) ;
+        } catch {}
+        
         super({...props, ...currentState});
 
         Store.on(Store.EVENTS.UPDATED, () => {
@@ -26,8 +28,10 @@ export default function withStore(mapStateToProps: (state: state) => obj) {
             return;
           }
     
-          currentState = JSON.parse(JSON.stringify(stateToProps));
-
+          try {
+            currentState = JSON.parse(JSON.stringify(stateToProps));
+          } catch {}
+          
           this.setProps({...stateToProps});
         });
       }
