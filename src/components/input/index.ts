@@ -14,6 +14,7 @@ interface InputProps {
     click?: (e: Event) => void,
     change?: (e: Event) => void,
     focusout?: (e: Event) => void,
+    input?: (e: Event) => void,
   },
   propStyle?: string,
 }

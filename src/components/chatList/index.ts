@@ -18,12 +18,14 @@ import validateInput, { validate } from "../../utils/validateInput";
 import validationForm from "../../utils/validationForm";
 
 import defPhoto from "../../../static/img/Photo.png";
+import Store from "../../utils/Store";
 
 interface ChatListProps {
   chats: ChatInfo[] | [],
   isLoading: boolean,
   selectedChat: ChatInfo,
   createChat: string,
+  search: string,
 }
 
 class ChatList extends Block {
@@ -51,13 +53,20 @@ class ChatList extends Block {
   }
 
   createChats(props: ChatListProps) {
-    return props.chats.map(data => {
+    const selectedChat = Store.getState().selectedChat;
+    let chats = props.chats;
+
+    if (this.props.search) {
+      chats = chats.filter(chat => chat.title.toLowerCase().includes(this.props.search));
+    }
+
+    return chats.map(data => {
       return new ChatItem({
         photo: data.photo || defPhoto,
         title: data.title,
         lastMessage: data.last_message,
         unread_count: data.unread_count,
-        active: this.props.selectedChat === data.id,
+        active: selectedChat === data.id,
         events: {
           click: () => {
             ChatController.selectChat(data.id, data.photo || defPhoto);
@@ -77,7 +86,9 @@ class ChatList extends Block {
       name: "search", 
       placeholder: "Search",
       events: {
-        click: () => console.log("search")
+        change: (e) => {
+          Store.set("search", (e.target as HTMLInputElement).value.toLowerCase());
+        }
       },
       propStyle: styles.search, 
     });
@@ -134,13 +145,14 @@ const withChatList = withStore((state: state) => {
   if (state.chats) {
     return {
       chats: [...state.chats],
-      selectedChat: state.selectedChat,
       createChat: state.createChat,
+      search: state.search,
     }
   } else {
     return {
       chats: [],
-      createChat: ""
+      createChat: "",
+      search: state.search,
     }
   }
 });
