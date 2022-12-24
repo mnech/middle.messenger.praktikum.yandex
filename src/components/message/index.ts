@@ -24,10 +24,13 @@ export default class Message extends Block {
   time(time: string) {
     const date = new Date(time);
 
+    const day = this.setZero(date.getDay());
+    const month = this.setZero(date.getMonth());
+    const year = this.setZero(date.getFullYear());
     const hours = this.setZero(date.getHours());
     const minutes = this.setZero(date.getMinutes());
 
-    return `${hours}:${minutes}`;
+    return `${day}.${month}.${year} ${hours}:${minutes}`;
   }
 
   render() {
