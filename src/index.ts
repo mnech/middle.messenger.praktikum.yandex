@@ -8,6 +8,7 @@ import Chat from "./pages/chat";
 import AuthController from "./controlles/AuthController";
 import { Content } from "./types/types";
 import "./controlles/MessageController";
+import Store from "./utils/Store";
 
 enum Routes {
   Index = "/",
@@ -40,19 +41,19 @@ window.addEventListener("DOMContentLoaded", async ()=> {
         break;
     }
 
-    try {
-      await AuthController.fetchUser();
+    await AuthController.fetchUser();
       
-      Router.start(); 
+    const error = Store.getState().fetchUser;
 
-      if (!isProtectedRoute) {
-        Router.go(Routes.Chat);
-      }
-    } catch(e) {
-      Router.start();
+    Router.start();
 
+    if (error) {
       if (isProtectedRoute) {
         Router.go(Routes.Index);
+      }
+    } else {
+      if (!isProtectedRoute) {
+        Router.go(Routes.Chat);
       }
     }
 });
