@@ -1,9 +1,10 @@
 import Block from "../../../../utils/Block";
 import template from "./info.hbs";
 import Button from "../../../../components/button";
-import { Content } from "../../types";
+import { Content } from "../../../../types/types";
 
 import * as styles from "./info.module.scss";
+import Router from "../../../../utils/Router";
 
 interface InfoProps {
   changeContent: (content: Content) => void,
@@ -25,7 +26,7 @@ export default class Info extends Block {
       label: "Edit profile",
       events: {
         click: () => {
-          this.props.changeContent(Content.EditProfile);
+          Router.go("/settings/info");;
         }
       }, 
       propStyle: styles.btn
@@ -34,7 +35,7 @@ export default class Info extends Block {
       label: "Change password",
       events: {
         click: () => {
-          this.props.changeContent(Content.ChangePassword);
+          Router.go("/settings/password");
         }
       }, 
       propStyle: styles.btn

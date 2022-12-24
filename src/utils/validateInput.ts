@@ -1,48 +1,56 @@
+import Block from "./Block";
 import validation from "./validation";
-
 export interface validate {
   value: string;
-  touched: boolean;
   error: string;
+  errorComponent: Block | null,
+  touched: boolean;
   name: string;
-  onFocus(): void;
-  onBlur(e: Event): void;
+  onChange(e: Event): void;
+  onBlur(): void;
   validate(): void;
 }
 
 export default function validateInput(initialValue: string, name: string): validate {
+  const error = validation(initialValue, name);
+
   return {
     value: initialValue,
+    error,
+    errorComponent: null,
     touched: false,
-    error: "",
     name,
-    onFocus() {
-      this.touched = true;
-    },
-    onBlur(e: Event) {
+    onChange(e: Event) {
       this.value = (e.target as HTMLInputElement).value;
       this.error = validation(this.value, name);
     },
+    onBlur() {
+      this.touched = true;
+    },
     validate() {
       this.error = validation(this.value, name);
-    }
+      this.errorComponent?.setProps({text: this.error});
+    },
   };
 }
 
-export function focusin(e: Event, self: Record<string, any>) {
-    const name = (e.target as HTMLInputElement).name;
-    self[name].onFocus();
+function change(e: Event, input: validate) {
+  input.onChange(e);
+  if (input.touched) {
+    input.errorComponent?.setProps({text: input.error});
+  }
 }
 
-export function focusout(e: Event, self: Record<string, any>) {
-    const name = (e.target as HTMLInputElement).name;
-    self[name].onBlur(e);
+function focusout(_e: Event, input: validate) {
+  input.onBlur();
+  if (input.touched) {
+    input.errorComponent?.setProps({text: input.error});
+  }
+}
 
-    //after submit don't need to update props
-    if (self.submit) {
-      self.submit = false;
-      return;
-    } 
-
-    self.setProps({name: self[name]});
+export function validEvents(input: validate) {
+  return {
+    change: (e: Event) => change(e, input),
+    focusout: (e: Event) => focusout(e, input),
+  }
 }

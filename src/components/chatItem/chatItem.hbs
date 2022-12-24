@@ -1,0 +1,13 @@
+<li class="{{styles.chat}} {{#if active}}{{styles.chat-active}}{{/if}}">
+  <img src={{photo}} alt="user" class="{{styles.photo}}">
+  <div class="{{styles.info}}">
+    <div class="{{styles.title}}">{{title}}</div>
+    <div class="{{styles.message}}">{{last_message.content}}</div>
+  </div>
+  <div class="{{styles.info}} {{styles.right}}">
+    <div class="{{styles.date}}">{{last_message.time}}</div>
+    {{#if unread_count }}
+    <div class="{{styles.unread}}">{{unread_count}}</div>
+    {{/if}}
+  </div>
+</li>

@@ -1,48 +1,74 @@
 import Block from "../../../../utils/Block";
 import template from "./changePassword.hbs";
-import Input from "../../../../components/input";
 import Button from "../../../../components/button";
 
-import validateInput, {validate, focusin, focusout} from "../../../../utils/validateInput";
+import validateInput, {validate} from "../../../../utils/validateInput";
 import validationForm from "../../../../utils/validationForm";
-import { Content } from "../../types";
 
 import * as styles from "./changePassword.module.scss";
+import ProfileController from "../../../../controlles/ProfileController";
+import { PasswordData } from "../../../../types/interfaces";
+import FormInput from "../../../../components/FormInput";
+import Router from "../../../../utils/Router";
+import Store from "../../../../utils/Store";
+import ErrorText from "../../../../components/errorText";
 
-interface ChangePasswordProps {
-  changeContent: (content: Content) => void,
-}
+interface ChangePasswordProps {}
 
 export default class ChangePassword extends Block {
+  private oldPassword!: validate;
   private password!: validate;
-  private submit = false;
-  private onSubmit = validationForm(this.password);
+  private onSubmit = validationForm(this.oldPassword, this.password);
 
   constructor(props?: ChangePasswordProps) {
     super(props);
   }
 
+  async changePassword(e: Event) {
+    this.onSubmit(e);
+          
+    if (this.oldPassword.value && this.password.value) {
+      const data = {
+        oldPassword: this.oldPassword.value,
+        newPassword: this.password.value,
+       };
+
+      await ProfileController.changePassword(data as PasswordData);
+
+      const error = Store.getState().userError;
+
+      if (error) {
+        (this.children.error as Block).setProps({error});
+      } else {
+        this.oldPassword.value = "";
+        this.password.value = "";
+
+        (this.children.oldPassword as Block).setProps({validation: this.oldPassword});
+        (this.children.newPassword as Block).setProps({validation: this.password});
+        
+        (this.children.error as Block).setProps({error: ""});
+      }
+    }   
+  }
+
   init() {
+    this.oldPassword = validateInput("", "oldPassword");
     this.password = validateInput("", "password");
   
-    this.children.oldPassword = new Input({
+    this.children.oldPassword = new FormInput({
       label: "Old password",
       type: "password",
-      name: "old_password", 
+      name: "oldPassword", 
       placeholder: "Enter old password",
-      events: {},
+      validation: this.oldPassword,
       propStyle: styles.input  
     });
-    this.children.newPassword = new Input({
+    this.children.newPassword = new FormInput({
       label: "New password",
       type: "password",
       name: "password", 
       placeholder: "Enter new password",
-      value: this.password.value,
-      events: {
-        focusin: (e) => focusin(e, this),
-        focusout: (e) => focusout(e, this),
-      },
+      validation: this.password,
       propStyle: styles.input  
     });
     this.children.save = new Button({
@@ -50,30 +76,27 @@ export default class ChangePassword extends Block {
       type: "submit",
       events: {
         click: (e) => {
-          this.submit = true;
-          this.onSubmit(e);
-          this.setProps({password: this.password});
-        }
-      }, 
+          e.preventDefault();
+          this.changePassword(e);
+        }, 
+      },
       propStyle: styles.btn
     });
     this.children.close = new Button({
-      label: "Don't save",
+      label: "Close",
       type: "button",
       events: {
         click: () => {
-          this.props.changeContent(Content.Info);
+          Router.go("/settings");
         }
       }, 
       propStyle: styles.btn,
       secondary: true,
     });
+    this.children.error = new ErrorText({});
   }
 
   render() {
-    return this.compile(template, 
-      {...this.props, 
-      styles,
-      errorPassword: this.password.error,});
+    return this.compile(template, {...this.props, styles});
   }
 }

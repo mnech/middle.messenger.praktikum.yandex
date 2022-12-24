@@ -4,7 +4,7 @@ import EventBus from './EventBus';
 import {getStub, getStubSelector} from "../utils/stub";
 
 type Element = HTMLElement | null;
-type Children = Record<string, Block>;
+type Children = Record<string, Block | Block[]>;
 type Props = Record<string, any>;
 
 type BlockEvents = {
@@ -89,6 +89,7 @@ export default class Block {
     const fragment = this.render();
     
     const newElement = fragment.firstElementChild as HTMLElement;
+    this._removeEvents();
     this._element?.replaceWith(newElement);
     this._element = newElement;
 
@@ -99,27 +100,44 @@ export default class Block {
     return new DocumentFragment();
   }
 
-  protected compile(template: HandlebarsTemplateDelegate, context?: Props): DocumentFragment {
+  protected compile(template: HandlebarsTemplateDelegate, context?: Props) {
     const contextAndStubs = {...context};
 
     Object.entries(this.children).forEach(([name, component]) => {
-      contextAndStubs[name] = getStub(component.id);
+      if (Array.isArray(component)) {
+        contextAndStubs[name] = component.map(child => getStub(child.id));
+      } else {
+        contextAndStubs[name] = getStub(component.id);
+      }
     });
 
     const html = template(contextAndStubs);
     const temp = document.createElement("template");
     temp.innerHTML = html;
 
-    Object.entries(this.children).forEach(([_name, component]) => {
+    const replaceStub = (component: Block) => {
       const stub = temp.content.querySelector(getStubSelector(component.id));
 
-      if (stub) {
-        stub.replaceWith(component.getContent()!);
+      if (!stub) {
+        return;
       }
-    });
 
+      component.getContent()?.append(...Array.from(stub.childNodes));
+
+      stub.replaceWith(component.getContent()!);
+    }
+
+    Object.entries(this.children).forEach(([_, component]) => {
+      if (Array.isArray(component)) {
+        component.forEach(replaceStub);
+      } else {
+        replaceStub(component);
+      }
+    });  
+  
     return temp.content;
   }
+
 
   public getContent(): Element {
     return this.element;
@@ -130,7 +148,9 @@ export default class Block {
     const children: Children = {};
 
     Object.entries(childrenAndProps).forEach(([key, value]) => {
-      if (value instanceof Block) {
+      if (Array.isArray(value) && value.length > 0 && value.every(val => val instanceof Block)) {
+        children[key] = value as Block[];
+      } else if (value instanceof Block) {
         children[key] = value;
       } else {
         props[key] = value;
@@ -138,6 +158,14 @@ export default class Block {
     });
 
     return {props, children};
+  }
+
+  private _removeEvents() {
+    const {events = {}} = this.props;
+
+    Object.keys(events).forEach(event => {
+      this._element?.removeEventListener(event, events[event])
+    })
   }
 
   private _addEvents(): void {
