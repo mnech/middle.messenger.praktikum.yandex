@@ -12,7 +12,6 @@ import * as styles from "./chatWindow.module.scss";
 
 import searchIcon from "../../../static/icons/search.svg";
 import optionsIcon from "../../../static/icons/options.svg";
-import paperclipIcon from "../../../static/icons/paperclip.svg";
 import arrowRigth from "../../../static/icons/arrow_right.svg";
 import MessageController from "../../controlles/MessageController";
 import DropDown from "../dropDown";
@@ -21,12 +20,14 @@ import Modal from "../modal";
 import ChatController from "../../controlles/ChatController";
 import ProfileController from "../../controlles/ProfileController";
 import Store from "../../utils/Store";
+import UploadFile from "../uploadFile";
 
 interface ChatWindowProps {
   selectedChat: number | undefined;
   messages: any[],
   userId: number;
   addUserToChat: string,
+  selectedChatPhoto: string,
 }
 
 class ChatWindow extends Block {
@@ -115,14 +116,24 @@ class ChatWindow extends Block {
         },
         propStyle: `${styles.transp} dropbtn`
       }),
-      list: [new Button({
+      list: [
+        new Button({
         label: "Add user to chat",
         events: {
           click: () => {
             (this.children.modal as Block).setProps({active: true});
           }
         },
-      })],
+        }),
+        new Button({
+          label: "Change avatar",
+          events: {
+            click: () => {
+              (this.children.modalAvatar as Block).setProps({active: true });
+            }
+          },
+          }),
+        ],
     });
     this.children.message = new FormInput({
       type: "text",
@@ -173,10 +184,35 @@ class ChatWindow extends Block {
         }
       },
     });
+    this.children.upload = new UploadFile({
+      photo: this.props.selectedChatPhoto,
+      events: {
+        req: async (data: FormData) => {
+          data.append("chatId", this.props.selectedChat);
+
+          await ChatController.changeChatAvatar(data);
+
+          (this.children.modalAvatar as Block).setProps({active: false});
+        }
+      }
+    }),
+    this.children.modalAvatar = new Modal({
+      active: false,
+      content: this.children.upload,
+      events: {
+        click: () => {
+          (this.children.modalAvatar as Block).setProps({active: false});
+        }
+      },
+    });
   }
 
   protected componentDidUpdate(_oldProps: ChatWindowProps, newProps: ChatWindowProps): boolean {
     this.children.messages = this.createMessages(newProps);
+    
+    if (_oldProps.selectedChatPhoto !== newProps.selectedChatPhoto) {
+      (this.children.upload as Block).setProps({photo: newProps.selectedChatPhoto});   
+    }
 
     return true;
   }
@@ -193,6 +229,7 @@ const withChatWindow = withStore(state => {
     return {
       messages: [],
       selectedChat: undefined,
+      selectedChatPhoto: undefined,
       userId: state.user.id,
       chatError: "",
     }
@@ -201,10 +238,10 @@ const withChatWindow = withStore(state => {
   return {
     messages: (state.messages || {})[chatId] || [],
     selectedChat: state.selectedChat,
+    selectedChatPhoto: state.selectedChatPhoto,
     userId: state.user.data.id,
     addUserToChat: state.addUserToChat,
   }
 });
 
 export default withChatWindow(ChatWindow);
- 

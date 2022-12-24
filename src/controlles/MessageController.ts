@@ -51,11 +51,11 @@ class MessageController {
 
     switch (type) {
       case "message": {
-        Store.set(`messages.${chatId}`, [...oldMessages, message]);
+        Store.set(`messages.${chatId}`, [message, ...oldMessages]);
         break;
       }  
       case "messages": {
-        Store.set(`messages.${chatId}`, [...oldMessages, ...(message as Message[]).reverse()]);
+        Store.set(`messages.${chatId}`, [...oldMessages, ...(message as Message[])]);
         break;
       }
     }    

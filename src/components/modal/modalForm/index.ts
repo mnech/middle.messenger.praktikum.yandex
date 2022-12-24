@@ -26,6 +26,7 @@ export default class ModalForm extends Block {
       label: "Close",
       icon: close,
       alt: "Close",
+      type: "button",
       events: {
         click: () => {
           this.setProps({active: false});

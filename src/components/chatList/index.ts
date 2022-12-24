@@ -60,7 +60,7 @@ class ChatList extends Block {
         active: this.props.selectedChat === data.id,
         events: {
           click: () => {
-            ChatController.selectChat(data.id);
+            ChatController.selectChat(data.id, data.photo || defPhoto);
           }
         },
       })

@@ -11,6 +11,8 @@ import * as styles from "./profile.module.scss";
 import defPhoto from "../../../static/img/Photo.png";
 import withStore from "../../hocs/withStore";
 import UploadFile from "../../components/uploadFile";
+import ProfileController from "../../controlles/ProfileController";
+import AuthController from "../../controlles/AuthController";
 
 interface ProfileProps {
   data?: Record<string, string>;
@@ -62,7 +64,13 @@ class Profile extends Block {
 
     this.children.navbar = new Navbar({});
     this.children.avatar = new UploadFile({
-      photo
+      photo,
+      events: {
+        req: async (data: FormData) => {
+          await ProfileController.changeAvatar(data);
+          await AuthController.fetchUser();  
+        }
+      }
     });
   }
 

@@ -33,7 +33,7 @@
 .content-top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   height: 54px;
   padding: 0 30px;
   background-color: #D9D9D9;
@@ -59,7 +59,7 @@
 
 .content-body {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   width: 100%;
   height: calc(100vh - var(--navbar-height) - 100px);
   padding: 50px 30px;

@@ -2,11 +2,12 @@ import Block from "../../utils/Block";
 import template from "./uploadFile.hbs";
 import UploadInput from "./uploadInput";
 import * as styles from "./uploadFile.module.scss";
-import ProfileController from "../../controlles/ProfileController";
-import AuthController from "../../controlles/AuthController";
 
 interface UploadFileProps {
-  photo: "string"
+  photo: "string",
+  events: {
+    req: (data: FormData) => void,
+  },
 }
 
 export default class UploadFile extends Block {
@@ -20,9 +21,7 @@ export default class UploadFile extends Block {
     if (files?.length) {
       const formData = new FormData();
       formData.append("avatar", files.item(0)!);
-      await ProfileController.changeAvatar(formData);
-      
-      await AuthController.fetchUser();   
+      this.props.events.req(formData); 
     }
   }
 

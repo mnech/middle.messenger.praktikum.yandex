@@ -27,6 +27,10 @@ export class ChatAPI extends BaseAPI {
     return this.hhtp.put("/users", {data: {users, chatId: id}});
   }
 
+  public changeChatAvatar(avatar: FormData): Promise<unknown> {
+    return this.hhtp.put("/avatar", {data: avatar});
+  }
+
   async getToken(id: number): Promise<string> {
     const res = await this.hhtp.post<{token: string}>(`/token/${id}`);
     return res.token;

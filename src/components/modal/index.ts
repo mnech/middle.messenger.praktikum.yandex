@@ -9,7 +9,7 @@ interface ModalProps {
   events: {
     click?: (e: Event) => void,
   },
-  submit: Block | Block[],
+  submit?: Block | Block[],
   content: Block | Block[],
   error?: string,
   propStyle?: string,

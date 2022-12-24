@@ -1,4 +1,5 @@
 import { ChatAPI } from "../api/ChatAPI";
+import HTTPTransport from "../utils/HTTPTransport";
 import Store from "../utils/Store";
 import { request } from "../utils/helpers";
 import MessageController from "./MessageController";
@@ -16,6 +17,12 @@ class ChatController {
   async fetchChats() {
     await request("chatsError", async() => {
       const chats = await this.api.read();
+
+      chats.forEach(chat => {
+        if (chat.avatar) {
+          chat.photo = `${HTTPTransport.API_URL}/resources${chat.avatar}`;
+        }
+      });
 
       const promises = chats.map(chat => {
         return MessageController.connect(chat.id);
@@ -40,8 +47,16 @@ class ChatController {
     });
   }
 
-  selectChat(id: number) {
+  async changeChatAvatar(avatar: FormData) {
+    await request("chatAvatar", async() => {
+      await this.api.changeChatAvatar(avatar);
+      this.fetchChats();
+    });
+  }
+
+  selectChat(id: number, photo: string) {
     Store.set("selectedChat", id);
+    Store.set("selectedChatPhoto", photo);
   }
 
   getToken(id: number){

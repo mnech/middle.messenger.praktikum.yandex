@@ -21,7 +21,6 @@ class Navbar extends Block {
   }
 
   getPhoto(photo: string | undefined) {
-    console.log("photo",this.props)
     return photo || defPhoto;
   }
 
