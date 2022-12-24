@@ -53,6 +53,10 @@ class ChatList extends Block {
   }
 
   createChats(props: ChatListProps) {
+    if (!props.chats) {
+      return props.chats;
+    }
+
     const selectedChat = Store.getState().selectedChat;
     let chats = props.chats;
 
