@@ -81,4 +81,6 @@ export interface Message {
   }
 }
 
-
+export interface error {
+  reason: string;
+}

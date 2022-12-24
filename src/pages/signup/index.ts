@@ -1,6 +1,5 @@
 import Block from "../../utils/Block";
 import template from "./signup.hbs";
-import Input from "../../components/input";
 import Button from "../../components/button";
 
 import validateInput, {validate, validEvents} from "../../utils/validateInput";
@@ -8,6 +7,8 @@ import validationForm from "../../utils/validationForm";
 import AuthController from "../../controlles/AuthController";
 import { SignupData } from "../../types/interfaces";
 import FormInput from "../../components/FormInput";
+import Store from "../../utils/Store";
+import ErrorText from "../../components/errorText";
 
 interface SignupProps {
   styles: Record<string, string>
@@ -29,6 +30,20 @@ export default class Signup extends Block {
 
   constructor(props?: SignupProps) {
     super(props);
+  }
+
+  async auth(e: Event) {
+    const data = this.onSubmit(e);
+
+    if (data) { 
+      await AuthController.signup(data as SignupData);
+
+      const error = Store.getState().errorAuth;
+
+      if (error) {
+        (this.children.error as Block).setProps({error});
+      }
+    }
   }
   
   init() {
@@ -85,21 +100,12 @@ export default class Signup extends Block {
       label: "Sign up",
       events: {
         click: (e) => {
-          this.setProps({
-            email: this.email,
-            login: this.login,
-            first_name: this.first_name,
-            second_name: this.second_name,
-            phone: this.phone,
-            password: this.password
-          });
-
-          const data = this.onSubmit(e);
-          AuthController.signup(data as SignupData);
+          this.auth(e);
         }
       }, 
       propStyle: this.props.styles.btn,
     });
+    this.children.error = new ErrorText({});
   }
 
   render() {

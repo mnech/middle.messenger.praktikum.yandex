@@ -1,3 +1,6 @@
+import { error } from "../types/interfaces";
+import Store from "./Store";
+
 type Indexed<T = unknown> = {
   [key in string]: T;
 };
@@ -58,4 +61,21 @@ function checkObjects(a: object, b: object) {
     }
     return equal && keyA === keyB;
   }, true);
+}
+
+export async function request(path: string, req: () => void) {
+  try {
+    setError(null, path);
+    await req();
+  } catch(e) {
+    setError(e as error, path);
+  } 
+}
+
+export function setError(e: error | null, path: string): void {
+  if (e) {
+    Store.set(path, e.reason);
+  } else {
+    Store.set(path, e);
+  } 
 }

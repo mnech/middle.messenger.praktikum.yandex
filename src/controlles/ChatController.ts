@@ -1,35 +1,20 @@
 import { ChatAPI } from "../api/ChatAPI";
 import Store from "../utils/Store";
+import { request } from "../utils/helpers";
 import MessageController from "./MessageController";
 
 class ChatController {
   constructor(private api: ChatAPI) {};
 
-  private async request(req: () => void) {
-    try {
-      this.setError(undefined);
-      await req();
-    } catch(e) {
-      this.setError(e);
-      throw new Error();
-    }
-  }
-
-  private setError(e: unknown) {
-    if (e instanceof Error) {
-      Store.set("chats", e.message);
-    } else if (e){
-      Store.set("chats", e);
-    }
-  }
-
   async create(title: string) {
-    await this.api.create(title);
-    await this.fetchChats();
+    await request("createChat", async() => {
+      await this.api.create(title);
+      await this.fetchChats();
+    });
   }
 
   async fetchChats() {
-    await this.request(async() => {
+    await request("chatsError", async() => {
       const chats = await this.api.read();
 
       const promises = chats.map(chat => {
@@ -43,13 +28,13 @@ class ChatController {
   }
 
   async addUserToChat(id: number, userId: number) {
-    await this.request(async() => {
+    await request("addUserToChat", async() => {
       this.api.addUsers(id, [userId]);
     });
   }
 
   async delete(id: number) {
-    await this.request(async() => {
+    await request("deleteChat", async() => {
       await this.api.delete(id);
       this.fetchChats();
     });

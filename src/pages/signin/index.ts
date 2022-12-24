@@ -7,6 +7,8 @@ import validationForm from "../../utils/validationForm";
 import AuthController from "../../controlles/AuthController";
 import { SigninData } from "../../types/interfaces";
 import FormInput from "../../components/FormInput";
+import ErrorText from "../../components/errorText";
+import Store from "../../utils/Store";
 
 interface SigninProps {
   styles: Record<string, string>
@@ -19,6 +21,20 @@ export default class Signin extends Block {
 
   constructor(props?: SigninProps) {
     super(props);
+  }
+
+  async auth(e: Event) {
+    const data = this.onSubmit(e);
+
+    if (data) { 
+      await AuthController.signin(data as SigninData);
+
+      const error = Store.getState().errorAuth;
+
+      if (error) {
+        (this.children.error as Block).setProps({error});
+      }
+    }
   }
 
   init() {
@@ -44,15 +60,12 @@ export default class Signin extends Block {
       type: "submit",
       events: {
         click: (e: PointerEvent) => {
-          const data = this.onSubmit(e);
-          if (data) {
-            
-            AuthController.signin(data as SigninData);
-          }
+          this.auth(e);
         }
       }, 
       propStyle: this.props.styles.btn,
     });
+    this.children.error = new ErrorText({});
   }
 
   render() {

@@ -23,6 +23,7 @@ interface ChatListProps {
   chats: ChatInfo[] | [],
   isLoading: boolean,
   selectedChat: ChatInfo,
+  createChat: string,
 }
 
 class ChatList extends Block {
@@ -31,6 +32,22 @@ class ChatList extends Block {
 
   constructor(props: ChatListProps) {
     super(props);
+  }
+
+  async addChat(e: Event) {
+    e.preventDefault();
+    
+    const data = this.onSubmit(e);
+            
+    if (data) {
+      await ChatController.create(this.chat_name.value);
+
+      if (!this.props.createChat) {
+        (this.children.modal as Block).setProps({active: false});
+      } else {
+        (this.children.modal as Block).setProps({error: this.props.createChat});
+      }
+    }
   }
 
   createChats(props: ChatListProps) {
@@ -89,12 +106,7 @@ class ChatList extends Block {
         label: "Create",
         events: {
           click: (e: Event) => {
-            const data = this.onSubmit(e);
-            
-            if (data) {
-              ChatController.create(this.chat_name.value);
-              (this.children.modal as Block).setProps({active: false});
-            }
+            this.addChat(e);
           }
         },
         propStyle: styles.btn,
@@ -123,10 +135,12 @@ const withChatList = withStore((state: state) => {
     return {
       chats: [...state.chats],
       selectedChat: state.selectedChat,
+      createChat: state.createChat,
     }
   } else {
     return {
-      chats: []
+      chats: [],
+      createChat: ""
     }
   }
 });
