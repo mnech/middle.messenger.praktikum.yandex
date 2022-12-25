@@ -25,6 +25,14 @@ class Navbar extends Block {
     return photo || defPhoto;
   }
 
+  protected componentDidUpdate(_oldProps: NavbarProps, newProps: NavbarProps): boolean {
+    (this.children.profile as Block).setProps({
+      img: this.getPhoto(newProps.photo),
+    });
+
+    return false;
+  }
+
   init() {
     this.children.logout = new ButtonIcon({
       label: "Log out",
