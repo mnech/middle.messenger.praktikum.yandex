@@ -10,6 +10,7 @@ import withStore from "../../hocs/withStore";
 import { state } from "../../types/types";
 
 import defPhoto from "../../../static/img/Photo.png";
+import { Link } from "../link";
 
 interface NavbarProps {
   photo?: string,
@@ -37,14 +38,25 @@ class Navbar extends Block {
       }, 
       propStyle: styles.transp,
     });
+    this.children.profile = new Link({
+      img: this.getPhoto(this.props.photo),
+      label: "Profile",
+      to: "/settings",
+      styleLink: styles.link,
+      styleImg: styles.photo,
+    });
+    this.children.chat = new Link({
+      img: messageIcon,
+      label: "Chat",
+      to: "/messenger",
+      styleLink: styles.link,
+    });
   }
 
   render() {
     return this.compile(template, 
       {...this.props,
       styles,  
-      photo: this.getPhoto(this.props.photo),
-      messageIcon,
       logoutIcon});
   }
 }
