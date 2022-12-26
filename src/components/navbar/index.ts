@@ -57,7 +57,6 @@ class Navbar extends Block {
       img: messageIcon,
       label: "Chat",
       to: "/messenger",
-      styleLink: styles.link,
     });
   }
 

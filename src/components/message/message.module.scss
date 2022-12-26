@@ -40,17 +40,10 @@
   background-color: var(--color-white);
 
   &::before {
-    right: -7px;
+    right: 0;
     width: 20px;
     background-color: var(--color-white);
     border-bottom-left-radius: 16px 14px;
-  }
-
-  &::after {
-    right: -26px;
-    width: 26px;
-    background-color: var(--color-grey-light);
-    border-bottom-left-radius: 10px;
   }
 }
 
@@ -61,16 +54,9 @@
   background-color: var(--primary);
 
   &::before {
-    left: -7px;
+    left: 0;
     width: 20px;
     background-color: var(--primary);
     border-bottom-right-radius: 16px 14px;
-  }
-
-  &::after {
-    left: -26px;
-    width: 26px;
-    background-color: var(--color-grey-light);
-    border-bottom-right-radius: 10px;
   }
 }

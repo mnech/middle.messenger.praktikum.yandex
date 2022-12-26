@@ -16,26 +16,21 @@ import arrowRigth from "../../../static/icons/arrow_right.svg";
 import MessageController from "../../controlles/MessageController";
 import DropDown from "../dropDown";
 import Button from "../button";
-import Modal from "../modal";
-import ChatController from "../../controlles/ChatController";
-import ProfileController from "../../controlles/ProfileController";
-import Store from "../../utils/Store";
-import UploadFile from "../uploadFile";
+import { ModalAvatar } from "./modals/modalAvatar";
+import { ModalUser } from "./modals/modalUser";
+import { ModalDelete } from "./modals/modalDelete";
 
 interface ChatWindowProps {
   selectedChat: number | undefined;
   messages: any[],
   userId: number,
   errorModalChat: string,
-  selectedChatPhoto: string,
 }
 
 class ChatWindow extends Block {
   private activeOptions: boolean = false;
   private message!: validate;
-  private user_login!: validate;
   private onSubmit = validationForm(this.message);
-  private onSubmitModal = validationForm(this.user_login);
 
   constructor(props: ChatWindowProps) {
     super(props);
@@ -69,63 +64,8 @@ class ChatWindow extends Block {
     window.addEventListener("click", this.closeDropDown);
   }
 
-  async addRemoveUser(e: Event, add: boolean) {
-    e.preventDefault();
-    const data = this.onSubmitModal(e);
-
-    if (data) {
-      await ProfileController.searchByLogin(this.user_login.value);
-      const friend = Store.getState().friend;
-
-      if (Array.isArray(friend) && friend.length) {
-        const id = Store.getState().friend[0].id;
-
-        if (add) {
-          await ChatController.addUserToChat(this.props.selectedChat, id);
-        } else {
-          await ChatController.removeUserFromChat(this.props.selectedChat, id);
-        }
-      }
-
-      if (!this.props.errorModalChat) {
-        this.user_login.value = "";
-
-        if (add) {
-          (this.children.modalAddUser as Block).setProps({
-            active: false,
-            validation: this.user_login,
-          });
-        } else {
-          (this.children.modalRemoveUser as Block).setProps({
-            active: false,
-            validation: this.user_login,
-          });
-        }
-      } else {
-        if (add) {
-          (this.children.modalAddUser as Block).setProps({error: this.props.errorModalChat});
-        } else {
-          (this.children.modalRemoveUser as Block).setProps({error: this.props.errorModalChat});
-        }
-      }
-    }
-  }
-
-  async deleteChat(e: Event) {
-    e.preventDefault();
-
-    await ChatController.delete(this.props.selectedChat);
-
-    if (!this.props.errorModalChat) {
-      (this.children.modalDeleteChat as Block).setProps({active: false});
-    } else {
-      (this.children.modalDeleteChat as Block).setProps({error: this.props.errorModalChat});
-    }
-  }
-
   init() {
     this.message = validateInput("", "");
-    this.user_login = validateInput("", "required");
 
     this.children.messages = this.createMessages(this.props as ChatWindowProps);
 
@@ -166,7 +106,7 @@ class ChatWindow extends Block {
           label: "Remove user",
           events: {
             click: () => {
-            (this.children.modalRemoveUser as Block).setProps({active: true});
+              (this.children.modalRemoveUser as Block).setProps({active: true});
             }
           },
         }),
@@ -214,115 +154,17 @@ class ChatWindow extends Block {
       },
     });
 
-    this.children.modalAddUser = new Modal({
-      active: false,
-      title: "Add user to chat",
-      content: new FormInput({
-        label: "User login",
-        type: "text",
-        name: "user_login", 
-        placeholder: "Enter user login...",
-        validation: this.user_login,
-      }),
-      submit: new Button({
-        label: "Ok",
-        events: {
-          click: (e: Event) => {
-            this.addRemoveUser(e, true); 
-          }
-        },
-        propStyle: styles.btn,
-      }),
-      events: {
-        click: () => {
-          this.user_login.value = "";
-          (this.children.modalAddUser as Block).setProps({
-            active: false,
-            validation: this.user_login,
-          });
-        }
-      },
-    });
+    this.children.modalAddUser = new ModalUser({active: false, addUser: true});
 
-    this.children.modalRemoveUser = new Modal({
-      active: false,
-      title: "Remove user from chat",
-      content: new FormInput({
-        label: "User login",
-        type: "text",
-        name: "user_login", 
-        placeholder: "Enter user login...",
-        validation: this.user_login,
-      }),
-      submit: new Button({
-        label: "Ok",
-        events: {
-          click: (e: Event) => {
-            this.addRemoveUser(e, false); 
-          }
-        },
-        propStyle: styles.btn,
-      }),
-      events: {
-        click: () => {
-          this.user_login.value = "";
-          (this.children.modalRemoveUser as Block).setProps({
-            active: false,
-            validation: this.user_login,
-          });
-        }
-      },
-    });
+    this.children.modalRemoveUser = new ModalUser({active: false, addUser: false});
 
-    this.children.modalDeleteChat = new Modal({
-      active: false,
-      title: "Delete this chat?",
-      submit: new Button({
-        label: "Ok",
-        events: {
-          click: (e: Event) => {
-            this.deleteChat(e); 
-          }
-        },
-        propStyle: styles.btn,
-      }),
-      events: {
-        click: () => {
-          (this.children.modalDeleteChat as Block).setProps({active: false});
-        }
-      },
-    });    
+    this.children.modalDeleteChat = new ModalDelete({active: false});    
 
-    this.children.upload = new UploadFile({
-      photo: this.props.selectedChatPhoto,
-      events: {
-        req: async (data: FormData) => {
-          data.append("chatId", this.props.selectedChat);
-
-          await ChatController.changeChatAvatar(data);
-
-          (this.children.modalAvatar as Block).setProps({active: false});
-        }
-      }
-    }),
-    this.children.modalAvatar = new Modal({
-      active: false,
-      title: "Choose an avatar for the chat",
-      content: this.children.upload,
-      events: {
-        click: () => {
-          (this.children.modalAvatar as Block).setProps({active: false});
-        }
-      },
-    });
+    this.children.modalAvatar = new ModalAvatar({active: false});
   }
 
   protected componentDidUpdate(_oldProps: ChatWindowProps, newProps: ChatWindowProps): boolean {
     this.children.messages = this.createMessages(newProps);
-    
-    if (_oldProps.selectedChatPhoto !== newProps.selectedChatPhoto) {
-      (this.children.upload as Block).setProps({photo: newProps.selectedChatPhoto});   
-    }
 
     return true;
   }
@@ -339,7 +181,6 @@ const withChatWindow = withStore(state => {
     return {
       messages: [],
       selectedChat: undefined,
-      selectedChatPhoto: undefined,
       userId: state.user.id,
       chatError: "",
     }
@@ -348,7 +189,6 @@ const withChatWindow = withStore(state => {
   return {
     messages: (state.messages || {})[chatId] || [],
     selectedChat: state.selectedChat,
-    selectedChatPhoto: state.selectedChatPhoto,
     userId: state.user.data.id,
     errorModalChat: state.errorModalChat,
   }

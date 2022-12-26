@@ -50,6 +50,7 @@ class ChatController {
     await request("errorModalChat", async() => {
       await this.api.delete(id);
       this.fetchChats();
+      Store.set("selectedChat", undefined);
     });
   }
 
