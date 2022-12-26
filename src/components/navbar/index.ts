@@ -50,7 +50,6 @@ class Navbar extends Block {
       img: this.getPhoto(this.props.photo),
       label: "Profile",
       to: "/settings",
-      styleLink: styles.link,
       styleImg: styles.photo,
     });
     this.children.chat = new Link({
