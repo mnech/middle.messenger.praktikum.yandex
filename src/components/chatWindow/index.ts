@@ -88,10 +88,18 @@ class ChatWindow extends Block {
       }
 
       if (!this.props.errorModalChat) {
+        this.user_login.value = "";
+
         if (add) {
-          (this.children.modalAddUser as Block).setProps({active: false});
+          (this.children.modalAddUser as Block).setProps({
+            active: false,
+            validation: this.user_login,
+          });
         } else {
-          (this.children.modalRemoveUser as Block).setProps({active: false});
+          (this.children.modalRemoveUser as Block).setProps({
+            active: false,
+            validation: this.user_login,
+          });
         }
       } else {
         if (add) {
@@ -227,7 +235,11 @@ class ChatWindow extends Block {
       }),
       events: {
         click: () => {
-          (this.children.modalAddUser as Block).setProps({active: false});
+          this.user_login.value = "";
+          (this.children.modalAddUser as Block).setProps({
+            active: false,
+            validation: this.user_login,
+          });
         }
       },
     });
@@ -253,7 +265,11 @@ class ChatWindow extends Block {
       }),
       events: {
         click: () => {
-          (this.children.modalRemoveUser as Block).setProps({active: false});
+          this.user_login.value = "";
+          (this.children.modalRemoveUser as Block).setProps({
+            active: false,
+            validation: this.user_login,
+          });
         }
       },
     });

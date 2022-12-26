@@ -110,6 +110,7 @@ class ChatList extends Block {
     });
     this.children.modal = new Modal({
       active: false,
+      title: "Create chat",
       content: new FormInput({
         label: "Chat name",
         type: "text",
@@ -118,7 +119,7 @@ class ChatList extends Block {
         validation: this.chat_name,
       }),
       submit: new Button({
-        label: "Create",
+        label: "Ok",
         events: {
           click: (e: Event) => {
             this.addChat(e);

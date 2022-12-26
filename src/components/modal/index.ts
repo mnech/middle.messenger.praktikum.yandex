@@ -22,7 +22,6 @@ export default class Modal extends Block {
   }
 
   protected componentDidUpdate(_oldProps: ModalProps, newProps: ModalProps): boolean {
-    console.log(newProps.submit);
     (this.children.form as Block).setProps({
       active: newProps.active,
       error: newProps.error,
