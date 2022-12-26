@@ -35,13 +35,19 @@ class ChatController {
   }
 
   async addUserToChat(id: number, userId: number) {
-    await request("addUserToChat", async() => {
+    await request("errorModalChat", async() => {
       this.api.addUsers(id, [userId]);
     });
   }
 
+  async removeUserFromChat(id: number, userId: number) {
+    await request("errorModalChat", async() => {
+      this.api.removeUsers(id, [userId]);
+    });
+  }
+
   async delete(id: number) {
-    await request("deleteChat", async() => {
+    await request("errorModalChat", async() => {
       await this.api.delete(id);
       this.fetchChats();
     });

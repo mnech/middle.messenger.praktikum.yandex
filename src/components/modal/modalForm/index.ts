@@ -9,7 +9,7 @@ import close from "../../../../static/icons/x.svg";
 interface ModalFormProps {
   active: boolean,
   submit: Block | Block[],
-  content: Block | Block[],
+  content?: Block | Block[],
   error?: string,
   events: {
     click?: (e: Event) => void,

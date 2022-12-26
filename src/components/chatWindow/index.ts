@@ -25,8 +25,8 @@ import UploadFile from "../uploadFile";
 interface ChatWindowProps {
   selectedChat: number | undefined;
   messages: any[],
-  userId: number;
-  addUserToChat: string,
+  userId: number,
+  errorModalChat: string,
   selectedChatPhoto: string,
 }
 
@@ -69,7 +69,7 @@ class ChatWindow extends Block {
     window.addEventListener("click", this.closeDropDown);
   }
 
-  async addUser(e: Event) {
+  async addRemoveUser(e: Event, add: boolean) {
     e.preventDefault();
     const data = this.onSubmitModal(e);
 
@@ -79,14 +79,39 @@ class ChatWindow extends Block {
 
       if (Array.isArray(friend) && friend.length) {
         const id = Store.getState().friend[0].id;
-        await ChatController.addUserToChat(this.props.selectedChat, id);
+
+        if (add) {
+          await ChatController.addUserToChat(this.props.selectedChat, id);
+        } else {
+          await ChatController.removeUserFromChat(this.props.selectedChat, id);
+        }
       }
 
-      if (!this.props.addUserToChat) {
-        (this.children.modal as Block).setProps({active: false});
+      if (!this.props.errorModalChat) {
+        if (add) {
+          (this.children.modalAddUser as Block).setProps({active: false});
+        } else {
+          (this.children.modalRemoveUser as Block).setProps({active: false});
+        }
       } else {
-        (this.children.modal as Block).setProps({error: this.props.addUserToChat});
+        if (add) {
+          (this.children.modalAddUser as Block).setProps({error: this.props.errorModalChat});
+        } else {
+          (this.children.modalRemoveUser as Block).setProps({error: this.props.errorModalChat});
+        }
       }
+    }
+  }
+
+  async deleteChat(e: Event) {
+    e.preventDefault();
+
+    await ChatController.delete(this.props.selectedChat);
+
+    if (!this.props.errorModalChat) {
+      (this.children.modalDeleteChat as Block).setProps({active: false});
+    } else {
+      (this.children.modalDeleteChat as Block).setProps({error: this.props.errorModalChat});
     }
   }
 
@@ -122,12 +147,28 @@ class ChatWindow extends Block {
       }),
       list: [
         new Button({
-        label: "Add user to chat",
+        label: "Add user",
         events: {
           click: () => {
-            (this.children.modal as Block).setProps({active: true});
+            (this.children.modalAddUser as Block).setProps({active: true});
           }
         },
+        }),
+        new Button({
+          label: "Remove user",
+          events: {
+            click: () => {
+            (this.children.modalRemoveUser as Block).setProps({active: true});
+            }
+          },
+        }),
+        new Button({
+          label: "Delete chat",
+          events: {
+            click: () => {
+              (this.children.modalDeleteChat as Block).setProps({active: true});
+            }
+          },
         }),
         new Button({
           label: "Change avatar",
@@ -136,7 +177,7 @@ class ChatWindow extends Block {
               (this.children.modalAvatar as Block).setProps({active: true });
             }
           },
-          }),
+        }),
         ],
     });
     this.children.message = new FormInput({
@@ -164,8 +205,10 @@ class ChatWindow extends Block {
         }
       },
     });
-    this.children.modal = new Modal({
+
+    this.children.modalAddUser = new Modal({
       active: false,
+      title: "Add user to chat",
       content: new FormInput({
         label: "User login",
         type: "text",
@@ -174,20 +217,66 @@ class ChatWindow extends Block {
         validation: this.user_login,
       }),
       submit: new Button({
-        label: "Add",
+        label: "Ok",
         events: {
           click: (e: Event) => {
-            this.addUser(e); 
+            this.addRemoveUser(e, true); 
           }
         },
         propStyle: styles.btn,
       }),
       events: {
         click: () => {
-          (this.children.modal as Block).setProps({active: false});
+          (this.children.modalAddUser as Block).setProps({active: false});
         }
       },
     });
+
+    this.children.modalRemoveUser = new Modal({
+      active: false,
+      title: "Remove user from chat",
+      content: new FormInput({
+        label: "User login",
+        type: "text",
+        name: "user_login", 
+        placeholder: "Enter user login...",
+        validation: this.user_login,
+      }),
+      submit: new Button({
+        label: "Ok",
+        events: {
+          click: (e: Event) => {
+            this.addRemoveUser(e, false); 
+          }
+        },
+        propStyle: styles.btn,
+      }),
+      events: {
+        click: () => {
+          (this.children.modalRemoveUser as Block).setProps({active: false});
+        }
+      },
+    });
+
+    this.children.modalDeleteChat = new Modal({
+      active: false,
+      title: "Delete this chat?",
+      submit: new Button({
+        label: "Ok",
+        events: {
+          click: (e: Event) => {
+            this.deleteChat(e); 
+          }
+        },
+        propStyle: styles.btn,
+      }),
+      events: {
+        click: () => {
+          (this.children.modalDeleteChat as Block).setProps({active: false});
+        }
+      },
+    });    
+
     this.children.upload = new UploadFile({
       photo: this.props.selectedChatPhoto,
       events: {
@@ -202,6 +291,7 @@ class ChatWindow extends Block {
     }),
     this.children.modalAvatar = new Modal({
       active: false,
+      title: "Choose an avatar for the chat",
       content: this.children.upload,
       events: {
         click: () => {
@@ -244,7 +334,7 @@ const withChatWindow = withStore(state => {
     selectedChat: state.selectedChat,
     selectedChatPhoto: state.selectedChatPhoto,
     userId: state.user.data.id,
-    addUserToChat: state.addUserToChat,
+    errorModalChat: state.errorModalChat,
   }
 });
 
