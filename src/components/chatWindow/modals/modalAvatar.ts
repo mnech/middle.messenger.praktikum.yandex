@@ -57,7 +57,6 @@ class BaseModal extends Block {
   }
 
   render() {
-    console.log("render", this.props)
     return this.compile(template, {...this.props, styles});
   }
 }
