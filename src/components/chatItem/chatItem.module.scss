@@ -5,6 +5,10 @@
   justify-content: space-between;
 }
 
+.right {
+  margin-left: auto;
+}
+
 .chat {
   display: flex;
   align-items: center;
@@ -32,7 +36,7 @@
   line-height: 24px;
 }
 
-.chats-message {
+.message {
   color: var(--color-grey-dark);
   font-weight: 400;
   font-size: 14px;

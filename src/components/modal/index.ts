@@ -6,11 +6,12 @@ import ModalForm from "./modalForm";
 
 interface ModalProps {
   active: boolean,
+  title: string,
   events: {
     click?: (e: Event) => void,
   },
   submit?: Block | Block[],
-  content: Block | Block[],
+  content?: Block | Block[],
   error?: string,
   propStyle?: string,
 }

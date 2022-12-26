@@ -1,0 +1,15 @@
+.link {
+  display: flex;
+  align-items: center;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.img {
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
+}

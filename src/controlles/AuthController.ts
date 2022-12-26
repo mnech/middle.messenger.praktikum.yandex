@@ -38,8 +38,9 @@ class AuthController {
   async fetchUser() {
     await request("fetchUser", async() => {
       const user = await this.api.read();
+
       Store.set("user.data", user);
-      
+    
       if (user.avatar) {
         const photo = `${HTTPTransport.API_URL}/resources${user.avatar}`;
         Store.set("user.data.photo", photo);

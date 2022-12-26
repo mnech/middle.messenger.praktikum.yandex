@@ -47,7 +47,11 @@ class MessageController {
     }
 
     const messagesState = Store.getState().messages;
-    const oldMessages = messagesState ? messagesState[chatId] : [];
+    let oldMessages: [] = [];
+
+    if (messagesState && messagesState[chatId]) {
+      oldMessages = messagesState[chatId];
+    }
 
     switch (type) {
       case "message": {
