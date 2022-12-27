@@ -1,0 +1,62 @@
+.message {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-width: 255px;
+  margin-bottom: 12px;
+  padding: 10px 20px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  word-wrap: break-word;
+  border-radius: 25px;
+
+  &::before,
+  &::after {
+    position: absolute;
+    bottom: 0;
+    height: 25px;
+    content: "";
+  }
+}
+
+.time {
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 16px;
+}
+
+.receive .time {
+  color: var(--color-white);
+}
+
+.send .time {
+  color: var(--primary-dark);
+}
+
+.send {
+  align-self: flex-end;
+  color: var(--primary-dark);
+  background-color: var(--color-white);
+
+  &::before {
+    right: 0;
+    width: 20px;
+    background-color: var(--color-white);
+    border-bottom-left-radius: 16px 14px;
+  }
+}
+
+.receive {
+  align-items: end;
+  align-self: flex-start;
+  color: var(--color-white);
+  background-color: var(--primary);
+
+  &::before {
+    left: 0;
+    width: 20px;
+    background-color: var(--primary);
+    border-bottom-right-radius: 16px 14px;
+  }
+}

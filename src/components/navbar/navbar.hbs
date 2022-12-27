@@ -1,22 +1,14 @@
 <nav class="{{styles.navbar}}">
   <ul class=" {{styles.list}}">
     <li class="{{styles.item}}">
-      <img src="{{userPhoto}}" alt=" user" class="{{styles.photo}}">
-      <span>
-        <a href="/profile">Profile</a>
-      </span>
+      {{{profile}}}
     </li>
     <li class="{{styles.item}}">
-      <img src="{{messageIcon}}" alt="chat" class="{{styles.icon}}">
-      <span>
-        <a href="/chat">Chat</a>
-      </span>
+      {{{chat}}}
     </li>
     <li class="{{styles.item}}">
-      <img src="{{logoutIcon}}" alt="log out" class="{{styles.icon}}">
       <span>
-        {{!-- Ссылка временно --}}
-        <a href="/signin">Log out</a>
+        {{{logout}}}
       </span>
     </li>
   </ul>

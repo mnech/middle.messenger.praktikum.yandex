@@ -7,7 +7,7 @@ import img from "../../../static/img/UFO.png"
 
 export default class Page500 extends Block {
   init() {
-    this.children.navbar = new Navbar();
+    this.children.navbar = new Navbar({});
     this.children.error = new Error({
       img,
       code: "500",

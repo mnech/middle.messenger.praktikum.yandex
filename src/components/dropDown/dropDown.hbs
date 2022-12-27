@@ -1,0 +1,10 @@
+<div class={{styles.wrapper}}>
+  {{{button}}}
+  <ul class="dropdown {{styles.dropdown}} {{#if active}}{{styles.dropdown-active}}{{/if}}">
+    {{#each list}}
+    <li>
+      {{{this}}}
+    </li>
+    {{/each}}
+  </ul>
+</div>

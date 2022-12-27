@@ -1,0 +1,36 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  padding: 20px;
+  background-color: var(--color-white);
+  border-radius: 5px;
+  transform: scale(0.5);
+  transition: 0.4s all;
+}
+
+.content-active {
+  transform: scale(1);
+}
+
+.close {
+  background: transparent;
+}
+
+.error {
+  margin: 0 auto;
+  margin-top: 5px;
+  color: var(--color-red);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.title {
+  margin: 20px 0 10px;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+}

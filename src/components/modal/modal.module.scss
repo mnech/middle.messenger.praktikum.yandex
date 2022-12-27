@@ -1,0 +1,20 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba($color: #000, $alpha: 25%);
+  opacity: 0;
+  transition: 0.5;
+  pointer-events: none;
+}
+
+.modal-active {
+  z-index: 3;
+  opacity: 1;
+  pointer-events: all;
+}

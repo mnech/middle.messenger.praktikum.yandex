@@ -1,67 +1,75 @@
 import Block from "../../utils/Block";
 import template from "./signin.hbs";
-import Input from "../../components/input";
 import Button from "../../components/button";
 
-import validateInput, {validate, validEvents} from "../../utils/validateInput";
+import validateInput, {validate} from "../../utils/validateInput";
 import validationForm from "../../utils/validationForm";
+import AuthController from "../../controlles/AuthController";
+import { SigninData } from "../../types/interfaces";
+import FormInput from "../../components/FormInput";
+import ErrorText from "../../components/errorText";
+import Store from "../../utils/Store";
 
 interface SigninProps {
   styles: Record<string, string>
 }
 
 export default class Signin extends Block {
-  private email!: validate;
+  private login!: validate;
   private password!: validate;
-  private submit = false;
-  private onSubmit = validationForm(this.email, this.password);
+  private onSubmit = validationForm(this.login, this.password);
 
   constructor(props?: SigninProps) {
     super(props);
   }
 
+  async auth(e: Event) {
+    const data = this.onSubmit(e);
+
+    if (data) { 
+      await AuthController.signin(data as SigninData);
+
+      const error = Store.getState().errorAuth;
+
+      if (error) {
+        (this.children.error as Block).setProps({error});
+      }
+    }
+  }
+
   init() {
-    this.email = validateInput("", "email");
+    this.login = validateInput("", "login");
     this.password = validateInput("", "password");
 
-    this.children.email = new Input({
-      label: "E-mail",
+    this.children.login = new FormInput({
+      label: "Login",
       type: "text",
-      name: "email", 
-      placeholder: "Enter your e-mail address",
-      value: this.email.value,
-      events: validEvents(this),  
+      name: "login",
+      placeholder: "Enter your login",
+      validation: this.login, 
     });
-    this.children.password = new Input({
+    this.children.password = new FormInput({
       label: "Password",
       type: "password",
       name: "password", 
       placeholder: "Enter your password",
-      value: this.password.value,
-      events: validEvents(this),   
+      validation: this.password,   
     });
     this.children.button = new Button({
       label: "Sign in",
       type: "submit",
       events: {
         click: (e: PointerEvent) => {
-          this.submit = true;
-          this.onSubmit(e);
-          this.setProps({
-            email: this.email,
-            password: this.password,
-          });    
+          this.auth(e);
         }
       }, 
       propStyle: this.props.styles.btn,
     });
+    this.children.error = new ErrorText({});
   }
 
   render() {
     return this.compile(template, 
-      {...this.props, 
-        errorEmail: this.email.error,
-        errorPassword: this.password.error,
-      });
+      {...this.props});
   }
 }

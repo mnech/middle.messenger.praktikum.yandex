@@ -1,13 +1,18 @@
 import Block from "../../../../utils/Block";
 import template from "./editProfile.hbs";
-import Input from "../../../../components/input";
 import Button from "../../../../components/button";
-import { Content } from "../../types";
+import { Content } from "../../../../types/types";
 
-import validateInput, {validate, validEvents} from "../../../../utils/validateInput";
+import validateInput, {validate} from "../../../../utils/validateInput";
 import validationForm from "../../../../utils/validationForm";
 
 import * as styles from "./editProfile.module.scss";
+import ProfileController from "../../../../controlles/ProfileController";
+import { ProfileData } from "../../../../types/interfaces";
+import FormInput from "../../../../components/FormInput";
+import Router from "../../../../utils/Router";
+import Store from "../../../../utils/Store";
+import ErrorText from "../../../../components/errorText";
 
 interface EditProfileProps {
   changeContent: (content: Content) => void,
@@ -26,7 +31,6 @@ export default class EditProfile extends Block {
   private second_name!: validate;
   private display_name!: validate;
   private phone!: validate;
-  private submit = false;
   private onSubmit = validationForm(this.email, 
     this.login,
     this.first_name,
@@ -38,66 +42,76 @@ export default class EditProfile extends Block {
     super(props);
   }
 
+  async editProfile(e: Event) {
+    const data = this.onSubmit(e);
+          
+    if (data) {
+      await ProfileController.changeProfile(data as ProfileData);
+
+      const error = Store.getState().userError;
+
+      if (error) {
+        (this.children.error as Block).setProps({error});
+      }
+    }   
+  }
+
   init() {
-    this.email = validateInput(this.props.email, "email");
-    this.login = validateInput(this.props.login, "login");
-    this.first_name = validateInput(this.props.first_name, "first_name");
-    this.second_name = validateInput(this.props.second_name, "second_name");
-    this.display_name = validateInput(this.props.display_name, "display_name");
-    this.phone = validateInput(this.props.phone, "phone");
+    let {email, login, first_name, second_name, display_name, phone} = this.props;
+
+    this.email = validateInput(email, "email");
+    this.login = validateInput(login, "login");
+    this.first_name = validateInput(first_name, "first_name");
+    this.second_name = validateInput(second_name, "second_name");
+    this.display_name = validateInput(display_name, "display_name");
+    this.phone = validateInput(phone, "phone");
   
-    this.children.email = new Input({
+    this.children.email = new FormInput({
       label: "E-mail",
       type: "email",
       name: "email", 
       placeholder: "Enter your e-mail address",
-      value: this.email.value,
-      events: validEvents(this),
+      validation: this.email,
       propStyle: styles.input   
     });
-    this.children.login = new Input({
+    this.children.login = new FormInput({
       label: "Login",
       type: "text",
       name: "login", 
       placeholder: "Enter your login",
-      value: this.login.value,
-      events: validEvents(this),
+      validation: this.login,
       propStyle: styles.input  
     });
-    this.children.firstName = new Input({
+    this.children.firstName = new FormInput({
       label: "First name",
       type: "text",
       name: "first_name", 
       placeholder: "Enter your first name",
-      value: this.first_name.value,
-      events: validEvents(this),
+      validation: this.first_name,
       propStyle: styles.input   
     });
-    this.children.secondName = new Input({
+    this.children.secondName = new FormInput({
       label: "Second name",
       type: "text",
       name: "second_name", 
       placeholder: "Enter your second name",
-      value: this.second_name.value,
-      events: validEvents(this),
+      validation: this.second_name,
       propStyle: styles.input   
     });
-    this.children.displayName = new Input({
+    this.children.displayName = new FormInput({
       label: "Display name",
       type: "string",
       name: "display_name", 
       placeholder: "Enter your display name",
-      value: this.display_name.value,
-      events: validEvents(this),
+      validation: this.display_name,
       propStyle: styles.input   
     });
-    this.children.phone = new Input({
+    this.children.phone = new FormInput({
       label: "Phone",
       type: "tel",
       name: "phone", 
       placeholder: "Enter your phone",
-      value: this.phone.value,
-      events: validEvents(this),
+      validation: this.phone,
       propStyle: styles.input  
     });
     this.children.save = new Button({
@@ -105,42 +119,28 @@ export default class EditProfile extends Block {
       type: "submit",
       events: {
         click: (e) => {
-          this.onSubmit(e);
-          this.setProps({
-            email: this.email,
-            login: this.login,
-            first_name: this.first_name,
-            second_name: this.second_name,
-            display_name: this.display_name,
-            phone: this.phone
-          });
+          this.editProfile(e);
         }
       }, 
       propStyle: styles.btn
     });
     this.children.close = new Button({
-      label: "Don't save",
+      label: "Close",
       type: "button",
       events: {
         click: () => {
-          this.submit = true;
-          this.props.changeContent(Content.Info);
+          Router.go("/settings");
         }
       }, 
       propStyle: styles.btn,
       secondary: true,
     });
+    this.children.error = new ErrorText({});
   }
 
   render() {
     return this.compile(template, 
       {...this.props, 
-      styles,
-      errorEmail: this.email.error,
-      errorLogin: this.login.error,
-      errorFirstName: this.first_name.error,
-      errorSecondName: this.second_name.error,
-      errorPhone: this.phone.error,
-      errorDisplayName: this.display_name.error,});
+      styles});
   }
 }

@@ -1,0 +1,33 @@
+<div class="{{styles.content}}">
+  {{#if selectedChat }}
+  <div class="{{styles.content-top}}">
+    <ul class="{{styles.options}}">
+      <li class="{{styles.options-item}}">
+        {{{searchChat}}}
+      </li>
+      <li class="{{styles.options-item}}">
+        {{{options}}}
+        {{{modalAddUser}}}
+        {{{modalRemoveUser}}}
+        {{{modalDeleteChat}}}
+        {{{modalAvatar}}}
+      </li>
+    </ul>
+  </div>
+  <div class="{{styles.content-body}}">
+    <div class="{{styles.date-chat}}">{{date}}</div>
+    {{#each messages}}
+    {{{this}}}
+    {{/each}}
+  </div>
+  <form class="{{styles.form}}">
+    {{{moreOptions}}}
+    {{{message}}}
+    {{{send}}}
+  </form>
+  {{else}}
+  <div class={{styles.title}}>
+    Choose chat
+  </div>
+  {{/if}}
+</div>

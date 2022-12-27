@@ -1,4 +1,5 @@
 import Block from "../../utils/Block";
+import Router from "../../utils/Router";
 import Button from "../button";
 import template from "./error.hbs";
 
@@ -19,7 +20,9 @@ export default class Error extends Block {
     this.children.button = new Button({
       label: "Go back to chat",
       events: {
-        click: () => console.log("Go chat")
+        click: () => {
+          Router.go("/messenger");
+        }
       },
       propStyle: styles.btn,
     });
