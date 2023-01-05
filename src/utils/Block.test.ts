@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import Block from "./Block";
 
 describe("Block", () => {
@@ -9,7 +8,7 @@ describe("Block", () => {
   }
 
   it("test", () => {
-    const instance = new Component();
-      
+    // const instance = new Component();
+    new Component();
   });
 });

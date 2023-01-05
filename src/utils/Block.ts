@@ -100,7 +100,7 @@ export default class Block {
     return new DocumentFragment();
   }
 
-  protected compile(template: HandlebarsTemplateDelegate, context?: Props) {
+  protected compile(template: (context: any) => string, context?: Props) {
     const contextAndStubs = {...context};
 
     Object.entries(this.children).forEach(([name, component]) => {

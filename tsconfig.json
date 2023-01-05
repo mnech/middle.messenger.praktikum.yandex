@@ -14,5 +14,8 @@
     "noImplicitAny": true,
     "strictNullChecks": true
   },
-  "lib": ["ESNext", "DOM"]
+  "lib": ["ESNext", "DOM"],
+  "ts-node": {
+    "files": true
+ }
 }
