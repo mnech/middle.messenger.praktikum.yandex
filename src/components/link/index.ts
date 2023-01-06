@@ -1,7 +1,7 @@
 import { withRouter } from "../../hocs/withRouter";
 import Block from "../../utils/Block";
 import template from "./link.hbs";
-import * as styles from "./link.module.scss";
+import {default as styles} from "./link.module.scss";
 
 interface LinkProps {
   label: string,

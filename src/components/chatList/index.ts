@@ -8,7 +8,7 @@ import ChatItem from "../chatItem";
 import Input from "../input";
 import template from "./chatList.hbs";
 
-import * as styles from "./chatList.module.scss";
+import {default as styles} from "./chatList.module.scss";
 
 import plus from "../../../static/icons/plus.svg";
 import Modal from "../modal";

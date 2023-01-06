@@ -8,7 +8,7 @@ import FormInput from "../FormInput";
 import validateInput, {validate} from "../../utils/validateInput";
 import validationForm from "../../utils/validationForm";
 
-import * as styles from "./chatWindow.module.scss";
+import {default as styles} from "./chatWindow.module.scss";
 
 import searchIcon from "../../../static/icons/search.svg";
 import optionsIcon from "../../../static/icons/options.svg";

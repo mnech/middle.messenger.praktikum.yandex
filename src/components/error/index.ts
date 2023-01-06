@@ -3,7 +3,7 @@ import Router from "../../utils/Router";
 import Button from "../button";
 import template from "./error.hbs";
 
-import * as styles from "./error.module.scss";
+import {default as styles} from "./error.module.scss";
 
 interface ErrorProps {
   img: string,

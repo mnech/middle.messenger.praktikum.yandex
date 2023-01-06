@@ -1,7 +1,7 @@
 import Block from "../../utils/Block";
 import template from "./dropDown.hbs";
 
-import * as styles from "./dropDown.module.scss";
+import {default as styles} from "./dropDown.module.scss";
 
 interface DropDownProps {
   active: boolean,

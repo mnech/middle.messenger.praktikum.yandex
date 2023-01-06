@@ -1,3 +1,5 @@
+import "./styles/globals.scss";
+
 import Router from "./utils/Router";
 
 import Auth from "./pages/auth";

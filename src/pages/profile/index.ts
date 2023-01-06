@@ -6,7 +6,7 @@ import ChangePassword from "./components/changePassword";
 import Info from "./components/info";
 import { Content, state } from "../../types/types";
 
-import * as styles from "./profile.module.scss";
+import {default as styles} from "./profile.module.scss";
 
 import defPhoto from "../../../static/img/Photo.png";
 import withStore from "../../hocs/withStore";

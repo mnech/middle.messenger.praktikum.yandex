@@ -5,7 +5,7 @@ import Button from "../../../../components/button";
 import validateInput, {validate} from "../../../../utils/validateInput";
 import validationForm from "../../../../utils/validationForm";
 
-import * as styles from "./changePassword.module.scss";
+import {default as styles} from "./changePassword.module.scss";
 import ProfileController from "../../../../controlles/ProfileController";
 import { PasswordData } from "../../../../types/interfaces";
 import FormInput from "../../../../components/FormInput";

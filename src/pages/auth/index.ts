@@ -3,7 +3,7 @@ import template from "./auth.hbs";
 import Signin from "../signin";
 import Signup from "../signup";
 
-import * as styles from "./auth.module.scss";
+import {default as styles} from "./auth.module.scss";
 import { Link } from "../../components/link";
 
 interface AuthProps {
