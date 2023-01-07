@@ -51,7 +51,6 @@
     "sinon": "5.0.1",
     "style-loader": "3.3.1",
     "stylelint": "14.15.0",
-    "stylelint-config-rational-order": "0.1.2",
     "stylelint-config-recommended-scss": "8.0.0",
     "stylelint-config-standard": "29.0.0",
     "stylelint-order": "5.0.0",
