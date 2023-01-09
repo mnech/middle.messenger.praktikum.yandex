@@ -6,14 +6,13 @@
     "dev": "cross-env NODE_ENV=development webpack serve",
     "build": "cross-env NODE_ENV=production webpack",
     "start": "cross-env NODE_ENV=production webpack && node ./server.js",
-    "stylelint": "stylelint \"**/*.scss\"",
-    "eslint": "eslint --ext .ts src/",
-    "test": "mocha --require ts-node/register --require ./mochaSetup.js './src/**/*.test.ts'",
-    "lint": "node_modules/.bin/eslint ."
+    "list:scss": "stylelint \"**/*.scss\"",
+    "lint": "eslint .",
+    "test": "mocha --require ts-node/register --require ./mochaSetup.js './src/**/*.test.ts'"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm-run-all test eslint stylelint"
+      "pre-commit": "npm-run-all test lint:all"
     }
   },
   "keywords": [],
