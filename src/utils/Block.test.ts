@@ -1,14 +1,28 @@
-import Block from "./Block";
+import Sinon from "sinon";
+import proxyquire from 'proxyquire';
+import type BlockType from './Block'
+import { expect } from "chai";
 
-describe("Block", () => {
-  class Component extends Block {
-    protected render(): DocumentFragment {
-      return new DocumentFragment();
+const eventBusMock = {
+  on: Sinon.fake(),
+  emit: Sinon.fake(),
+}
+
+const { default: Block } = proxyquire('./Block', {
+  './EventBus': {
+    EventBus: class {
+      emit = eventBusMock.emit;
+      on = eventBusMock.on;
     }
   }
+}) as { default: typeof BlockType };
 
-  it("test", () => {
-    // const instance = new Component();
-    new Component();
+describe('Block', () => {
+  class ComponentMock extends Block {}
+
+  it('should call init',  () => {
+    new ComponentMock({});
+
+    expect(eventBusMock.emit.calledWith('init')).to.eq(true);
   });
 });

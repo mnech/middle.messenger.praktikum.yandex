@@ -1,4 +1,4 @@
-export default class EventBus<E extends {[Event: string]: unknown[]}> {
+export class EventBus<E extends {[Event: string]: unknown[]}> {
   private readonly listeners: {
     [K in keyof E]?: Array<(...args: E[K]) => void>;
   } = {};

@@ -1,6 +1,6 @@
 import {v4 as uuidv4} from 'uuid';
 
-import EventBus from './EventBus';
+import { EventBus } from './EventBus';
 import {getStub, getStubSelector} from "../utils/stub";
 
 type Element = HTMLElement | null;

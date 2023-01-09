@@ -1,9 +1,9 @@
-import { withRouter } from "../../hocs/withRouter";
+import { PropsWithRouter, withRouter } from "../../hocs/withRouter";
 import Block from "../../utils/Block";
 import template from "./link.hbs";
 import {default as styles} from "./link.module.scss";
 
-interface LinkProps {
+interface LinkProps extends PropsWithRouter {
   label: string,
   to: string,
   styleLink?: string,
@@ -14,7 +14,7 @@ interface LinkProps {
   }
 }
 
-class BaseLink extends Block {
+export class BaseLink extends Block {
   constructor(props: LinkProps) {
     super({
       ...props,
