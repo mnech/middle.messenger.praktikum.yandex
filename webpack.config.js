@@ -55,8 +55,9 @@ module.exports = {
         exclude: /\.module.(s(a|c)ss)$/
       },
       { 
-       test: /\.hbs$/,
-       loader: 'handlebars-loader'
+        test: /\.hbs$/,
+        use: ["handlebars-loader"],
+        exclude: /(node_modules)/,
       }
     ]
   },
