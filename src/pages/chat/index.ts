@@ -3,7 +3,7 @@ import template from "./chat.hbs";
 import Navbar from "../../components/navbar";
 import ChatController from "../../controlles/ChatController";
 
-import * as styles from "./chat.module.scss";
+import {default as styles} from "./chat.module.scss";
 
 import { ChatInfo } from "../../types/interfaces";
 import ChatList from "../../components/chatList";

@@ -9,3 +9,7 @@ export function withRouter(Component: typeof Block) {
     }
   }
 }
+
+export interface PropsWithRouter {
+  router: typeof Router;
+}

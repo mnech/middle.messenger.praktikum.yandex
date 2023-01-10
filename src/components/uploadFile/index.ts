@@ -1,7 +1,7 @@
 import Block from "../../utils/Block";
 import template from "./uploadFile.hbs";
 import UploadInput from "./uploadInput";
-import * as styles from "./uploadFile.module.scss";
+import {default as styles} from "./uploadFile.module.scss";
 
 interface UploadFileProps {
   photo: "string",

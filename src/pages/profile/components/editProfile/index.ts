@@ -6,7 +6,7 @@ import { Content } from "../../../../types/types";
 import validateInput, {validate} from "../../../../utils/validateInput";
 import validationForm from "../../../../utils/validationForm";
 
-import * as styles from "./editProfile.module.scss";
+import {default as styles} from "./editProfile.module.scss";
 import ProfileController from "../../../../controlles/ProfileController";
 import { ProfileData } from "../../../../types/interfaces";
 import FormInput from "../../../../components/FormInput";

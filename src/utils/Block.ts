@@ -1,6 +1,6 @@
 import {v4 as uuidv4} from 'uuid';
 
-import EventBus from './EventBus';
+import { EventBus } from './EventBus';
 import {getStub, getStubSelector} from "../utils/stub";
 
 type Element = HTMLElement | null;
@@ -100,7 +100,7 @@ export default class Block {
     return new DocumentFragment();
   }
 
-  protected compile(template: HandlebarsTemplateDelegate, context?: Props) {
+  protected compile(template: (context: any) => string, context?: Props) {
     const contextAndStubs = {...context};
 
     Object.entries(this.children).forEach(([name, component]) => {

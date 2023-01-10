@@ -1,8 +1,7 @@
 {
   "extends": [
     "stylelint-config-standard",
-    "stylelint-config-recommended-scss",
-    "stylelint-config-rational-order"
+    "stylelint-config-recommended-scss"
   ],
   "plugins": ["stylelint-order"],
   "rules": {

@@ -62,7 +62,7 @@ export default class HTTPTransport {
 
 	private request<T>(url: string, 
              options: Options = {method: Methods.Get, headers: {"Content-Type": "application/json"}}, 
-             timeout: number = 5000): Promise<T> {
+             _timeout: number = 5000): Promise<T> {
     let {method, data, headers = {}} = options;
     
     return new Promise((resolve, reject) => {

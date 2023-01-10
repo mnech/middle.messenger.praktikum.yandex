@@ -2,7 +2,7 @@ import Block from "../../../utils/Block";
 import ButtonIcon from "../../buttonIcon";
 import template from "./modalForm.hbs";
 
-import * as styles from "./modalForm.module.scss";
+import {default as styles} from "./modalForm.module.scss";
 
 import close from "../../../../static/icons/x.svg";
 
